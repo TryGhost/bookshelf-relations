@@ -267,11 +267,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     },
                     expect: function (result) {
                         result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('tags').length.should.eql(0);
+                        result.related('tags').length.should.eql(1);
 
                         return testUtils.database.getConnection()('posts_tags')
                             .then(function (result) {
-                                result.length.should.eql(0);
+                                result.length.should.eql(1);
                             })
                             .then(function () {
                                 return testUtils.database.getConnection()('tags');
@@ -491,11 +491,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         ]
                     },
                     expect: function (result) {
-                        result.message.should.match(/unique/gi);
+                        result.related('tags').length.should.eql(1);
 
                         return testUtils.database.getConnection()('posts_tags')
                             .then(function (result) {
-                                result.length.should.eql(2);
+                                result.length.should.eql(1);
                             })
                             .then(function () {
                                 return testUtils.database.getConnection()('tags');
@@ -516,11 +516,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         ]
                     },
                     expect: function (result) {
-                        result.message.should.match(/unique/gi);
+                        result.related('tags').length.should.eql(1);
 
                         return testUtils.database.getConnection()('posts_tags')
                             .then(function (result) {
-                                result.length.should.eql(2);
+                                result.length.should.eql(1);
                             })
                             .then(function () {
                                 return testUtils.database.getConnection()('tags');
