@@ -1,3 +1,5 @@
+'use strict';
+
 const models = require('../../../models');
 
 module.exports = function (options) {
