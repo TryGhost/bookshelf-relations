@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib",
-    "test": "npm run lint && _mocha --report lcovonly -- test/integration/*_spec.js",
-    "perf": "_mocha --timeout 5000 --report lcovonly -- test/perf/*_spec.js"
+    "test": "npm run lint && _mocha --timeout 5000 --report lcovonly -- test/integration/*_spec.js",
+    "perf": "_mocha --report lcovonly -- test/perf/*_spec.js"
   },
   "repository": {
     "type": "git",
