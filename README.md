@@ -1,14 +1,14 @@
-# [Bookshelf Relations][0]
+# Bookshelf Relations
 
 
 > Auto insert, update and remove nested relationships.
 
-# Installation
+## Installation
 
     npm install bookshelf-relations --save
     yarn add bookshelf-relations
 
-# Tests
+## Tests
 
     npm test
     NODE_ENV=testing-mysql npm test
