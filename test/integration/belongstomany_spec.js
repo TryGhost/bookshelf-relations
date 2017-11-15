@@ -260,6 +260,28 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     }
                 }
             },
+            sendEmptyTag: function () {
+                return {
+                    values: {
+                        tags: [{}],
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                        result.related('tags').length.should.eql(0);
+
+                        return testUtils.database.getConnection()('posts_tags')
+                            .then(function (result) {
+                                result.length.should.eql(0);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            });
+                    }
+                }
+            },
             deleteAllExistingTagsFromPostWhichHasNone: function () {
                 return {
                     id: 1,
@@ -463,6 +485,31 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 id: testUtils.fixtures.getAll().posts[1].tags[0].id,
                                 slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
                             },
+                            {
+                                slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.message.should.match(/unique/gi);
+
+                        return testUtils.database.getConnection()('posts_tags')
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            });
+                    }
+                }
+            },
+            addDuplicate: function () {
+                return {
+                    values: {
+                        tags: [
                             {
                                 slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
                             }
