@@ -477,6 +477,45 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     }
                 }
             },
+            noChangesButUnknownAttr: function () {
+                // NOTE: This is not the task of the plugin. Your project has to do field validation before saving.
+                return {
+                    values: {
+                        tags: [
+                            {
+                                id: testUtils.fixtures.getAll().posts[1].tags[0].id,
+                                slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
+                                parent: null
+                            },
+                            {
+                                id: testUtils.fixtures.getAll().posts[1].tags[1].id,
+                                slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                        result.related('tags').length.should.eql(2);
+
+                        result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                        result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+
+                        result.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                        result.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+
+                        return testUtils.database.getConnection()('posts_tags')
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            });
+                    }
+                }
+            },
             addDuplicates: function () {
                 return {
                     values: {
@@ -589,20 +628,27 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     expect: function (outerResult) {
                         outerResult.related('tags').models.length.should.eql(3);
 
+                        outerResult.related('tags').models[0].id.should.eql(3);
+                        outerResult.related('tags').models[0].get('slug').should.eql('something');
+
+                        outerResult.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                        outerResult.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+
+                        outerResult.related('tags').models[2].get('slug').should.eql('else');
+                        outerResult.related('tags').models[2].id.should.eql(4);
+
                         return testUtils.database.getConnection()('posts_tags').orderBy('sort_order', 'ASC')
                             .then(function (result) {
                                 result.length.should.eql(3);
 
                                 result[0].sort_order.should.eql(0);
-                                result[0].tag_id.should.eql(outerResult.related('tags').models[1].id);
-                                outerResult.related('tags').models[1].get('slug').should.eql('something');
+                                result[0].tag_id.should.eql(outerResult.related('tags').models[0].id);
 
                                 result[1].sort_order.should.eql(1);
                                 result[1].tag_id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
 
                                 result[2].sort_order.should.eql(2);
                                 result[2].tag_id.should.eql(outerResult.related('tags').models[2].id);
-                                outerResult.related('tags').models[2].get('slug').should.eql('else');
                             })
                             .then(function () {
                                 return testUtils.database.getConnection()('tags');
