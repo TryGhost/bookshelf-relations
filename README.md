@@ -13,6 +13,7 @@
     npm test
     NODE_ENV=testing-mysql npm test
     npm run perf
+    npm run coverage
 
 # Copyright & License
 

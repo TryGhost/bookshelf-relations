@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const Promise = require('bluebird');
+require('should');
 
 module.exports = function (bookshelf) {
     bookshelf.plugin('registry');
@@ -15,6 +16,12 @@ module.exports = function (bookshelf) {
                             sort_order: index
                         }, _.extend({}, options, {query: {where: {tag_id: target.id}}}));
                     });
+                },
+                beforeRelationCreation: function (collection, data, opts) {
+                    // do nothing, just ensure the syntax is correct
+                    should.exist(collection);
+                    should.exist(data);
+                    should.exist(opts);
                 }
             }
         }

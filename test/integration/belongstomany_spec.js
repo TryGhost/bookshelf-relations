@@ -391,6 +391,37 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     }
                 }
             },
+            addUnknownTargetId: function () {
+                return {
+                    values: {
+                        title: 'case2',
+                        tags: [
+                            {
+                                id: 20,
+                                slug: 'unknown-id'
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql('case2');
+                        result.related('tags').length.should.eql(1);
+
+                        result.related('tags').models[0].id.should.not.eql(20);
+                        result.related('tags').models[0].get('slug').should.eql('unknown-id');
+
+                        return testUtils.database.getConnection()('posts_tags')
+                            .then(function (result) {
+                                result.length.should.eql(1);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(3);
+                            });
+                    }
+                }
+            },
             useWithRelated: function () {
                 return {
                     options: {
@@ -436,6 +467,34 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                             })
                             .then(function (result) {
                                 result.length.should.eql(2);
+                            });
+                    }
+                }
+            },
+            matchingUnknown: function () {
+                return {
+                    values: {
+                        tags: [
+                            {
+                                slug: 'test',
+                                name: undefined
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                        result.related('tags').length.should.eql(1);
+                        result.related('tags').models[0].get('slug').should.eql('test');
+
+                        return testUtils.database.getConnection()('posts_tags')
+                            .then(function (result) {
+                                result.length.should.eql(1);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(3);
                             });
                     }
                 }

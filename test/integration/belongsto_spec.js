@@ -107,6 +107,28 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                     }
                 }
             },
+            authorWithUnknownId: function () {
+                return {
+                    values: {
+                        author: {
+                            id: 20,
+                            name: 'Frank'
+                        }
+                    },
+                    expect: function (result) {
+                        result.related('author').toJSON().id.should.not.eql(20);
+                        result.related('author').toJSON().name.should.eql('Frank');
+
+                        return testUtils.database.getConnection()('authors')
+                            .then(function (result) {
+                                result.length.should.eql(3);
+                                result[0].name.should.eql('Alf');
+                                result[1].name.should.eql('Mozart');
+                                result[2].name.should.eql('Frank');
+                            });
+                    }
+                }
+            },
             overrideExistingAuthor: function () {
                 return {
                     values: {

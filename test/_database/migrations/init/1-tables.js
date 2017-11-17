@@ -14,6 +14,7 @@ exports.up = function up(options) {
     }).createTable('tags', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('slug', 191).unique().nullable(false);
+        table.string('name', 250).nullable(true);
     }).createTable('posts_tags', function (table) {
         table.increments('id').primary().nullable(false);
         table.integer('post_id').unsigned().nullable(false).references('posts.id');
