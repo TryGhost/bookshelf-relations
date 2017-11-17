@@ -1,3 +1,5 @@
+'use strict';
+
 const sinon = require('sinon');
 const _ = require('lodash');
 const Bookshelf = require('bookshelf');
