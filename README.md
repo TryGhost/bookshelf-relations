@@ -18,15 +18,15 @@
 
 2. Define your relationships on each model.
 
-
+```
     bookshelf.Model.extend({
         relationships: ['tags', 'news']
     }, {...});
-
+```
 
 3. Ensure you call `initialize` of the parent model. This is only required if `autoHook` is set to true.
 
-
+```
     const proto = bookshelf.Model.prototype;
     
     bookshelf.Model.extend({
@@ -38,7 +38,7 @@
             proto.initialize.call(this);
         }
     });
-    
+```
     
 ## Plugin Options
 
