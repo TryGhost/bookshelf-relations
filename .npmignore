@@ -4,3 +4,6 @@ test.db
 .git*
 package-lock.json
 node_modules/**
+.nyc-output
+coverage
+.idea
