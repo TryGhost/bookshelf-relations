@@ -174,7 +174,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                         }
                     },
                     expect: function (result) {
-                        result.message.should.match(/unique/gi);
+                        result.stack.should.match(/unique/gi);
 
                         return testUtils.database.getConnection()('news')
                             .then(function (result) {
