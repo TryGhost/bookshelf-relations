@@ -37,6 +37,7 @@
     "bookshelf": "^0.10.0",
     "deep-diff": "^0.3.4",
     "eslint": "^4.11.0",
+    "grunt-release": "^0.14.0",
     "knex": "^0.12.1",
     "knex-migrator": "^3.0.7",
     "mocha": "^3.0.2",
