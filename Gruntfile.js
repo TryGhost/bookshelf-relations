@@ -3,11 +3,11 @@ module.exports = function (grunt) {
     grunt.initConfig({
         release: {
             options: {
-                changelog: true,
-                github: {
-                    repo: 'TryGhost/bookshelf-relations',
-                    accessTokenVar: 'GITHUB_ACCESS_TOKEN'
-                }
+                changelog: true
+            },
+            github: {
+                repo: 'TryGhost/bookshelf-relations',
+                accessTokenVar: 'GITHUB_ACCESS_TOKEN'
             }
         }
     });
