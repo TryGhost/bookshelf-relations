@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-relations",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "alias": "bookshelf-relations",
   "description": "Auto update relations",
   "main": "index.js",
