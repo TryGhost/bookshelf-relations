@@ -68,4 +68,4 @@ e.g. `.set('tags', [{ name: 'tag1', [relation]: {} }])`. Relation won't get upda
 
 # Copyright & License
 
-Copyright (c) 2017 Ghost Foundation - Released under the [MIT license](LICENSE).
+Copyright (c) 2017-2018 Ghost Foundation - Released under the [MIT license](LICENSE).
