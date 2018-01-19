@@ -10,6 +10,18 @@ exports.up = function up(options) {
     }).createTable('posts', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('title');
+        table.string('a');
+        table.string('b');
+        table.string('c');
+        table.string('d');
+        table.string('e');
+        table.string('f');
+        table.string('g');
+        table.string('h');
+        table.string('i');
+        table.string('j');
+        table.text('content', 'long');
+        table.text('plaintext', 'long');
         table.integer('author_id').unsigned().nullable(false).references('authors.id');
     }).createTable('tags', function (table) {
         table.increments('id').primary().nullable(false);
