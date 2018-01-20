@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "bookshelf": "^0.10.0",
+    "bson-objectid": "^1.2.2",
     "deep-diff": "^0.3.4",
     "eslint": "^4.11.0",
     "grunt": "^1.0.1",

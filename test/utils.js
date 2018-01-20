@@ -10,11 +10,6 @@ const knex = require('knex');
 const path = require('path');
 const KnexMigrator = require('knex-migrator');
 const config = require('../config');
-const models = require('./_database/models');
-const knexMigrator = new KnexMigrator({
-    knexMigratorFilePath: path.join(__dirname, '_database')
-});
-
 let connection;
 
 exports.database = {
@@ -24,7 +19,14 @@ exports.database = {
     connect: function connect() {
         return knex(config.get('database'));
     },
-    init: function () {
+    init: function (options) {
+        options = options || {};
+        const dbName = options.dbName || '_database';
+        const models = require('./' + dbName + '/models');
+        let knexMigrator = new KnexMigrator({
+            knexMigratorFilePath: path.join(__dirname, dbName)
+        });
+
         return knexMigrator.init()
             .then(() => {
                 return knex(config.get('database'));
@@ -32,9 +34,19 @@ exports.database = {
             .then((_connection) => {
                 connection = _connection;
                 return models.init(connection);
+            })
+            .finally(() => {
+                knexMigrator = null;
             });
     },
-    reset: function () {
+    reset: function (options) {
+        options = options || {};
+        const dbName = options.dbName || '_database';
+
+        let knexMigrator = new KnexMigrator({
+            knexMigratorFilePath: path.join(__dirname, dbName)
+        });
+
         return knexMigrator.reset({force: true})
             .then(() => {
                 if (!connection) {
@@ -42,6 +54,9 @@ exports.database = {
                 }
 
                 return connection.destroy();
+            })
+            .finally(() => {
+                knexMigrator = null;
             });
     }
 };
