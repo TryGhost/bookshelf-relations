@@ -8,7 +8,7 @@
     "lint": "eslint lib",
     "test": "npm run lint && _mocha --timeout 5000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
     "perf": "_mocha --report lcovonly -- test/perf/*_spec.js",
-    "coverage": "nyc --reporter=lcov _mocha -- test/integration/*_spec.js test/unit/*_spec.js"
+    "coverage": "nyc --reporter=lcov _mocha -s 1 -- test/integration/*_spec.js test/unit/*_spec.js"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'testing-mysql';
 
 const _ = require('lodash');
 const Promise = require('bluebird');
-const models = require('../_database1/models');
+const models = require('../_database2/models');
 const testUtils = require('../utils');
 const ObjectId = require('bson-objectid');
 
@@ -53,19 +53,20 @@ let generatePost = function generatePost() {
     };
 };
 
-describe('[Integration] Perf (1) - MySQL only', function () {
+describe.only('[Integration] Perf (1) - MySQL only', function () {
     let addedPosts = [];
     this.timeout(1000 * 60 * 10);
+    this.slow(1);
 
     before(function () {
-        return testUtils.database.reset({dbName: '_database1'})
+        return testUtils.database.reset({dbName: '_database2'})
             .then(function () {
-                return testUtils.database.init({dbName: '_database1'});
+                return testUtils.database.init({dbName: '_database2'});
             });
     });
 
     it('insert posts', function () {
-        const posts = _.map(_.range(1000 * 3), generatePost);
+        const posts = _.map(_.range(3000), generatePost);
 
         return Promise.each(posts, function (post) {
             return models.Post.add(post)
@@ -75,39 +76,13 @@ describe('[Integration] Perf (1) - MySQL only', function () {
         });
     });
 
-    it('fetch one posts with all relations', function () {
-        return models.Post.forge({id: addedPosts[0].id}).fetch({withRelated: ['tags', 'authors', 'meta']})
-            .then(function (post) {
-                post.related('tags').length.should.eql(2);
-                post.related('authors').length.should.eql(2);
-                post.related('meta').length.should.eql(2);
-            });
-    });
-
-    it('fetch all posts with all relations', function () {
-        return models.Post.fetchAll({withRelated: ['tags', 'authors', 'meta']})
+    it('fetch 10 posts', function () {
+        return models.Post.query(function (qb) {
+            qb.limit(10);
+            qb.select(['title', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']);
+        }).fetchAll()
             .then(function (result) {
-                result.models[0].related('tags').length.should.eql(2);
-                result.models[0].related('authors').length.should.eql(2);
-                result.models[0].related('meta').length.should.eql(2);
+                result.models.length.should.eql(10);
             });
-    });
-
-    it('edit and expect revisions', function () {
-        return models.Post.edit({
-            tags: [],
-            authors: [
-                {
-                    name: 'Ralf'
-                }
-            ]
-        }, {id: addedPosts[0].id}).then(function (post) {
-            post.related('tags').models.length.should.eql(0);
-            post.related('authors').models.length.should.eql(1);
-
-            return models.Post.fetchAll({withRelated: ['revisions']});
-        }).then(function (result) {
-            result.models[0].related('revisions').models.length.should.eql(1);
-        });
     });
 });
