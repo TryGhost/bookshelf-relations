@@ -56,8 +56,7 @@
 
 ## Unsupported
 
-The plugin is not able to update nested-nested relations at the moment.
-e.g. `.set('tags', [{ name: 'tag1', [relation]: {} }])`. Relation won't get updated.
+~~The plugin is not able to update nested-nested relations at the moment. e.g. `.set('tags', [{ name: 'tag1', [relation]: {} }])`. Relation won't get updated.~~ Supported, but no tests available.
 
 ## Tests
 
