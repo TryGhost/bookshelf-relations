@@ -6,7 +6,7 @@ exports.up = function up(options) {
 
     return schema.createTable('authors', function (table) {
         table.string('id', 24).primary().nullable(false);
-        table.string('name', 100).nullable(false);
+        table.string('name', 100).unique().nullable(false);
     }).createTable('posts', function (table) {
         table.string('id', 24).primary().nullable(false);
         table.string('title');
@@ -25,10 +25,10 @@ exports.up = function up(options) {
         table.string('j');
     }).createTable('tags', function (table) {
         table.string('id', 24).primary().nullable(false);
-        table.string('slug', 191).nullable(false);
+        table.string('slug', 191).unique().nullable(false);
         table.string('name', 250).nullable(true);
         table.string('parent_id', 24).nullable(true).references('tags.id');
-        table.unique(['slug', 'parent_id']);
+        table.index(['parent_id']);
     }).createTable('posts_tags', function (table) {
         table.string('id', 24).primary().nullable(false);
         table.string('post_id', 24).nullable(false).references('posts.id');
@@ -39,6 +39,18 @@ exports.up = function up(options) {
         table.string('key', 100).nullable(true);
         table.text('value', 'medium').nullable(true);
         table.string('object_id', 24).nullable(false);
+        table.index(['object_id']);
+    }).createTable('tags_meta', function (table) {
+        table.string('id', 24).primary().nullable(false);
+        table.string('key', 100).nullable(true);
+        table.text('value', 'medium').nullable(true);
+        table.string('object_id', 24).nullable(false);
+        table.index(['object_id']);
+    }).createTable('tags_nested', function (table) {
+        table.string('id', 24).primary().nullable(false);
+        table.string('parent_id', 24).nullable(true);
+        table.string('child_id', 24).nullable(true);
+        table.index(['parent_id']);
     }).createTable('revisions', function (table) {
         table.string('id', 24).primary().nullable(false);
         table.text('data', 'long').nullable(true);
@@ -54,7 +66,4 @@ exports.up = function up(options) {
         // primary author/tag is always the first element in the array
         table.integer('sort_order', 24).nullable(false).defaultTo(0);
     });
-
-    // posts_fields (for custom fields)
-    // users_fields (for custom fields)
 };

@@ -61,7 +61,7 @@ describe('[Integration] Perf - MySQL only', function () {
     });
 
     it('insert posts', function () {
-        const posts = _.map(_.range(1000 * 4), generatePost);
+        const posts = _.map(_.range(1), generatePost);
 
         return Promise.each(posts, function (post) {
             return models.Post.add(post)

@@ -53,7 +53,7 @@ let generatePost = function generatePost() {
     };
 };
 
-describe.only('[Integration] Perf (1) - MySQL only', function () {
+describe('[Integration] Perf (1) - MySQL only', function () {
     let addedPosts = [];
     this.timeout(1000 * 60 * 10);
     this.slow(1);
