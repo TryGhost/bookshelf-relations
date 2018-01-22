@@ -16,7 +16,15 @@ module.exports = function (bookshelf) {
                         return Promise.each(targets.models, function (target, index) {
                             return existing.updatePivot({
                                 sort_order: index
-                            }, _.extend({}, options, {query: {where: {tag_id: target.id}}}));
+                            }, _.extend({}, options, {query: {where: {tag_id: target.id}}}))
+                                .catch(function (err) {
+                                    // @TODO: it tries to update the pivot for tags_nested, but it has no pivot
+                                    if (err.code === 'ER_BAD_FIELD_ERROR') {
+                                        return Promise.resolve();
+                                    }
+
+                                    throw err;
+                                })
                         });
                     } else if (targets && targets.models.length && targets.models[0].tableName === 'authors') {
                         return Promise.each(targets.models, function (target, index) {

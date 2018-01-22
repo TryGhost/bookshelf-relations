@@ -6,7 +6,11 @@
       "user": "root",
       "password": "",
       "database": "bookshelf_relations_testing",
-      "debug": false
+      "debug": false,
+      "pool": {
+        "min": 5,
+        "max": 10
+      }
     }
   }
 }
