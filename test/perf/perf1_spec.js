@@ -129,7 +129,7 @@ describe.only('[Integration] Perf (1) - MySQL only - fetch', function () {
     this.slow(1);
 
     // just lookup any post id
-    const postId = '5a665f0c9c4f7665dec9dd41';
+    const postId = '5a665f1f9c4f7665dec9fec6';
 
     before(function () {
         const knex = require('knex');
@@ -150,22 +150,41 @@ describe.only('[Integration] Perf (1) - MySQL only - fetch', function () {
             });
     });
 
-    it('fetch 10 posts', function () {
+    it('fetch 15 posts', function () {
         return models.Post.query(function (qb) {
-            qb.limit(10);
+            qb.limit(15);
         }).fetchAll({withRelated: ['tags', 'authors', 'meta', 'tags.meta', 'tags.nested']})
             .then(function (result) {
-                result.models.length.should.eql(10);
+                result.models.length.should.eql(15);
             });
     });
 
-    it('fetch 10 offset 1000 posts', function () {
+    it('fetch 15 posts', function () {
         return models.Post.query(function (qb) {
-            qb.limit(10);
-            qb.offset(1000);
+            qb.limit(15);
         }).fetchAll({withRelated: ['tags', 'authors', 'meta', 'tags.meta', 'tags.nested']})
             .then(function (result) {
-                result.models.length.should.eql(10);
+                result.models.length.should.eql(15);
+            });
+    });
+
+    it('fetch 15 posts', function () {
+        return models.Post.query(function (qb) {
+            qb.limit(15);
+            qb.offset(2000);
+        }).fetchAll({withRelated: ['tags', 'authors', 'meta', 'tags.meta', 'tags.nested']})
+            .then(function (result) {
+                result.models.length.should.eql(15);
+            });
+    });
+
+    it('fetch 15 posts', function () {
+        return models.Post.query(function (qb) {
+            qb.limit(15);
+            qb.offset(2000);
+        }).fetchAll({withRelated: ['tags', 'authors', 'meta', 'tags.meta', 'tags.nested']})
+            .then(function (result) {
+                result.models.length.should.eql(15);
             });
     });
 
