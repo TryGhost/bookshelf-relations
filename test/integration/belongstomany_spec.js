@@ -103,6 +103,36 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     }
                 }
             },
+            postsWithUnknownTagIds: function () {
+                return {
+                    options: {
+                        withRelated: ['tags']
+                    },
+                    values: {
+                        title: 'test-post-no-tags',
+                        tags: [
+                            {
+                                id: 11111,
+                                slug: 'lalalala'
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql('test-post-no-tags');
+
+                        return testUtils.database.getConnection()('posts_tags').where('post_id', result.id)
+                            .then(function (result) {
+                                result.length.should.eql(1);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(3);
+                            });
+                    }
+                }
+            },
             postWithNewTags: function () {
                 return {
                     values: {
@@ -138,7 +168,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             it(key, function () {
                 let addCase = addCases[key]();
 
-                return models.Post.add(_.merge({author: {name: 'Tomas'}}, addCase.values))
+                return models.Post.add(_.merge({author: {name: 'Tomas'}}, addCase.values), addCase.options || {})
                     .then(function (result) {
                         return addCase.expect(result);
                     })

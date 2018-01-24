@@ -52,10 +52,14 @@ module.exports = function (bookshelf) {
             return this.belongsTo('Author', 'author_id');
         }
     }, {
-        add: function (data) {
+        add: function (data, options) {
+            options = options || {};
+
             return bookshelf.transaction((transacting) => {
+                options.transacting = transacting;
+
                 let post = this.forge(data);
-                return post.save(null, {transacting: transacting});
+                return post.save(null, options);
             });
         },
 

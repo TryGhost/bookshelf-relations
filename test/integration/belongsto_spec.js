@@ -28,6 +28,54 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
         });
     });
 
+    describe('add', function () {
+        const addCases = {
+            addWithUnknownId: function () {
+                return {
+                    options: {
+                        withRelated: ['author']
+                    },
+                    values: {
+                        title: 'post-title',
+                        author: {
+                            id: 11111,
+                            name: 'test-unknown'
+                        }
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql('post-title');
+                        result.related('author').toJSON().should.containEql({
+                            name: 'test-unknown'
+                        });
+
+                        return testUtils.database.getConnection()('authors')
+                            .then(function (result) {
+                                result.length.should.eql(3);
+                            });
+                    }
+                }
+            }
+        };
+
+        return _.each(Object.keys(addCases), function (key) {
+            it(key, function () {
+                let addCase = addCases[key]();
+
+                return models.Post.add(addCase.values, addCase.options || {})
+                    .then(function (result) {
+                        return addCase.expect(result);
+                    })
+                    .catch(function (err) {
+                        if (err instanceof should.AssertionError) {
+                            throw err;
+                        }
+
+                        return addCase.expect(err);
+                    });
+            });
+        });
+    });
+
     describe('destroy', function () {
         const destroyCases = {
             existingPostWithAuthor: function () {
