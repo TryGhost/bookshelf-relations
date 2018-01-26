@@ -73,6 +73,32 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     }
                 }
             },
+            withTagForeignKey: function () {
+                return {
+                    values: {
+                        title: 'test-post-no-tags',
+                        tags: [
+                            {
+                                tag_id: testUtils.fixtures.getAll().posts[1].tags[1].id
+                            }
+                        ]
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql('test-post-no-tags');
+
+                        return testUtils.database.getConnection()('posts_tags').where('post_id', result.id)
+                            .then(function (result) {
+                                result.length.should.eql(1);
+                            })
+                            .then(function () {
+                                return testUtils.database.getConnection()('tags');
+                            })
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            });
+                    }
+                }
+            },
             postWithNewAndExistingTags: function () {
                 return {
                     values: {

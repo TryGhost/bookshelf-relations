@@ -37,7 +37,7 @@ module.exports = function (bookshelf) {
         },
 
         tags: function () {
-            return this.belongsToMany('Tag').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
+            return this.belongsToMany('Tag', 'posts_tags', 'post_id', 'tag_id').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
         },
 
         news: function () {
