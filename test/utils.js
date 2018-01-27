@@ -8,6 +8,7 @@ require('should');
 
 const knex = require('knex');
 const path = require('path');
+const Promise = require('bluebird');
 const KnexMigrator = require('knex-migrator');
 const config = require('../config');
 const models = require('./_database/models');
@@ -35,13 +36,13 @@ exports.database = {
             });
     },
     reset: function () {
-        return knexMigrator.reset({force: true})
-            .then(() => {
-                if (!connection) {
-                    return;
-                }
+        if (!connection) {
+            return knexMigrator.reset({force: true})
+        }
 
-                return connection.destroy();
+        return Promise.promisify(connection.destroy)()
+            .then(() => {
+                return knexMigrator.reset({force: true})
             });
     }
 };
