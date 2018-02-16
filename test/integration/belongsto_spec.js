@@ -238,6 +238,28 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                             });
                     }
                 }
+            },
+            changeAuthor: function () {
+                return {
+                    id: 1,
+                    options: {
+                        withRelated: ['author']
+                    },
+                    values: {
+                        author: {
+                            id: testUtils.fixtures.getAll().posts[1].author.id
+                        }
+                    },
+                    expect: function (result) {
+                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
+                        result.related('author').toJSON().name.should.eql('Mozart');
+
+                        return testUtils.database.getConnection()('authors')
+                            .then(function (result) {
+                                result.length.should.eql(2);
+                            });
+                    }
+                }
             }
         };
 
