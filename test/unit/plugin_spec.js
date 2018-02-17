@@ -43,6 +43,50 @@ describe('[Unit] plugin', function () {
         }
     });
 
+    it('event call order (1)', function (done) {
+        plugin(bookshelfMock, {autoHook: true});
+
+        sandbox.stub(bookshelfMock.manager, 'updateRelations').resolves();
+
+        let TestModel = bookshelfMock.Model.extend({
+            relationships: ['fake'],
+            initialize: function () {
+                let createdCalled = false;
+
+                this.on('created', function () {
+                    bookshelfMock.manager.updateRelations.calledOnce.should.eql(false);
+                    createdCalled = true;
+                });
+
+                this.on('saved', function () {
+                    bookshelfMock.manager.updateRelations.calledOnce.should.eql(true);
+                    createdCalled.should.eql(true);
+                    done();
+                });
+
+                bookshelfMock.Model.prototype.initialize.apply(this, arguments);
+            }
+        }, {});
+
+        let testModel = new TestModel();
+        testModel.fake = function () {
+            return {
+                relatedData: {
+                    type: 'belongsToMany'
+                }
+            }
+        };
+
+        testModel.related = function () {
+            return {};
+        };
+
+        testModel.set('fake', 'fake');
+        testModel.emit('saving', testModel);
+        testModel.emit('created', testModel);
+        testModel.emit('saved', testModel);
+    });
+
     it('saved: unknown relation type', function () {
         plugin(bookshelfMock, {autoHook: true});
 
