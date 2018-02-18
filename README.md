@@ -49,6 +49,22 @@
 
 ## Notes
 
+### Events
+
+If you are using `autoHook:true` (!), then you should know the following fact. 
+
+Bookshelf triggers two events if you insert data: `created` and `saved` (in this order).
+Bookshelf triggers two events if you update data: `updated` and `saved` (in this order).
+
+`autoHook:true` makes use of the `created` and `updated` events.
+
+If you are also listen on `created`, please ensure you don't rely on the data, because your parent model will for sure receive the event first.
+And that means, the relations were not yet updated. This is not optimal, but hard to solve right now.
+
+So, please use the `saved` event and differentiate between `options.method=insert|update` - this is reliable.
+
+You don't have to use the builtin `autoHook`, you can simply trigger the plugin yourself using `bookshelf.manager.updateRelations`.
+
 ### Transactions
 
 *It's highly recommended to insert/update/delete your models within [transactions](http://bookshelfjs.org/#Bookshelf-instance-transaction) when using this plugin, because updating nested relationships requires additional queries to the database. Otherwise if an error occurs during any query, you can't expect data to be rolled back fully.*
