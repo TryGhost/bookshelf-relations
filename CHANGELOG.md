@@ -1,4 +1,9 @@
 ### 0.2.0 - 2018-03-19
+
+- Breaking Change
+  - peer dependency Bookshelf >= 0.13
+  - it requires you to update to bookshelf 0.13
+
 ### 0.1.13 - 2018-02-18
 ### 0.1.12 - 2018-02-17
 ### 0.1.11 - 2018-02-16
