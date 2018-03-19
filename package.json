@@ -34,7 +34,7 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "bookshelf": "^0.10.0",
+    "bookshelf": "^0.13.0",
     "deep-diff": "^0.3.4",
     "eslint": "^4.11.0",
     "grunt": "^1.0.1",
@@ -53,5 +53,8 @@
     "bluebird": "^3.4.1",
     "ghost-ignition": "^2.8.16",
     "lodash": "^4.17.4"
+  },
+  "peerDependencies": {
+    "bookshelf": ">=0.13.0"
   }
 }

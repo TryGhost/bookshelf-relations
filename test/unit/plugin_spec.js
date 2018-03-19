@@ -3,6 +3,7 @@
 const sinon = require('sinon');
 const _ = require('lodash');
 const Bookshelf = require('bookshelf');
+const Knex = require('knex');
 const plugin = require('../../lib/plugin');
 let sandbox = sinon.sandbox.create();
 
@@ -10,7 +11,7 @@ describe('[Unit] plugin', function () {
     let bookshelfMock = {};
 
     beforeEach(function () {
-        const bookshelf = Bookshelf();
+        const bookshelf = Bookshelf(Knex({client: 'sqlite3', useNullAsDefault: true}));
         bookshelfMock.Model = bookshelf.Model;
         sandbox.spy(bookshelfMock.Model, 'extend');
     });
