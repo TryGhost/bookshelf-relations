@@ -1,5 +1,3 @@
-'use strict';
-
 exports.up = function up(options) {
     let connection = options.connection;
     let schema = connection.schema;

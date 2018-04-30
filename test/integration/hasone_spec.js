@@ -1,5 +1,3 @@
-'use strict';
-
 const _ = require('lodash');
 const models = require('../_database/models');
 const testUtils = require('../utils');
