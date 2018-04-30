@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = function (bookshelf) {
     bookshelf.plugin('registry');
 

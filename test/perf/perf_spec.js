@@ -1,5 +1,3 @@
-'use strict';
-
 process.env.NODE_ENV = 'testing-mysql';
 
 const _ = require('lodash');

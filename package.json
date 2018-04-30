@@ -29,6 +29,9 @@
     "email": "hello@ghost.org",
     "web": "https://ghost.org"
   },
+  "engine": {
+    "node": ">=6"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
