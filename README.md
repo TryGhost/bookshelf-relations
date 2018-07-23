@@ -76,10 +76,14 @@ You don't have to use the builtin `autoHook`, you can simply trigger the plugin 
 
 ## Tests
 
-    npm test
-    NODE_ENV=testing-mysql npm test
-    npm run perf
-    npm run coverage
+- `yarn test` to run tests & eslint
+- `yarn lint` to run eslint only
+- `NODE_ENV=testing-mysql yarn test` to run tests with mysql db
+- `yarn perf` to run a performance test
+- `yarn coverage` to run test coverage
+
+## Publishing
+- `yarn ship`
 
 # Copyright & License
 

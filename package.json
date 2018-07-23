@@ -6,9 +6,12 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib",
-    "test": "npm run lint && _mocha --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
+    "test": "_mocha --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
+    "posttest": "yarn lint",
     "perf": "_mocha --report lcovonly -- test/perf/*_spec.js",
-    "coverage": "nyc --reporter=lcov _mocha -- test/integration/*_spec.js test/unit/*_spec.js"
+    "coverage": "nyc --reporter=lcov _mocha -- test/integration/*_spec.js test/unit/*_spec.js",
+    "preship": "yarn test",
+    "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn publish && git push --follow-tags; fi"
   },
   "repository": {
     "type": "git",
@@ -40,8 +43,6 @@
     "bookshelf": "0.13.3",
     "deep-diff": "^0.3.4",
     "eslint": "4.19.1",
-    "grunt": "1.0.2",
-    "grunt-release": "^0.14.0",
     "knex": "0.14.6",
     "knex-migrator": "3.1.6",
     "mocha": "^3.0.2",
