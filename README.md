@@ -87,4 +87,4 @@ You don't have to use the builtin `autoHook`, you can simply trigger the plugin 
 
 # Copyright & License
 
-Copyright (c) 2017-2018 Ghost Foundation - Released under the [MIT license](LICENSE).
+Copyright (c) 2017-2019 Ghost Foundation - Released under the [MIT license](LICENSE).
