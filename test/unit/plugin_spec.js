@@ -3,7 +3,6 @@ const _ = require('lodash');
 const Bookshelf = require('bookshelf');
 const Knex = require('knex');
 const plugin = require('../../lib/plugin');
-let sandbox = sinon.sandbox.create();
 
 describe('[Unit] plugin', function () {
     let bookshelfMock = {};
@@ -11,11 +10,11 @@ describe('[Unit] plugin', function () {
     beforeEach(function () {
         const bookshelf = Bookshelf(Knex({client: 'sqlite3', useNullAsDefault: true}));
         bookshelfMock.Model = bookshelf.Model;
-        sandbox.spy(bookshelfMock.Model, 'extend');
+        sinon.spy(bookshelfMock.Model, 'extend');
     });
 
     afterEach(function () {
-        sandbox.restore();
+        sinon.restore();
     });
 
     it('can disable auto hooking', function () {
@@ -104,7 +103,7 @@ describe('[Unit] plugin', function () {
             return this;
         };
 
-        sandbox.spy(bookshelfMock.manager, 'updateRelations');
+        sinon.spy(bookshelfMock.manager, 'updateRelations');
 
         testModel.emit('saving', testModel);
         testModel.emit('creating', testModel);

@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib",
-    "test": "_mocha --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
+    "test": "_mocha --exit --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "yarn lint",
     "perf": "_mocha --report lcovonly -- test/perf/*_spec.js",
     "coverage": "nyc --reporter=lcov _mocha -- test/integration/*_spec.js test/unit/*_spec.js",
@@ -40,23 +40,23 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "bookshelf": "0.13.3",
-    "deep-diff": "^0.3.4",
-    "eslint": "4.19.1",
+    "bookshelf": "0.14.2",
+    "deep-diff": "1.0.2",
+    "eslint": "5.13.0",
     "knex": "0.14.6",
-    "knex-migrator": "3.1.6",
-    "mocha": "^3.0.2",
-    "mysql": "^2.11.1",
+    "knex-migrator": "3.2.5",
+    "mocha": "5.2.0",
+    "mysql": "2.16.0",
     "nconf": "0.10.0",
-    "nyc": "11.7.1",
-    "should": "13.2.1",
-    "sinon": "^4.1.2",
-    "sqlite3": "^3.1.8"
+    "nyc": "13.1.0",
+    "should": "13.2.3",
+    "sinon": "7.2.3",
+    "sqlite3": "4.0.6"
   },
   "dependencies": {
-    "bluebird": "^3.4.1",
-    "ghost-ignition": "2.9.2",
-    "lodash": "4.17.10"
+    "bluebird": "3.5.3",
+    "ghost-ignition": "3.0.0",
+    "lodash": "4.17.11"
   },
   "peerDependencies": {
     "bookshelf": ">=0.13.0"
