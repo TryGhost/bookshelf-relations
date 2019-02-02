@@ -6,6 +6,7 @@ module.exports = function (bookshelf) {
     bookshelf.plugin('registry');
 
     bookshelf.plugin(require('../../../lib/plugin'), {
+        extendChanged: '_changed',
         hooks: {
             belongsToMany: {
                 after: function (existing, targets, options) {
@@ -32,6 +33,15 @@ module.exports = function (bookshelf) {
 
         initialize: function () {
             bookshelf.Model.prototype.initialize.call(this);
+
+            this.on('updating', function (model) {
+                model._changed = _.cloneDeep(model.changed);
+                // console.log('updating', this._changed);
+            });
+
+            this.on('updated', function (model) {
+                // console.log('updated', model._changed);
+            });
         },
 
         tags: function () {
