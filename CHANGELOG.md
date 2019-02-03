@@ -1,3 +1,10 @@
+### 1.0.0 - 2019-02-03
+
+Refactoring how we hook into Bookshelf. Major release was required, because
+i am not sure if this will break your implementation.
+
+No other breaking changes.
+
 ### 0.2.1 - 2018-04-30
 ### 0.2.0 - 2018-03-19
 
