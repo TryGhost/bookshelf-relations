@@ -1,15 +1,21 @@
+dist: xenial
 language: node_js
 node_js:
-  - "6"
-  - "8"
-  - "10"
-sudo: false
-cache:
-  directories:
-    - node_modules
+      - 6
+      - 8
+      - 10
+services:
+  - mysql
+  
+cache: yarn
+
+# Don't run builds for renovate PRs
+if: NOT head_branch =~ ^renovate
+
 env:
   matrix:
     - DB=sqlite3 NODE_ENV=testing
     - DB=mysql NODE_ENV=testing-mysql
 before_install:
   - if [ $DB == "mysql" ]; then mysql -e 'create database bookshelf_relations_testing'; fi
+
