@@ -71,11 +71,11 @@ describe('[Integration] Mixed', function () {
                         return editCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (editCase.expectErr) {
+                            return editCase.expectErr(err);
                         }
 
-                        return editCase.expect(err);
+                        throw err;
                     });
             });
         });

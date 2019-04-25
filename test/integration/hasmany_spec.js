@@ -38,7 +38,10 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
             existingPostWithoutFields: function () {
                 return {
                     id: 1,
-                    expect: function () {
+                    expectErr: function (err) {
+                        // @TODO: should not error, bookshelf-relation should catch this (!)
+                        err.stack.should.match(/no rows deleted/gi);
+
                         return testUtils.database.getConnection()('custom_fields').where('post_id', 1)
                             .then(function (result) {
                                 result.length.should.eql(0);
@@ -57,11 +60,11 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                         return destroyCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (destroyCase.expectErr) {
+                            return destroyCase.expectErr(err);
                         }
 
-                        return destroyCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -193,7 +196,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                             }
                         ]
                     },
-                    expect: function (result) {
+                    expectErr: function (result) {
                         result.stack.should.match(/unique/gi);
 
                         return testUtils.database.getConnection()('custom_fields')
@@ -298,11 +301,11 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                         return editCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (editCase.expectErr) {
+                            return editCase.expectErr(err);
                         }
 
-                        return editCase.expect(err);
+                        throw err;
                     });
             });
         });

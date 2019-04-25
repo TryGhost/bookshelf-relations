@@ -197,11 +197,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         return addCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (addCase.expectErr) {
+                            return addCase.expectErr(err);
                         }
 
-                        return addCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -230,7 +230,10 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             existingPostWithoutTags: function () {
                 return {
                     id: 1,
-                    expect: function () {
+                    expectErr: function (err) {
+                        // @TODO: should not error, bookshelf-relation should catch this (!)
+                        err.stack.should.match(/no rows deleted/gi);
+
                         return testUtils.database.getConnection()('posts_tags').where('post_id', 1)
                             .then(function (result) {
                                 result.length.should.eql(0);
@@ -255,11 +258,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         return destroyCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (destroyCase.expectErr) {
+                            return destroyCase.expectErr(err);
                         }
 
-                        return destroyCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -846,11 +849,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         return editCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (editCase.expectErr) {
+                            return editCase.expectErr(err);
                         }
 
-                        return editCase.expect(err);
+                        throw err;
                     });
             });
         });

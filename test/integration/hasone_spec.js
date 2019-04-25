@@ -45,7 +45,10 @@ describe('[Integration] HasOne: Posts/News', function () {
             existingPostWithoutTags: function () {
                 return {
                     id: 1,
-                    expect: function () {
+                    expectErr: function (err) {
+                        // @TODO: should not error, bookshelf-relation should catch this (!)
+                        err.stack.should.match(/no rows deleted/gi);
+
                         return testUtils.database.getConnection()('news').where('post_id', 1)
                             .then(function (result) {
                                 result.length.should.eql(0);
@@ -64,11 +67,11 @@ describe('[Integration] HasOne: Posts/News', function () {
                         return destroyCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (destroyCase.expectErr) {
+                            return destroyCase.expectErr(err);
                         }
 
-                        return destroyCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -171,7 +174,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             keywords: 'self,this'
                         }
                     },
-                    expect: function (result) {
+                    expectErr: function (result) {
                         result.stack.should.match(/unique/gi);
 
                         return testUtils.database.getConnection()('news')
@@ -284,7 +287,10 @@ describe('[Integration] HasOne: Posts/News', function () {
                     values: {
                         news: {}
                     },
-                    expect: function () {
+                    expectErr: function (err) {
+                        // @TODO: should not error, bookshelf-relation should catch this (!)
+                        err.stack.should.match(/no rows deleted/gi);
+
                         return testUtils.database.getConnection()('news')
                             .then(function (result) {
                                 result.length.should.eql(1);
@@ -307,11 +313,11 @@ describe('[Integration] HasOne: Posts/News', function () {
                         return editCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (editCase.expectErr) {
+                            return editCase.expectErr(err);
                         }
 
-                        return editCase.expect(err);
+                        throw err;
                     });
             });
         });

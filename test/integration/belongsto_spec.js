@@ -64,11 +64,11 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         return addCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (addCase.expectErr) {
+                            return addCase.expectErr(err);
                         }
 
-                        return addCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -99,11 +99,11 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         return destroyCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (destroyCase.expectErr) {
+                            return destroyCase.expectErr(err);
                         }
 
-                        return destroyCase.expect(err);
+                        throw err;
                     });
             });
         });
@@ -270,11 +270,11 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         return editCase.expect(result);
                     })
                     .catch(function (err) {
-                        if (err instanceof should.AssertionError) {
-                            throw err;
+                        if (editCase.expectErr) {
+                            return editCase.expectErr(err);
                         }
 
-                        return editCase.expect(err);
+                        throw err;
                     });
             });
         });
