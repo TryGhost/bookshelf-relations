@@ -1,6 +1,6 @@
 {
   "extends": [
-    "@tryghost:quietjs"
+    "@tryghost:quietJS"
   ],
   "travis": { "enabled": true },
   "node": {
