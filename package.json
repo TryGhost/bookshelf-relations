@@ -42,7 +42,7 @@
   "devDependencies": {
     "bookshelf": "0.14.2",
     "deep-diff": "1.0.2",
-    "eslint": "5.13.0",
+    "eslint": "5.16.0",
     "knex": "0.14.6",
     "knex-migrator": "3.2.5",
     "mocha": "5.2.0",
@@ -50,7 +50,7 @@
     "nconf": "0.10.0",
     "nyc": "13.1.0",
     "should": "13.2.3",
-    "sinon": "7.2.3",
+    "sinon": "7.3.2",
     "sqlite3": "4.0.6"
   },
   "dependencies": {
