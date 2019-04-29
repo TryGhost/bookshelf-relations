@@ -44,7 +44,7 @@
     "deep-diff": "1.0.2",
     "eslint": "5.13.0",
     "knex": "0.14.6",
-    "knex-migrator": "3.2.5",
+    "knex-migrator": "3.2.6",
     "mocha": "5.2.0",
     "mysql": "2.16.0",
     "nconf": "0.10.0",
