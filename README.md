@@ -1,80 +1,85 @@
 # Bookshelf Relations
 
+Insert, update and remove relationships on your Bookshelf models.
+This plugin supports all relationship types: belongs-to, belongs-to-many has-one and has-many.
 
-> Auto insert, update and remove nested relationships.
+# Install
 
-## Installation
+`npm install bookshelf-relations --save`
 
-    npm install bookshelf-relations --save
-    yarn add bookshelf-relations
+or
 
-## Usage
+`yarn add bookshelf-relations`
+
+
+# Usage
+
+## Pre-word
+
+- It's highly recommended to insert/update/delete your models within [transactions](http://bookshelfjs.org/#Bookshelf-instance-transaction) when using this plugin, because updating nested relationships requires additional queries to the database. Otherwise if an error occurs during any query, you can't expect data to be rolled back fully.
+
+## Options
+
+|hook|type|default|description|
+|---|---|---|---|
+|autoHook|Boolean|true|The plugin takes over everything for you and hooks into the Bookshelf workflow.
+|unsetRelations|Boolean|true|The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations. 
+|extendChanged|String|-|Define a variable name and Bookshelf-relations will store the information which relations were changed.|
+|attachPreviousRelations|Boolean|false|An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.|
+|hooks|Object|-|<ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, beforeRelationCreation: Function}}```
+
+Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/base/index.js#L52).
+
+## Automatic
+
+The plugin will automatically deal with relationships upserts.
 
 1. Register the plugin.
 
-```
-    bookshelf.plugin('bookshelf-relations');
+```js
+    bookshelf.plugin('bookshelf-relations', {options});
 ```
 
 2. Define your relationships on each model.
 
-```
+```js
     bookshelf.Model.extend({
         relationships: ['tags', 'news']
     }, {...});
 ```
 
-3. Ensure you call `initialize` of the parent model. This is only required if `autoHook` is set to true.
+## Manual
 
+You manually need to call the plugin to update relationships.
+
+1. Register the plugin.
+
+```js
+    bookshelf.plugin('bookshelf-relations', {options});
 ```
-    const proto = bookshelf.Model.prototype;
-    
-    bookshelf.Model.extend({
-        initialize: function() {
-            // first register your model events. 
-            // otherwise the order of events is different.
-            
-            // trigger parent
-            proto.initialize.call(this);
-        }
-    });
+
+2. Manually call bookshelf-relations.
+
+```js
+    bookshelf.manager.updateRelations({
+        model: model,
+        relations: {tags: [...]},
+        pluginOptions: {options}
+    })
 ```
-    
-## Plugin Options
 
-- `autoHook`: The plugin hooks into your models via bookshelf model events. It adds/updates/deletes the passed relations. So it takes over everything for you. (**default: true**)
-- `unsetRelations`: The plugin will unset the relations after they are detected. (**default: true**)
-- `hooks.belongsToMany.beforeRelationCreation`: Hook into the process of updating belongsToMany relationships.
-- `hooks.belongsToMany.after`: Hook into the process of updating belongsToMany relationships.
+## Notations
 
-## Notes
+```js
+// will detach & remove all existing relations
+model.set('tags', []);
 
-### Events
+// will check if "test" exists and if not, it will insert the target tag
+// will remove all previous relations if exist
+model.set('tags', [{slug: 'test'}]);
+```
 
-If you are using `autoHook:true` (!), then you should know the following fact. 
-
-Bookshelf triggers two events if you insert data: `created` and `saved` (in this order).
-Bookshelf triggers two events if you update data: `updated` and `saved` (in this order).
-
-`autoHook:true` makes use of the `created` and `updated` events.
-
-If you are also listen on `created`, please ensure you don't rely on the data, because your parent model will for sure receive the event first.
-And that means, the relations were not yet updated. This is not optimal, but hard to solve right now.
-
-So, please use the `saved` event and differentiate between `options.method=insert|update` - this is reliable.
-
-You don't have to use the builtin `autoHook`, you can simply trigger the plugin yourself using `bookshelf.manager.updateRelations`.
-
-### Transactions
-
-*It's highly recommended to insert/update/delete your models within [transactions](http://bookshelfjs.org/#Bookshelf-instance-transaction) when using this plugin, because updating nested relationships requires additional queries to the database. Otherwise if an error occurs during any query, you can't expect data to be rolled back fully.*
-
-
-## Unsupported
-
-~~The plugin is not able to update nested-nested relations at the moment. e.g. `.set('tags', [{ name: 'tag1', [relation]: {} }])`. Relation won't get updated.~~ Supported, but no tests available.
-
-## Tests
+# Test
 
 - `yarn test` to run tests & eslint
 - `yarn lint` to run eslint only
@@ -82,7 +87,8 @@ You don't have to use the builtin `autoHook`, you can simply trigger the plugin 
 - `yarn perf` to run a performance test
 - `yarn coverage` to run test coverage
 
-## Publishing
+# Publish
+
 - `yarn ship`
 
 # Copyright & License
