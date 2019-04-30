@@ -23,6 +23,7 @@ or
 |hook|type|default|description|
 |---|---|---|---|
 |autoHook|Boolean|true|The plugin takes over everything for you and hooks into the Bookshelf workflow.
+|allowedOptions|Array|-|An array of allowed model options the plugin passes on when executing Bookshelf queries.
 |unsetRelations|Boolean|true|The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations. 
 |extendChanged|String|-|Define a variable name and Bookshelf-relations will store the information which relations were changed.|
 |attachPreviousRelations|Boolean|false|An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.|
