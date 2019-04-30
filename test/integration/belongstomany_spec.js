@@ -324,11 +324,11 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     },
                     expect: function (result) {
                         result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('tags').length.should.eql(1);
+                        result.related('tags').length.should.eql(0);
 
                         return testUtils.database.getConnection()('posts_tags')
                             .then(function (result) {
-                                result.length.should.eql(1);
+                                result.length.should.eql(0);
                             })
                             .then(function () {
                                 return testUtils.database.getConnection()('tags');
