@@ -33,6 +33,7 @@ Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/G
 ## Automatic
 
 The plugin will automatically deal with relationships upserts.
+It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
 
 1. Register the plugin.
 
@@ -51,6 +52,7 @@ The plugin will automatically deal with relationships upserts.
 ## Manual
 
 You manually need to call the plugin to update relationships.
+It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
 
 1. Register the plugin.
 
