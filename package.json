@@ -51,7 +51,7 @@
     "nyc": "14.1.1",
     "should": "13.2.3",
     "sinon": "7.3.2",
-    "sqlite3": "4.0.6"
+    "sqlite3": "4.0.8"
   },
   "dependencies": {
     "bluebird": "3.5.4",
