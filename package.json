@@ -40,7 +40,7 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "bookshelf": "0.14.2",
+    "bookshelf": "0.15.1",
     "deep-diff": "1.0.2",
     "eslint": "5.16.0",
     "knex": "0.14.6",
