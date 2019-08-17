@@ -43,7 +43,7 @@
     "bookshelf": "0.15.1",
     "deep-diff": "1.0.2",
     "eslint": "5.16.0",
-    "knex": "0.14.6",
+    "knex": "0.19.2",
     "knex-migrator": "3.3.3",
     "mocha": "6.2.0",
     "mysql": "2.17.1",
