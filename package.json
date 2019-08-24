@@ -42,7 +42,7 @@
   "devDependencies": {
     "bookshelf": "0.15.1",
     "deep-diff": "1.0.2",
-    "eslint": "5.16.0",
+    "eslint": "6.2.2",
     "knex": "0.14.6",
     "knex-migrator": "3.3.3",
     "mocha": "6.2.0",
