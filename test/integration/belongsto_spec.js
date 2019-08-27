@@ -51,7 +51,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -86,7 +86,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -128,7 +128,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             editPostAndAuthor: function () {
                 return {
@@ -151,7 +151,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result[1].name.should.eql('Peter');
                             });
                     }
-                }
+                };
             },
             authorWithUnknownId: function () {
                 return {
@@ -173,7 +173,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result[2].name.should.eql('Frank');
                             });
                     }
-                }
+                };
             },
             overrideExistingAuthor: function () {
                 return {
@@ -195,7 +195,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result[2].name.should.eql('Karl');
                             });
                     }
-                }
+                };
             },
             setNull: function () {
                 return {
@@ -215,7 +215,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             setUndefined: function () {
                 return {
@@ -235,7 +235,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             changeAuthor: function () {
                 return {
@@ -257,7 +257,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             }
         };
 

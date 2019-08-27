@@ -1,5 +1,4 @@
-const _ = require('lodash'),
-    errors = require('ghost-ignition').errors,
+const errors = require('ghost-ignition').errors,
     util = require('util');
 
 function BookshelfRelationsError(options) {

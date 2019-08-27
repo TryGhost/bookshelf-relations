@@ -36,11 +36,6 @@ module.exports = function (bookshelf) {
 
             this.on('updating', function (model) {
                 model._changed = _.cloneDeep(model.changed);
-                // console.log('updating', this._changed);
-            });
-
-            this.on('updated', function (model) {
-                // console.log('updated', model._changed);
             });
         },
 

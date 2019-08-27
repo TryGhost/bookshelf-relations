@@ -5,7 +5,7 @@
   "description": "Auto update relations",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib",
+    "lint": "eslint . --ext .js --cache",
     "test": "_mocha --exit --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "yarn lint",
     "perf": "_mocha --report lcovonly -- test/perf/*_spec.js",
@@ -48,6 +48,7 @@
     "bookshelf": "0.15.1",
     "deep-diff": "1.0.2",
     "eslint": "5.16.0",
+    "eslint-plugin-ghost": "0.5.0",
     "knex": "0.14.6",
     "knex-migrator": "3.3.3",
     "mocha": "6.2.0",

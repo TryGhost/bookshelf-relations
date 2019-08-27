@@ -40,7 +40,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             },
             existingPostWithoutTags: function () {
                 return {
@@ -54,7 +54,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -100,7 +100,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                             });
                     }
-                }
+                };
             },
             editPostOnlyWithoutNews: function () {
                 return {
@@ -124,7 +124,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                             });
                     }
-                }
+                };
             },
             editNewsAndPost: function () {
                 return {
@@ -148,7 +148,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql('future,something');
                             });
                     }
-                }
+                };
             },
             withRelated: function () {
                 return {
@@ -164,7 +164,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                     expect: function (result) {
                         result.related('news').toJSON().keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                     }
-                }
+                };
             },
             addNewsToPostWithNews: function () {
                 return {
@@ -187,7 +187,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql('self,this');
                             });
                     }
-                }
+                };
             },
             addNewsToPostWithoutNews: function () {
                 return {
@@ -213,7 +213,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[1].keywords.should.eql('self,this');
                             });
                     }
-                }
+                };
             },
             setNull: function () {
                 return {
@@ -236,7 +236,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                             });
                     }
-                }
+                };
             },
             setUndefined: function () {
                 return {
@@ -259,7 +259,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                             });
                     }
-                }
+                };
             },
             setEmptyNewsForPostWithNews: function () {
                 return {
@@ -277,7 +277,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             },
             setEmptyNewsForPostWithoutNews: function () {
                 return {
@@ -301,7 +301,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                                 result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
                             });
                     }
-                }
+                };
             }
         };
 

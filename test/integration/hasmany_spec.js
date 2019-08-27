@@ -33,7 +33,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             },
             existingPostWithoutFields: function () {
                 return {
@@ -47,7 +47,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -89,7 +89,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             editPostAndAddNewRelation: function () {
                 return {
@@ -111,7 +111,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(1);
                             });
                     }
-                }
+                };
             },
             addNewRelationsAndKeepExisting: function () {
                 return {
@@ -138,7 +138,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             removeExistingRelations: function () {
                 return {
@@ -155,7 +155,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(0);
                             });
                     }
-                }
+                };
             },
             editExistingRelations: function () {
                 return {
@@ -184,7 +184,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result[0].value.should.eql('this-time-different');
                             });
                     }
-                }
+                };
             },
             duplicateKeyForExistingField: function () {
                 return {
@@ -212,7 +212,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result[1].value.should.eql(testUtils.fixtures.getAll().posts[1].custom_fields[1].value);
                             });
                     }
-                }
+                };
             },
             duplicateKeyPerMultiplePosts: function () {
                 return {
@@ -232,7 +232,6 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                         outerResult.related('custom_fields').models[0].get('key').should.eql(testUtils.fixtures.getAll().posts[1].custom_fields[0].key);
                         outerResult.related('custom_fields').models[0].get('value').should.eql('this-time-different');
 
-
                         return testUtils.database.getConnection()('custom_fields')
                             .then(function (result) {
                                 result.length.should.eql(3);
@@ -250,7 +249,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result[2].value.should.eql('this-time-different');
                             });
                     }
-                }
+                };
             },
             setNull: function () {
                 return {
@@ -269,7 +268,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             setUndefined: function () {
                 return {
@@ -288,7 +287,7 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             }
         };
 

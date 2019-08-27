@@ -58,7 +58,7 @@ describe('[Integration] Mixed', function () {
                         result.related('tags').models[0].get('slug').should.eql('football');
                         result.related('custom_fields').models.length.should.eql(0);
                     }
-                }
+                };
             }
         };
 

@@ -35,12 +35,12 @@ exports.database = {
     },
     reset: function () {
         if (!connection) {
-            return knexMigrator.reset({force: true})
+            return knexMigrator.reset({force: true});
         }
 
         return Promise.promisify(connection.destroy)()
             .then(() => {
-                return knexMigrator.reset({force: true})
+                return knexMigrator.reset({force: true});
             });
     }
 };

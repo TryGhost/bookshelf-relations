@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const _ = require('lodash');
 const Bookshelf = require('bookshelf');
 const Knex = require('knex');
 const plugin = require('../../lib/plugin');
@@ -95,7 +94,7 @@ describe('[Unit] plugin', function () {
             return {};
         };
 
-        testModel['fake'] = function () {
+        testModel.fake = function () {
             this.relatedData = {
                 type: 'hasOne'
             };

@@ -42,7 +42,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             postWithExistingTags: function () {
                 return {
@@ -69,7 +69,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             withTagForeignKey: function () {
                 return {
@@ -95,7 +95,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             postWithNewAndExistingTags: function () {
                 return {
@@ -125,7 +125,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             postsWithUnknownTagIds: function () {
                 return {
@@ -155,7 +155,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             postWithNewTags: function () {
                 return {
@@ -184,7 +184,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(4);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -225,7 +225,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             existingPostWithoutTags: function () {
                 return {
@@ -245,7 +245,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             }
         };
 
@@ -293,12 +293,12 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             deleteAllExistingTags: function () {
                 return {
                     values: {
-                        tags: [],
+                        tags: []
                     },
                     expect: function (result) {
                         result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -315,12 +315,12 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             sendEmptyTag: function () {
                 return {
                     values: {
-                        tags: [{}],
+                        tags: [{}]
                     },
                     expect: function (result) {
                         result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -337,7 +337,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             deleteAllExistingTagsFromPostWhichHasNone: function () {
                 return {
@@ -360,7 +360,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             deleteAllExistingTagsAndEditPost: function () {
                 return {
@@ -383,7 +383,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             deleteLastExistingTag: function () {
                 return {
@@ -410,7 +410,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             addNewTagAndKeepExisting: function () {
                 return {
@@ -446,7 +446,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             addUnknownTargetId: function () {
                 return {
@@ -477,7 +477,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             useWithRelated: function () {
                 return {
@@ -496,7 +496,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                         result.related('tags').length.should.eql(1);
                     }
-                }
+                };
             },
             editExistingTag: function () {
                 return {
@@ -526,7 +526,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             matchingUnknown: function () {
                 return {
@@ -554,7 +554,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             noChanges: function () {
                 return {
@@ -591,7 +591,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             noChangesButUnknownAttr: function () {
                 // NOTE: This is not the task of the plugin. Your project has to do field validation before saving.
@@ -630,7 +630,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             addDuplicates: function () {
                 return {
@@ -659,7 +659,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             addDuplicate: function () {
                 return {
@@ -684,7 +684,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             ensureOrder: function () {
                 return {
@@ -723,7 +723,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(3);
                             });
                     }
-                }
+                };
             },
             ensureOrderWithDeleteAndAddOperations: function () {
                 return {
@@ -773,7 +773,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(4);
                             });
                     }
-                }
+                };
             },
             setNull: function () {
                 return {
@@ -805,7 +805,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             },
             setUndefined: function () {
                 return {
@@ -836,7 +836,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                 result.length.should.eql(2);
                             });
                     }
-                }
+                };
             }
         };
 
