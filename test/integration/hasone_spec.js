@@ -174,8 +174,9 @@ describe('[Integration] HasOne: Posts/News', function () {
                             keywords: 'self,this'
                         }
                     },
-                    expectErr: function (result) {
-                        result.stack.should.match(/unique/gi);
+                    expect: function (result) {
+                        result.get('title').should.eql('only-me');
+                        result.related('news').toJSON().keywords.should.eql('self,this');
 
                         return testUtils.database.getConnection()('news')
                             .then(function (result) {
@@ -183,7 +184,7 @@ describe('[Integration] HasOne: Posts/News', function () {
 
                                 result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
                                 result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                                result[0].keywords.should.eql('self,this');
                             });
                     }
                 }
