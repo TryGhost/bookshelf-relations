@@ -9,7 +9,7 @@
     "test": "_mocha --exit --timeout 10000 --report lcovonly -- test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "yarn lint",
     "perf": "_mocha --report lcovonly -- test/perf/*_spec.js",
-    "coverage": "nyc --reporter=lcov _mocha -- test/integration/*_spec.js test/unit/*_spec.js",
+    "coverage": "nyc --reporter=lcov _mocha --exit -- test/integration/*_spec.js test/unit/*_spec.js",
     "preship": "yarn test",
     "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn publish && git push --follow-tags; fi"
   },
