@@ -1,5 +1,3 @@
-const _ = require('lodash');
-const models = require('../_database/models');
 const testUtils = require('../utils');
 
 describe('[Integration] BelongsTo: Posts/Author', function () {
@@ -12,270 +10,256 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
 
     describe('fetch', function () {
         it('existing', function () {
-            return models.Post.fetchAll({withRelated: ['author']})
-                .then(function (posts) {
+            return testUtils.testPostModel({
+                method: 'fetchAll',
+                options: {withRelated: ['author']},
+                expectSuccess: (posts) => {
                     posts.length.should.eql(2);
-                    posts.models[0].related('author').toJSON().name.should.eql(testUtils.fixtures.getAll().posts[0].author.name);
-                    posts.models[1].related('author').toJSON().name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+                    posts.models[0].related('author').toJSON().name
+                        .should.eql(testUtils.fixtures.getAll().posts[0].author.name);
+                    posts.models[1].related('author').toJSON().name
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
-                    return testUtils.database.getConnection()('authors');
-                })
-                .then(function (result) {
-                    result.length.should.eql(2);
-                });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
+            });
         });
     });
 
     describe('add', function () {
-        const addCases = {
-            addWithUnknownId: function () {
-                return {
-                    options: {
-                        withRelated: ['author']
-                    },
-                    values: {
-                        title: 'post-title',
-                        author: {
-                            id: 11111,
-                            name: 'test-unknown'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('post-title');
-                        result.related('author').toJSON().should.containEql({
-                            name: 'test-unknown'
-                        });
-
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(3);
-                            });
+        it('addWithUnknownId', function () {
+            return testUtils.testPostModel({
+                method: 'add',
+                values: {
+                    title: 'post-title',
+                    author: {
+                        id: 11111,
+                        name: 'test-unknown'
                     }
-                };
-            }
-        };
-
-        return _.each(Object.keys(addCases), function (key) {
-            it(key, function () {
-                let addCase = addCases[key]();
-
-                return models.Post.add(addCase.values, addCase.options || {})
-                    .then(function (result) {
-                        return addCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (addCase.expectErr) {
-                            return addCase.expectErr(err);
-                        }
-
-                        throw err;
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('post-title');
+                    result.related('author').toJSON().should.containEql({
+                        name: 'test-unknown'
                     });
+
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(3);
+                        });
+                }
             });
         });
     });
 
     describe('destroy', function () {
-        const destroyCases = {
-            existingPostWithAuthor: function () {
-                return {
-                    expect: function (result) {
-                        result.related('author').toJSON().should.eql({});
+        it('existingPostWithAuthor', function () {
+            return testUtils.testPostModel({
+                method: 'destroy',
+                id: 2,
+                expectSuccess: (result) => {
+                    result.related('author').toJSON().should.eql({});
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                            });
-                    }
-                };
-            }
-        };
-
-        return _.each(Object.keys(destroyCases), function (key) {
-            it(key, function () {
-                let destroyCase = destroyCases[key]();
-
-                return models.Post.destroy({id: destroyCase.id || 2})
-                    .then(function (result) {
-                        return destroyCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (destroyCase.expectErr) {
-                            return destroyCase.expectErr(err);
-                        }
-
-                        throw err;
-                    });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
             });
         });
     });
 
     describe('edit', function () {
-        const editCases = {
-            editPostOnly: function () {
-                return {
-                    options: {
-                        withRelated: ['author']
-                    },
-                    values: {
-                        title: 'only-me'
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].author);
+        it('editPostOnly', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'only-me'
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('author').toJSON()
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author);
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                            });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
+            });
+        });
+
+        it('editPostAndAuthor', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'lala',
+                    author: {
+                        id: testUtils.fixtures.getAll().posts[1].author.id,
+                        name: 'Peter'
                     }
-                };
-            },
-            editPostAndAuthor: function () {
-                return {
-                    values: {
-                        title: 'lala',
-                        author: {
-                            id: testUtils.fixtures.getAll().posts[1].author.id,
-                            name: 'Peter'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('lala');
-                        result.related('author').toJSON().id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                        result.related('author').toJSON().name.should.eql('Peter');
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('lala');
+                    result.related('author').toJSON().id
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result.related('author').toJSON().name.should.eql('Peter');
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                                result[0].name.should.eql('Alf');
-                                result[1].name.should.eql('Peter');
-                            });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                            result[0].name.should.eql('Alf');
+                            result[1].name.should.eql('Peter');
+                        });
+                }
+            });
+        });
+
+        it('authorWithUnknownId', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    author: {
+                        id: 20,
+                        name: 'Frank'
                     }
-                };
-            },
-            authorWithUnknownId: function () {
-                return {
-                    values: {
-                        author: {
-                            id: 20,
-                            name: 'Frank'
-                        }
-                    },
-                    expect: function (result) {
-                        result.related('author').toJSON().id.should.not.eql(20);
-                        result.related('author').toJSON().name.should.eql('Frank');
+                },
+                expectSuccess: (result) => {
+                    result.related('author').toJSON().id.should.not.eql(20);
+                    result.related('author').toJSON().name.should.eql('Frank');
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(3);
-                                result[0].name.should.eql('Alf');
-                                result[1].name.should.eql('Mozart');
-                                result[2].name.should.eql('Frank');
-                            });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(3);
+                            result[0].name.should.eql('Alf');
+                            result[1].name.should.eql('Mozart');
+                            result[2].name.should.eql('Frank');
+                        });
+                }
+            });
+        });
+
+        it('overrideExistingAuthor', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    author: {
+                        name: 'Karl'
                     }
-                };
-            },
-            overrideExistingAuthor: function () {
-                return {
-                    values: {
-                        author: {
-                            name: 'Karl'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('author').toJSON().id.should.not.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                        result.related('author').toJSON().name.should.eql('Karl');
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                    result.related('author').toJSON().id
+                        .should.not.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result.related('author').toJSON().name.should.eql('Karl');
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(3);
-                                result[0].name.should.eql('Alf');
-                                result[1].name.should.eql('Mozart');
-                                result[2].name.should.eql('Karl');
-                            });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(3);
+                            result[0].name.should.eql('Alf');
+                            result[1].name.should.eql('Mozart');
+                            result[2].name.should.eql('Karl');
+                        });
+                }
+            });
+        });
+
+        it('setNull', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    author: null
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                    result.related('author').toJSON().id
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result.related('author').toJSON().name
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
+            });
+        });
+
+        it('setUndefined', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+
+                values: {
+                    author: undefined
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                    result.related('author').toJSON().id
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result.related('author').toJSON().name
+                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
+            });
+        });
+
+        it('changeAuthor', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 1,
+
+                values: {
+                    author: {
+                        id: testUtils.fixtures.getAll().posts[1].author.id
                     }
-                };
-            },
-            setNull: function () {
-                return {
-                    options: {
-                        withRelated: ['author']
-                    },
-                    values: {
-                        author: null
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('author').toJSON().id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                        result.related('author').toJSON().name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
+                    result.related('author').toJSON().name.should.eql('Mozart');
 
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                            });
-                    }
-                };
-            },
-            setUndefined: function () {
-                return {
-                    options: {
-                        withRelated: ['author']
-                    },
-                    values: {
-                        author: undefined
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('author').toJSON().id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                        result.related('author').toJSON().name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
-
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                            });
-                    }
-                };
-            },
-            changeAuthor: function () {
-                return {
-                    id: 1,
-                    options: {
-                        withRelated: ['author']
-                    },
-                    values: {
-                        author: {
-                            id: testUtils.fixtures.getAll().posts[1].author.id
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
-                        result.related('author').toJSON().name.should.eql('Mozart');
-
-                        return testUtils.database.getConnection()('authors')
-                            .then(function (result) {
-                                result.length.should.eql(2);
-                            });
-                    }
-                };
-            }
-        };
-
-        return _.each(Object.keys(editCases), function (key) {
-            it(key, function () {
-                let editCase = editCases[key]();
-
-                return models.Post.edit(_.merge({id: editCase.id || 2}, editCase.values), editCase.options || {})
-                    .then(function (result) {
-                        return editCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (editCase.expectErr) {
-                            return editCase.expectErr(err);
-                        }
-
-                        throw err;
-                    });
+                    return testUtils.database
+                        .getConnection()('authors')
+                        .then((result) => {
+                            result.length.should.eql(2);
+                        });
+                }
             });
         });
     });

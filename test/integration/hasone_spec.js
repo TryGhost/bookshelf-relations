@@ -1,5 +1,3 @@
-const _ = require('lodash');
-const models = require('../_database/models');
 const testUtils = require('../utils');
 
 describe('[Integration] HasOne: Posts/News', function () {
@@ -12,314 +10,318 @@ describe('[Integration] HasOne: Posts/News', function () {
 
     describe('fetch', function () {
         it('existing', function () {
-            return models.Post.fetchAll({withRelated: ['news']})
-                .then(function (posts) {
+            return testUtils.testPostModel({
+                method: 'fetchAll',
+                options: {withRelated: ['news']},
+                expectSuccess: (posts) => {
                     posts.length.should.eql(2);
                     posts.models[0].related('news').toJSON().should.eql({});
                     posts.models[1].related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
 
-                    return testUtils.database.getConnection()('news');
-                })
-                .then(function (result) {
-                    result.length.should.eql(1);
-                    result[0].post_id.should.eql(2);
-                    result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                });
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
+            });
         });
     });
 
     describe('destroy', function () {
-        const destroyCases = {
-            existingPostWithNews: function () {
-                return {
-                    expect: function (result) {
-                        result.related('news').toJSON().should.eql({});
+        it('existingPostWithNews', function () {
+            return testUtils.testPostModel({
+                method: 'destroy',
+                id: 2,
+                expectSuccess: (result) => {
+                    result.related('news').toJSON().should.eql({});
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(0);
-                            });
-                    }
-                };
-            },
-            existingPostWithoutTags: function () {
-                return {
-                    id: 1,
-                    expectErr: function (err) {
-                        // @TODO: should not error, bookshelf-relation should catch this (!)
-                        err.stack.should.match(/no rows deleted/gi);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(0);
+                        });
+                }
+            });
+        });
 
-                        return testUtils.database.getConnection()('news').where('post_id', 1)
-                            .then(function (result) {
-                                result.length.should.eql(0);
-                            });
-                    }
-                };
-            }
-        };
+        it('existingPostWithoutTags', function () {
+            return testUtils.testPostModel({
+                method: 'destroy',
+                id: 1,
+                expectError: (error) => {
+                    // @TODO: should not error, bookshelf-relation should catch this (!)
+                    error.stack.should.match(/no rows deleted/gi);
 
-        return _.each(Object.keys(destroyCases), function (key) {
-            it(key, function () {
-                let destroyCase = destroyCases[key]();
-
-                return models.Post.destroy({id: destroyCase.id || 2})
-                    .then(function (result) {
-                        return destroyCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (destroyCase.expectErr) {
-                            return destroyCase.expectErr(err);
-                        }
-
-                        throw err;
-                    });
+                    return testUtils.database
+                        .getConnection()('news').where('post_id', 1)
+                        .then((result) => {
+                            result.length.should.eql(0);
+                        });
+                }
             });
         });
     });
 
     describe('edit', function () {
-        const editCases = {
-            editPostOnlyWithNews: function () {
-                return {
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        title: 'only-me'
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+        it('editPostOnlyWithNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'only-me'
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                    return testUtils.database.getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                            });
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
+            });
+        });
+
+        it('editPostOnlyWithoutNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 1,
+                values: {
+                    title: 'only-me'
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('news').toJSON().should.eql({});
+
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
+
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
+            });
+        });
+
+        it('editNewsAndPost', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'only-me',
+                    news: {
+                        id: testUtils.fixtures.getAll().posts[1].news.id,
+                        keywords: 'future,something'
                     }
-                };
-            },
-            editPostOnlyWithoutNews: function () {
-                return {
-                    id: 1,
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        title: 'only-me'
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('news').toJSON().should.eql({});
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('news').toJSON().keywords.should.eql('future,something');
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                            });
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql('future,something');
+                        });
+                }
+            });
+        });
+
+        it('withRelated', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    news: {
+                        id: testUtils.fixtures.getAll().posts[1].news.id,
+                        keywords: testUtils.fixtures.getAll().posts[1].news.keywords
                     }
-                };
-            },
-            editNewsAndPost: function () {
-                return {
-                    values: {
-                        title: 'only-me',
-                        news: {
-                            id: testUtils.fixtures.getAll().posts[1].news.id,
-                            keywords: 'future,something'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('news').toJSON().keywords.should.eql('future,something');
-
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
-
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql('future,something');
-                            });
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: (result) => {
+                    result.related('news').toJSON().keywords
+                        .should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                }
+            });
+        });
+        it('addNewsToPostWithNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'only-me',
+                    news: {
+                        keywords: 'self,this'
                     }
-                };
-            },
-            withRelated: function () {
-                return {
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        news: {
-                            id: testUtils.fixtures.getAll().posts[1].news.id,
-                            keywords: testUtils.fixtures.getAll().posts[1].news.keywords
-                        }
-                    },
-                    expect: function (result) {
-                        result.related('news').toJSON().keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('news').toJSON().keywords.should.eql('self,this');
+
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
+
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql('self,this');
+                        });
+                }
+            });
+        });
+
+        it('addNewsToPostWithoutNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 1,
+                values: {
+                    news: {
+                        keywords: 'self,this'
                     }
-                };
-            },
-            addNewsToPostWithNews: function () {
-                return {
-                    values: {
-                        title: 'only-me',
-                        news: {
-                            keywords: 'self,this'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('news').toJSON().keywords.should.eql('self,this');
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
+                    result.related('news').toJSON().keywords.should.eql('self,this');
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(2);
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql('self,this');
-                            });
-                    }
-                };
-            },
-            addNewsToPostWithoutNews: function () {
-                return {
-                    id: 1,
-                    values: {
-                        news: {
-                            keywords: 'self,this'
-                        }
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
-                        result.related('news').toJSON().keywords.should.eql('self,this');
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(2);
+                            result[1].post_id.should.eql(1);
+                            result[1].keywords.should.eql('self,this');
+                        });
+                }
+            });
+        });
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+        it('setNull', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    news: null
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: function (result) {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
 
-                                result[1].post_id.should.eql(1);
-                                result[1].keywords.should.eql('self,this');
-                            });
-                    }
-                };
-            },
-            setNull: function () {
-                return {
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        news: null
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
+            });
+        });
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                            });
-                    }
-                };
-            },
-            setUndefined: function () {
-                return {
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        news: undefined
-                    },
-                    expect: function (result) {
-                        result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                        result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+        it('setUndefined', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    news: undefined
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
+                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                            });
-                    }
-                };
-            },
-            setEmptyNewsForPostWithNews: function () {
-                return {
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        news: {}
-                    },
-                    expect: function (result) {
-                        result.related('news').toJSON().should.eql({});
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
+            });
+        });
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(0);
-                            });
-                    }
-                };
-            },
-            setEmptyNewsForPostWithoutNews: function () {
-                return {
-                    id: 1,
-                    options: {
-                        withRelated: ['news']
-                    },
-                    values: {
-                        news: {}
-                    },
-                    expectErr: function (err) {
-                        // @TODO: should not error, bookshelf-relation should catch this (!)
-                        err.stack.should.match(/no rows deleted/gi);
+        it('setEmptyNewsForPostWithNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    news: {}
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectSuccess: (result) => {
+                    result.related('news').toJSON().should.eql({});
 
-                        return testUtils.database.getConnection()('news')
-                            .then(function (result) {
-                                result.length.should.eql(1);
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(0);
+                        });
+                }
+            });
+        });
 
-                                result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                                result[0].post_id.should.eql(2);
-                                result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-                            });
-                    }
-                };
-            }
-        };
+        it('setEmptyNewsForPostWithoutNews', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 1,
+                values: {
+                    news: {}
+                },
+                options: {
+                    withRelated: ['news']
+                },
+                expectError: (err) => {
+                    // @TODO: should not error, bookshelf-relation should catch this (!)
+                    err.stack.should.match(/no rows deleted/gi);
 
-        return _.each(Object.keys(editCases), function (key) {
-            it(key, function () {
-                let editCase = editCases[key]();
+                    return testUtils.database
+                        .getConnection()('news')
+                        .then((result) => {
+                            result.length.should.eql(1);
 
-                return models.Post.edit(_.merge({id: editCase.id || 2}, editCase.values), editCase.options || {})
-                    .then(function (result) {
-                        return editCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (editCase.expectErr) {
-                            return editCase.expectErr(err);
-                        }
-
-                        throw err;
-                    });
+                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].post_id.should.eql(2);
+                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        });
+                }
             });
         });
     });

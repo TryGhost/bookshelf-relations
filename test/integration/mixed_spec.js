@@ -1,5 +1,3 @@
-const _ = require('lodash');
-const models = require('../_database/models');
 const testUtils = require('../utils');
 
 describe('[Integration] Mixed', function () {
@@ -12,8 +10,10 @@ describe('[Integration] Mixed', function () {
 
     describe('fetch', function () {
         it('existing', function () {
-            return models.Post.fetchAll({withRelated: ['author', 'news', 'tags', 'custom_fields']})
-                .then(function (posts) {
+            return testUtils.testPostModel({
+                method: 'fetchAll',
+                options: {withRelated: ['author', 'news', 'tags', 'custom_fields']},
+                expectSuccess: (posts) => {
                     posts.length.should.eql(2);
                     posts.models[0].related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[0].author);
                     posts.models[1].related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].author);
@@ -26,57 +26,40 @@ describe('[Integration] Mixed', function () {
 
                     posts.models[0].related('custom_fields').length.should.eql(0);
                     posts.models[1].related('custom_fields').length.should.eql(2);
-                });
+                }
+            });
         });
     });
 
     describe('edit', function () {
-        const editCases = {
-            editExistingRelationsAndPost: function () {
-                return {
-                    values: {
-                        title: 'only-me',
-                        news: {
-                            id: testUtils.fixtures.getAll().posts[1].news.id,
-                            keywords: 'future,something'
-                        },
-                        tags: [
-                            {
-                                slug: 'football'
-                            }
-                        ],
-                        author: {
-                            name: 'Franz'
-                        },
-                        custom_fields: []
+        it('editExistingRelationsAndPost', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 2,
+                values: {
+                    title: 'only-me',
+                    news: {
+                        id: testUtils.fixtures.getAll().posts[1].news.id,
+                        keywords: 'future,something'
                     },
-                    expect: function (result) {
-                        result.get('title').should.eql('only-me');
-                        result.related('news').toJSON().keywords.should.eql('future,something');
-                        result.related('author').toJSON().name.should.eql('Franz');
-                        result.related('tags').models.length.should.eql(1);
-                        result.related('tags').models[0].get('slug').should.eql('football');
-                        result.related('custom_fields').models.length.should.eql(0);
-                    }
-                };
-            }
-        };
-
-        return _.each(Object.keys(editCases), function (key) {
-            it(key, function () {
-                let editCase = editCases[key]();
-
-                return models.Post.edit(_.merge({id: editCase.id || 2}, editCase.values), editCase.options || {})
-                    .then(function (result) {
-                        return editCase.expect(result);
-                    })
-                    .catch(function (err) {
-                        if (editCase.expectErr) {
-                            return editCase.expectErr(err);
+                    tags: [
+                        {
+                            slug: 'football'
                         }
-
-                        throw err;
-                    });
+                    ],
+                    author: {
+                        name: 'Franz'
+                    },
+                    custom_fields: []
+                },
+                expectSuccess: (result) => {
+                    result.get('title').should.eql('only-me');
+                    result.related('news').toJSON().keywords.should.eql('future,something');
+                    result.related('author').toJSON().name.should.eql('Franz');
+                    result.related('tags').models.length.should.eql(1);
+                    result.related('tags').models[0].get('slug').should.eql('football');
+                    result.related('custom_fields').models.length.should.eql(0);
+                }
             });
         });
     });
