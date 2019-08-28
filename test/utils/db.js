@@ -2,16 +2,14 @@ if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'testing';
 }
 
-require('should');
-
 const knex = require('knex');
 const path = require('path');
 const Promise = require('bluebird');
 const KnexMigrator = require('knex-migrator');
-const config = require('../config');
-const models = require('./_database/models');
+const config = require('../../config');
+const models = require('../_database/models');
 const knexMigrator = new KnexMigrator({
-    knexMigratorFilePath: path.join(__dirname, '_database')
+    knexMigratorFilePath: path.join(__dirname, '../', '_database')
 });
 
 let connection;

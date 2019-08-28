@@ -1,7 +1,8 @@
-const sinon = require('sinon');
 const Bookshelf = require('bookshelf');
 const Knex = require('knex');
 const plugin = require('../../lib/plugin');
+
+require('../utils');
 
 describe('[Unit] plugin', function () {
     let bookshelfMock = {};

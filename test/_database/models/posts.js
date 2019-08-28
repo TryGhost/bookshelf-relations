@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
-require('should');
+
+require('../../utils');
 
 module.exports = function (bookshelf) {
     bookshelf.plugin('registry');
