@@ -13,6 +13,11 @@
     "preship": "yarn test",
     "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn publish && git push --follow-tags; fi"
   },
+  "files": [
+    "errors.js",
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/TryGhost/bookshelf-relations.git"
