@@ -31,7 +31,7 @@ describe('[Integration] HasOne: Posts/News', function () {
     });
 
     describe('destroy', function () {
-        it('existingPostWithNews', function () {
+        it('existing post with news', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 2,
@@ -47,13 +47,13 @@ describe('[Integration] HasOne: Posts/News', function () {
             });
         });
 
-        it('existingPostWithoutTags', function () {
+        it('existing post without news', function () {
+            require('ghost-ignition').debug('test')('begin');
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 1,
-                expectError: (error) => {
-                    // @TODO: should not error, bookshelf-relation should catch this (!)
-                    error.stack.should.match(/no rows deleted/gi);
+                expectSuccess: (result) => {
+                    result.related('news').toJSON().should.eql({});
 
                     return testUtils.database
                         .getConnection()('news').where('post_id', 1)
@@ -308,9 +308,8 @@ describe('[Integration] HasOne: Posts/News', function () {
                 options: {
                     withRelated: ['news']
                 },
-                expectError: (err) => {
-                    // @TODO: should not error, bookshelf-relation should catch this (!)
-                    err.stack.should.match(/no rows deleted/gi);
+                expectSuccess: (result) => {
+                    result.related('news').toJSON().should.eql({});
 
                     return testUtils.database
                         .getConnection()('news')

@@ -234,9 +234,8 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 1,
-                expectError: (err) => {
-                    // @TODO: should not error, bookshelf-relation should catch this (!)
-                    err.stack.should.match(/no rows deleted/gi);
+                expectSuccess: (result) => {
+                    result.related('tags').models.length.should.eql(0);
 
                     return testUtils.database
                         .getConnection()('posts_tags').where('post_id', 1)

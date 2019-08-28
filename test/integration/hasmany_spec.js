@@ -43,9 +43,8 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 1,
-                expectError: (err) => {
-                    // @TODO: should not error, bookshelf-relation should catch this (!)
-                    err.stack.should.match(/no rows deleted/gi);
+                expectSuccess: (result) => {
+                    result.related('custom_fields').models.length.should.eql(0);
 
                     return testUtils.database
                         .getConnection()('custom_fields').where('post_id', 1)
