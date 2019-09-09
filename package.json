@@ -56,7 +56,7 @@
     "nconf": "0.10.0",
     "nyc": "14.1.1",
     "should": "13.2.3",
-    "sinon": "7.4.1",
+    "sinon": "7.4.2",
     "sqlite3": "4.1.0"
   },
   "dependencies": {
