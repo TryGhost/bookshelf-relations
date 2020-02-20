@@ -50,7 +50,7 @@
     "eslint": "5.16.0",
     "eslint-plugin-ghost": "0.6.0",
     "knex": "0.14.6",
-    "knex-migrator": "3.4.0",
+    "knex-migrator": "3.4.1",
     "mocha": "6.2.2",
     "mysql": "2.18.1",
     "nconf": "0.10.0",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "bluebird": "3.7.2",
-    "ghost-ignition": "3.1.0",
+    "ghost-ignition": "4.1.0",
     "lodash": "4.17.15"
   },
   "peerDependencies": {
