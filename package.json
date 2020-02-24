@@ -50,7 +50,7 @@
     "eslint": "5.16.0",
     "eslint-plugin-ghost": "0.6.0",
     "knex": "0.14.6",
-    "knex-migrator": "3.4.1",
+    "knex-migrator": "3.4.2",
     "mocha": "6.2.2",
     "mysql": "2.18.1",
     "nconf": "0.10.0",
