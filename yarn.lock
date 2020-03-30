@@ -363,10 +363,10 @@ bluebird@^3.4.3, bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.4:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.5.tgz#a8d0afd73251effbbd5fe384a77d73003c17a71f"
   integrity sha512-5am6HnnfN+urzt4yfg7IgTbotDjIT/u8AJpEt0sIU9FtXfVeezXAPKswrG+xKUCOYAINpSdgZVDU6QFh+cuH3w==
 
-bookshelf@0.15.1:
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/bookshelf/-/bookshelf-0.15.1.tgz#ca545ad8189a6a3be8b25661ad462dbf667222e3"
-  integrity sha512-o+N88s6A1YW2L47gqOmZgoyLD7xBikHexlPdilD/t4c4YG7Pd8RHdicxQAh07PzaGQtMOwMloSBQQoRQVC++cg==
+bookshelf@0.15.2:
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/bookshelf/-/bookshelf-0.15.2.tgz#aca42468ab6da7a514dc834dc1305d9eb2d9176b"
+  integrity sha512-pFttZ3vq0ZdPi4jGGTdHdnkjU3Yu/D5Pm1kHL1E46pjDgMghWlVgjuCWAUUb3AnRam3Qy8l4fQgTxEPOHxPzHg==
   dependencies:
     bluebird "^3.4.3"
     create-error "~0.3.1"
