@@ -4,7 +4,6 @@ if (!process.env.NODE_ENV) {
 
 const knex = require('knex');
 const path = require('path');
-const Promise = require('bluebird');
 const KnexMigrator = require('knex-migrator');
 const config = require('../../config');
 const models = require('../_database/models');
@@ -36,7 +35,7 @@ exports.database = {
             return knexMigrator.reset({force: true});
         }
 
-        return Promise.promisify(connection.destroy)()
+        return connection.destroy()
             .then(() => {
                 return knexMigrator.reset({force: true});
             });
