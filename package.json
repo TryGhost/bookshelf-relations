@@ -45,7 +45,7 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "bookshelf": "0.15.2",
+    "bookshelf": "1.1.1",
     "deep-diff": "1.0.2",
     "eslint": "6.8.0",
     "eslint-plugin-ghost": "1.1.0",
@@ -65,6 +65,6 @@
     "lodash": "4.17.15"
   },
   "peerDependencies": {
-    "bookshelf": ">=0.13.0"
+    "bookshelf": ">=1.1.0"
   }
 }
