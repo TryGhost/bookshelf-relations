@@ -1,8 +1,7 @@
 module.exports = function (bookshelf) {
-    bookshelf.plugin('registry');
-
     let CustomField = bookshelf.Model.extend({
         tableName: 'custom_fields',
+        requireFetch: false,
 
         posts: function () {
             return this.belongsToMany('Post');

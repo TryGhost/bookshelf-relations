@@ -4,8 +4,6 @@ const Promise = require('bluebird');
 require('../../utils');
 
 module.exports = function (bookshelf) {
-    bookshelf.plugin('registry');
-
     bookshelf.plugin(require('../../../lib/plugin'), {
         extendChanged: '_changed',
         hooks: {
@@ -29,6 +27,7 @@ module.exports = function (bookshelf) {
 
     let Post = bookshelf.Model.extend({
         tableName: 'posts',
+        requireFetch: false,
 
         relationships: ['tags', 'news', 'custom_fields', 'author'],
 

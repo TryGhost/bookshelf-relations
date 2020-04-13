@@ -1,10 +1,9 @@
 const _ = require('lodash');
 
 module.exports = function (bookshelf) {
-    bookshelf.plugin('registry');
-
     let Tag = bookshelf.Model.extend({
         tableName: 'tags',
+        requireFetch: false,
 
         initialize: function () {
             this.on('saving', function (model) {

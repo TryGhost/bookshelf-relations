@@ -1,8 +1,7 @@
 module.exports = function (bookshelf) {
-    bookshelf.plugin('registry');
-
     let Author = bookshelf.Model.extend({
-        tableName: 'authors'
+        tableName: 'authors',
+        requireFetch: false
     });
 
     return {
