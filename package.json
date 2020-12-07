@@ -47,7 +47,7 @@
   "devDependencies": {
     "bookshelf": "1.2.0",
     "deep-diff": "1.0.2",
-    "eslint": "7.14.0",
+    "eslint": "7.15.0",
     "eslint-plugin-ghost": "2.0.0",
     "knex": "0.21.5",
     "knex-migrator": "3.4.7",
