@@ -14,7 +14,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'fetchAll',
                 options: {withRelated: ['tags']},
                 expectSuccess: (posts) => {
-                    posts.length.should.eql(2);
+                    posts.length.should.eql(3);
                     posts.models[0].related('tags').length.should.eql(0);
                     posts.models[1].related('tags').length.should.eql(2);
                 }

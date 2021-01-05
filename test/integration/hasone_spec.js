@@ -14,7 +14,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                 method: 'fetchAll',
                 options: {withRelated: ['news']},
                 expectSuccess: (posts) => {
-                    posts.length.should.eql(2);
+                    posts.length.should.eql(3);
                     posts.models[0].related('news').toJSON().should.eql({});
                     posts.models[1].related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
 

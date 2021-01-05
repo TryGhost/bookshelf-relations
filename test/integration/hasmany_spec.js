@@ -1,6 +1,6 @@
 const testUtils = require('../utils');
 
-describe('[Integration] HasMany: Posts/CustomFields', function () {
+describe('[Integration] HasMany: Posts/CustomFields+Events', function () {
     beforeEach(function () {
         return testUtils.database.reset()
             .then(function () {
@@ -12,11 +12,12 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
         it('existing', function () {
             return testUtils.testPostModel({
                 method: 'fetchAll',
-                options: {withRelated: ['custom_fields']},
+                options: {withRelated: ['custom_fields', 'events']},
                 expectSuccess: (posts) => {
-                    posts.length.should.eql(2);
+                    posts.length.should.eql(3);
                     posts.models[0].related('custom_fields').length.should.eql(0);
                     posts.models[1].related('custom_fields').length.should.eql(2);
+                    posts.models[2].related('events').length.should.eql(2);
                 }
             });
         });
@@ -50,6 +51,21 @@ describe('[Integration] HasMany: Posts/CustomFields', function () {
                         .getConnection()('custom_fields').where('post_id', 1)
                         .then((result) => {
                             result.length.should.eql(0);
+                        });
+                }
+            });
+        });
+
+        it('existingPostWithEvents', function () {
+            return testUtils.testPostModel({
+                method: 'destroy',
+                id: 3,
+                expectSuccess: () => {
+                    // related events are not deleted
+                    return testUtils.database
+                        .getConnection()('events').where('post_id', 3)
+                        .then((queryResult) => {
+                            queryResult.length.should.eql(2);
                         });
                 }
             });

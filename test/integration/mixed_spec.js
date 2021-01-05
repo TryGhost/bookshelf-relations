@@ -14,7 +14,7 @@ describe('[Integration] Mixed', function () {
                 method: 'fetchAll',
                 options: {withRelated: ['author', 'news', 'tags', 'custom_fields']},
                 expectSuccess: (posts) => {
-                    posts.length.should.eql(2);
+                    posts.length.should.eql(3);
                     posts.models[0].related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[0].author);
                     posts.models[1].related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].author);
 

@@ -1,3 +1,14 @@
+### 2.1.0 - 2020-01-05
+
+- Adds per-relationship config allowing opt-out of default child record deletion for `hasMany` relationships
+
+### 2.0.0 - 2019-04-13
+
+- Breaking change
+  - peer dependency Bookshelf >= 1.1.0
+  - it requires you to update bookshelf to 1.1.0 or later
+
+
 ### 1.0.0 - 2019-02-03
 
 Refactoring how we hook into Bookshelf. Major release was required, because

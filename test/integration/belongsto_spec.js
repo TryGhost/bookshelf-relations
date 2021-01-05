@@ -14,7 +14,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 method: 'fetchAll',
                 options: {withRelated: ['author']},
                 expectSuccess: (posts) => {
-                    posts.length.should.eql(2);
+                    posts.length.should.eql(3);
                     posts.models[0].related('author').toJSON().name
                         .should.eql(testUtils.fixtures.getAll().posts[0].author.name);
                     posts.models[1].related('author').toJSON().name
