@@ -36,12 +36,23 @@ exports.up = function up() {
             author: {
                 name: 'Mozart'
             }
+        },
+        {
+            title: 'Third Post',
+            author: {
+                id: 1
+            },
+            events: [{
+                type: 'Created'
+            }, {
+                type: 'Destroyed'
+            }]
         }
     ];
 
     return Promise.each(posts, function (post) {
         return models.Post.add(post).then(function (result) {
-            testUtils.fixtures.add('posts', result.toJSON({withRelated: ['tags', 'news', 'customFields', 'author']}));
+            testUtils.fixtures.add('posts', result.toJSON({withRelated: ['tags', 'news', 'customFields', 'author', 'events']}));
         });
     });
 };

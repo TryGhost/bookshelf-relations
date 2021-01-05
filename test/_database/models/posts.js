@@ -29,7 +29,13 @@ module.exports = function (bookshelf) {
         tableName: 'posts',
         requireFetch: false,
 
-        relationships: ['tags', 'news', 'custom_fields', 'author'],
+        relationships: ['tags', 'news', 'custom_fields', 'author', 'events'],
+
+        relationshipConfig: {
+            events: {
+                destroyRelated: false
+            }
+        },
 
         initialize: function () {
             bookshelf.Model.prototype.initialize.call(this);
@@ -53,6 +59,10 @@ module.exports = function (bookshelf) {
 
         author: function () {
             return this.belongsTo('Author', 'author_id');
+        },
+
+        events: function () {
+            return this.hasMany('Events', 'post_id');
         }
     }, {
         add: function (data, options) {
