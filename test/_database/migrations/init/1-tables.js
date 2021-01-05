@@ -28,5 +28,10 @@ exports.up = function up(options) {
         table.string('value', 255).nullable(true);
         table.integer('post_id').unsigned().nullable(false).references('posts.id');
         table.unique(['key', 'post_id']);
+    }).createTable('events', function (table) {
+        table.increments('id').primary().nullable(false);
+        table.string('type', 100).nullable(false);
+        // indexed but not referenced so parent can be deleted but these records kept
+        table.integer('post_id').unsigned().nullable(false).index();
     });
 };
