@@ -24,7 +24,7 @@ or
 |---|---|---|---|
 |autoHook|Boolean|true|The plugin takes over everything for you and hooks into the Bookshelf workflow.
 |allowedOptions|Array|-|An array of allowed model options the plugin passes on when executing Bookshelf queries.
-|unsetRelations|Boolean|true|The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations. 
+|unsetRelations|Boolean|true|The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations.
 |extendChanged|String|-|Define a variable name and Bookshelf-relations will store the information which relations were changed.|
 |attachPreviousRelations|Boolean|false|An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.|
 |hooks|Object|-|<ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, beforeRelationCreation: Function}}```
@@ -33,7 +33,7 @@ Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/G
 
 ## Automatic
 
-The plugin will automatically deal with relationships upserts.
+The plugin will automatically deal with relationships upserts and cascading deletions through hasMany relationships.
 It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
 
 1. Register the plugin.
@@ -48,6 +48,19 @@ It's required to register your relationships in Bookshelf before you can use boo
     bookshelf.Model.extend({
         relationships: ['tags', 'news']
     }, {...});
+```
+
+To opt-out of automatic child record deletion for `hasMany` relationships it's possible to define per-relationship config:
+
+```js
+    bookshelf.Model.extend({
+        relationships: ['tags', 'news', 'events'],
+        relationshipConfig: {
+            events: {
+                destroyRelated: false
+            }
+        }
+    });
 ```
 
 ## Manual
