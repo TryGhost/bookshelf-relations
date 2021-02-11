@@ -51,7 +51,7 @@
     "eslint-plugin-ghost": "2.0.0",
     "knex": "0.21.5",
     "knex-migrator": "3.4.7",
-    "mocha": "8.2.1",
+    "mocha": "8.3.0",
     "mysql": "2.18.1",
     "nconf": "0.10.0",
     "nyc": "15.1.0",
