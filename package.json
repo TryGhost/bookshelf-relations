@@ -37,8 +37,8 @@
     "email": "hello@ghost.org",
     "web": "https://ghost.org"
   },
-  "engine": {
-    "node": "^10.13.0 || ^12.10.0"
+  "engines": {
+    "node": "^12.10.0 || ^14.15.0"
   },
   "license": "MIT",
   "bugs": {
