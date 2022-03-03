@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const errors = require('@tryghost/errors');
 
 module.exports = function (bookshelf) {
     let Tag = bookshelf.Model.extend({
@@ -14,6 +15,10 @@ module.exports = function (bookshelf) {
                         model.unset(key);
                     }
                 });
+
+                if (model.get('slug').length === 0) {
+                    throw new errors.ValidationError({message: 'Slug should not be empty'});
+                }
             });
         }
     });

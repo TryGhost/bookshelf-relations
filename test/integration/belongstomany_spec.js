@@ -79,6 +79,27 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
+        it('throws ValidationErrors', function () {
+            return testUtils.testPostModel({
+                method: 'add',
+                values: {
+                    title: 'test-post-no-tags',
+                    author: {name: 'Tomas'},
+                    tags: [
+                        {
+                            id: testUtils.fixtures.getAll().posts[1].tags[1].id,
+                            slug: ''
+                        }
+                    ]
+                },
+                expectError: (err) => {
+                    err.message.should.match(/slug/gi);
+                    err.errorType.should.eql('ValidationError');
+                    err.statusCode.should.eql(422);
+                }
+            });
+        });
+
         it('withTagForeignKey', function () {
             return testUtils.testPostModel({
                 method: 'add',

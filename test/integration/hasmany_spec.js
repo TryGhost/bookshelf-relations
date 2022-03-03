@@ -220,6 +220,9 @@ describe('[Integration] HasMany: Posts/CustomFields+Events', function () {
                     ]
                 },
                 expectError: (result) => {
+                    result.errorType.should.eql('BookshelfRelationsError');
+                    result.statusCode.should.eql(500);
+                    result.message.should.match(/nested/gi);
                     result.stack.should.match(/unique/gi);
 
                     return testUtils.database
