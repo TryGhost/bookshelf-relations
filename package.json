@@ -60,8 +60,9 @@
     "sqlite3": "5.0.2"
   },
   "dependencies": {
+    "@tryghost/debug": "^0.1.13",
+    "@tryghost/errors": "^1.2.3",
     "bluebird": "^3.7.2",
-    "ghost-ignition": "^4.6.2",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {

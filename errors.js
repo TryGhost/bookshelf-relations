@@ -1,16 +1,14 @@
-const errors = require('ghost-ignition').errors,
-    util = require('util');
+const errors = require('@tryghost/errors');
+const merge = require('lodash/merge');
 
-function BookshelfRelationsError(options) {
-    options = options || {};
-
-    options.errorType = 'BookshelfRelationsError';
-    options.level = 'critical';
-
-    errors.IgnitionError.call(this, options);
+class BookshelfRelationsError extends errors.InternalServerError {
+    constructor(options) {
+        super(merge({
+            errorType: 'BookshelfRelationsError',
+            level: 'critical'
+        }, options));
+    }
 }
-
-util.inherits(BookshelfRelationsError, errors.IgnitionError);
 
 module.exports = errors;
 module.exports.BookshelfRelationsError = BookshelfRelationsError;

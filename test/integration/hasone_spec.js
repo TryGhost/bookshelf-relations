@@ -48,7 +48,7 @@ describe('[Integration] HasOne: Posts/News', function () {
         });
 
         it('existing post without news', function () {
-            require('ghost-ignition').debug('test')('begin');
+            require('@tryghost/debug')('test')('begin');
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 1,
