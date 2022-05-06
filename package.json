@@ -57,7 +57,7 @@
     "nyc": "15.1.0",
     "should": "13.2.3",
     "sinon": "13.0.2",
-    "sqlite3": "5.0.6"
+    "sqlite3": "5.0.8"
   },
   "dependencies": {
     "@tryghost/debug": "^0.1.13",
