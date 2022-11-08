@@ -9,7 +9,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
     });
 
     describe('fetch', function () {
-        it('existing', function () {
+        it('fetches the record with specified relations', function () {
             return testUtils.testPostModel({
                 method: 'fetchAll',
                 options: {withRelated: ['author']},
@@ -31,7 +31,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
     });
 
     describe('add', function () {
-        it('addWithUnknownId', function () {
+        it('inserts a new author record when provided id is unknown', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -61,7 +61,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
     });
 
     describe('destroy', function () {
-        it('existingPostWithAuthor', function () {
+        it('does not remove related authors when the post is removed', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 2,
@@ -79,7 +79,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
     });
 
     describe('edit', function () {
-        it('editPostOnly', function () {
+        it('only edits the post', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -103,7 +103,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('editPostAndAuthor', function () {
+        it('edits existing post author when id matches', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -131,7 +131,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('authorWithUnknownId', function () {
+        it('inserts a new author record when provided id is unknown', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -157,7 +157,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('overrideExistingAuthor', function () {
+        it('overrides existing author and creates a new author db record', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -184,7 +184,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('setNull', function () {
+        it('does not remove related records when setting the relationship value to null', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -210,7 +210,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('setUndefined', function () {
+        it('does not remove related records when setting the relationship value to undefined', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -237,7 +237,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('changeAuthor', function () {
+        it('changes related author when a matching id is passed', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 1,
