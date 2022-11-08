@@ -1,13 +1,13 @@
-const Nconf = require('nconf'),
-    path = require('path'),
-    env = process.env.NODE_ENV || 'development';
+const Nconf = require('nconf');
+const path = require('path');
+const env = process.env.NODE_ENV || 'development';
 
 let _private = {};
 
 _private.loadNconf = function loadNconf() {
-    let baseConfigPath = __dirname,
-        customConfigPath = process.cwd(),
-        nconf = new Nconf.Provider();
+    let baseConfigPath = __dirname;
+    let customConfigPath = process.cwd();
+    let nconf = new Nconf.Provider();
 
     /**
      * command line arguments
