@@ -9,30 +9,30 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
     });
 
     describe('fetch', function () {
-        it('fetches the record with specified relations', function () {
-            return testUtils.testPostModel({
+        it('fetches the record with specified relations', async function () {
+            await testUtils.testPostModel({
                 method: 'fetchAll',
                 options: {withRelated: ['author']},
-                expectSuccess: (posts) => {
+                expectSuccess: async (posts) => {
                     posts.length.should.eql(3);
                     posts.models[0].related('author').toJSON().name
                         .should.eql(testUtils.fixtures.getAll().posts[0].author.name);
                     posts.models[1].related('author').toJSON().name
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
     });
 
     describe('add', function () {
-        it('inserts a new author record when provided id is unknown', function () {
-            return testUtils.testPostModel({
+        it('inserts a new author record when provided id is unknown', async function () {
+            const currentAuthors = await testUtils.database.getConnection()('authors');
+            currentAuthors.length.should.eql(2);
+
+            await testUtils.testPostModel({
                 method: 'add',
                 values: {
                     title: 'post-title',
@@ -44,35 +44,32 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 options: {
                     withRelated: ['author']
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql('post-title');
                     result.related('author').toJSON().should.containEql({
                         name: 'test-unknown'
                     });
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(3);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(3);
+                    authors[0].name.should.eql('Alf');
+                    authors[1].name.should.eql('Mozart');
+                    authors[2].name.should.eql('test-unknown');
                 }
             });
         });
     });
 
     describe('destroy', function () {
-        it('does not remove related authors when the post is removed', function () {
-            return testUtils.testPostModel({
+        it('does not remove related authors when the post is removed', async function () {
+            await testUtils.testPostModel({
                 method: 'destroy',
                 id: 2,
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.related('author').toJSON().should.eql({});
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
@@ -80,7 +77,10 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
 
     describe('edit', function () {
         it('only edits the post', async function () {
-            return testUtils.testPostModel({
+            const currentAuthors = await testUtils.database.getConnection()('authors');
+            currentAuthors.length.should.eql(2);
+
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -89,22 +89,23 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 options: {
                     withRelated: ['author']
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql('only-me');
                     result.related('author').toJSON()
                         .should.eql(testUtils.fixtures.getAll().posts[1].author);
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
 
         it('edits existing post author when id matches', async function () {
-            return testUtils.testPostModel({
+            const currentAuthors = await testUtils.database.getConnection()('authors');
+            currentAuthors.length.should.eql(2);
+            currentAuthors[1].name.should.eql('Mozart');
+
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -114,25 +115,25 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         name: 'Peter'
                     }
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql('lala');
                     result.related('author').toJSON().id
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name.should.eql('Peter');
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                            result[0].name.should.eql('Alf');
-                            result[1].name.should.eql('Peter');
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
+                    authors[0].name.should.eql('Alf');
+                    authors[1].name.should.eql('Peter');
                 }
             });
         });
 
         it('inserts a new author record when provided id is unknown', async function () {
-            return testUtils.testPostModel({
+            const currentAuthors = await testUtils.database.getConnection()('authors');
+            currentAuthors.length.should.eql(2);
+
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -141,24 +142,27 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         name: 'Frank'
                     }
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.related('author').toJSON().id.should.not.eql(20);
                     result.related('author').toJSON().name.should.eql('Frank');
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(3);
-                            result[0].name.should.eql('Alf');
-                            result[1].name.should.eql('Mozart');
-                            result[2].name.should.eql('Frank');
-                        });
+                    const authors = await testUtils.database
+                        .getConnection()('authors');
+
+                    authors.length.should.eql(3);
+
+                    authors[0].name.should.eql('Alf');
+                    authors[1].name.should.eql('Mozart');
+                    authors[2].name.should.eql('Frank');
                 }
             });
         });
 
         it('overrides existing author and creates a new author db record', async function () {
-            return testUtils.testPostModel({
+            const currentAuthors = await testUtils.database.getConnection()('authors');
+            currentAuthors.length.should.eql(2);
+
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -166,20 +170,19 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                         name: 'Karl'
                     }
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('author').toJSON().id
                         .should.not.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name.should.eql('Karl');
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(3);
-                            result[0].name.should.eql('Alf');
-                            result[1].name.should.eql('Mozart');
-                            result[2].name.should.eql('Karl');
-                        });
+                    const authors = await testUtils.database
+                        .getConnection()('authors');
+
+                    authors.length.should.eql(3);
+                    authors[0].name.should.eql('Alf');
+                    authors[1].name.should.eql('Mozart');
+                    authors[2].name.should.eql('Karl');
                 }
             });
         });
@@ -194,18 +197,15 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 options: {
                     withRelated: ['author']
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('author').toJSON().id
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
@@ -221,18 +221,15 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 options: {
                     withRelated: ['author']
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('author').toJSON().id
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name
                         .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
@@ -250,15 +247,12 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                 options: {
                     withRelated: ['author']
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
                     result.related('author').toJSON().name.should.eql('Mozart');
 
-                    return testUtils.database
-                        .getConnection()('authors')
-                        .then((result) => {
-                            result.length.should.eql(2);
-                        });
+                    const authors = await testUtils.database.getConnection()('authors');
+                    authors.length.should.eql(2);
                 }
             });
         });
