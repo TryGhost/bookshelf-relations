@@ -32,8 +32,26 @@ module.exports = function (bookshelf) {
         relationships: ['tags', 'news', 'custom_fields', 'author', 'events', 'newsletter'],
 
         relationshipConfig: {
+            tags: {
+                editable: true
+            },
+            news: {
+                editable: true
+            },
+            author: {
+                editable: true
+            },
+            custom_fields: {
+                editable: true
+            },
             events: {
+                editable: true,
                 destroyRelated: false
+            },
+            newsletter: {
+                // setting 'false' below is not necessary, as it's a default value
+                // it is here for illustrative purposes
+                editable: false
             }
         },
 

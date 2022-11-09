@@ -129,7 +129,7 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
             });
         });
 
-        it('edits existing post relations', async function () {
+        it('edits ONLY existing post "editable" author but NOT the "read-only" newsletter', async function () {
             const post = testUtils.fixtures.getAll().posts[0];
             should.equal(post.author.name, 'Alf');
             should.equal(post.newsletter.title, 'Best newsletter ever');
@@ -145,14 +145,14 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
                     },
                     newsletter: {
                         id: post.newsletter.id,
-                        title: 'Should change the newsletter title'
+                        title: 'Should NOT change the newsletter title'
                     }
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('Changed post title');
                     result.related('author').toJSON().id.should.eql(post.author.id);
                     result.related('author').toJSON().name.should.eql('Peter');
-                    result.related('newsletter').toJSON().title.should.eql('Should change the newsletter title');
+                    result.related('newsletter').toJSON().title.should.eql('Best newsletter ever');
                 }
             });
         });

@@ -20,14 +20,14 @@ or
 
 ## Options
 
-|hook|type|default|description|
-|---|---|---|---|
-|autoHook|Boolean|true|The plugin takes over everything for you and hooks into the Bookshelf workflow.
-|allowedOptions|Array|-|An array of allowed model options the plugin passes on when executing Bookshelf queries.
-|unsetRelations|Boolean|true|The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations.
-|extendChanged|String|-|Define a variable name and Bookshelf-relations will store the information which relations were changed.|
-|attachPreviousRelations|Boolean|false|An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.|
-|hooks|Object|-|<ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, beforeRelationCreation: Function}}```
+| hook                    | type    | default | description                                                                                                                                                                                             |
+| ----------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| autoHook                | Boolean | true    | The plugin takes over everything for you and hooks into the Bookshelf workflow.                                                                                                                         |
+| allowedOptions          | Array   | -       | An array of allowed model options the plugin passes on when executing Bookshelf queries.                                                                                                                |
+| unsetRelations          | Boolean | true    | The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations.                                    |
+| extendChanged           | String  | -       | Define a variable name and Bookshelf-relations will store the information which relations were changed.                                                                                                 |
+| attachPreviousRelations | Boolean | false   | An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.                                                               |
+| hooks                   | Object  | -       | <ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, beforeRelationCreation: Function}}``` |
 
 Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/base/index.js#L52).
 
@@ -58,6 +58,19 @@ To opt-out of automatic child record deletion for `hasMany` relationships it's p
         relationshipConfig: {
             events: {
                 destroyRelated: false
+            }
+        }
+    });
+```
+
+To opt-in for automatic relation editing pass in `editable` flag in per-relationship config:
+
+```js
+    bookshelf.Model.extend({
+        relationships: ['tags', 'news', 'events'],
+        relationshipConfig: {
+            tags: {
+                editable: true
             }
         }
     });
