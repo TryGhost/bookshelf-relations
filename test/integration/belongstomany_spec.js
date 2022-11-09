@@ -49,7 +49,12 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
         });
 
         it('attaches existing tag to a newly created post', async function () {
-            return testUtils.testPostModel({
+            const currentTags = await testUtils.database.getConnection()('tags');
+            currentTags.length.should.eql(2);
+            should.equal(currentTags[0].slug, 'slug1');
+            should.equal(currentTags[1].slug, 'slug2');
+
+            await testUtils.testPostModel({
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
@@ -61,20 +66,18 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         }
                     ]
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
-                    return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
-                        .then((result) => {
-                            result.length.should.eql(1);
+                    const postTags = await testUtils.database
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id);
+                    postTags.length.should.eql(1);
 
-                            return testUtils.database
-                                .getConnection()('tags')
-                                .then((result) => {
-                                    result.length.should.eql(2);
-                                });
-                        });
+                    const tags = await testUtils.database.getConnection()('tags');
+                    tags.length.should.eql(2);
+                    should.equal(tags[0].slug, 'slug1');
+                    should.equal(tags[1].slug, 'slug2');
                 }
             });
         });
@@ -413,7 +416,10 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
         });
 
         it('removes an exiting tag from the post when not present in the relation', async function () {
-            return testUtils.testPostModel({
+            const postTags = await testUtils.database.getConnection()('posts_tags').where('post_id', 2);
+            should.equal(postTags.length, 2);
+
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -430,8 +436,10 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
 
                     return testUtils.database
                         .getConnection()('posts_tags')
+                        .where('post_id', 2)
                         .then((result) => {
                             result.length.should.eql(1);
+                            should.equal(result[0].id, 2);
 
                             return testUtils.database
                                 .getConnection()('tags')
@@ -541,7 +549,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
         });
 
         it('edits existing tag property', async function () {
-            return testUtils.testPostModel({
+            await testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
                 values: {
@@ -552,24 +560,20 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         }
                     ]
                 },
-                expectSuccess: (result) => {
+                expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(1);
 
                     result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
                     result.related('tags').models[0].get('slug').should.eql('edited');
 
-                    return testUtils.database
-                        .getConnection()('posts_tags')
-                        .then((result) => {
-                            result.length.should.eql(1);
+                    const postTags = await testUtils.database.getConnection()('posts_tags');
 
-                            return testUtils.database
-                                .getConnection()('tags')
-                                .then((result) => {
-                                    result.length.should.eql(2);
-                                });
-                        });
+                    postTags.length.should.eql(1);
+
+                    const tags = await testUtils.database.getConnection()('tags');
+
+                    tags.length.should.eql(2);
                 }
             });
         });
