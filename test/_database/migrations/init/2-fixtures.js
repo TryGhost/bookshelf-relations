@@ -7,6 +7,9 @@ exports.up = async function up() {
             title: 'First Post',
             author: {
                 name: 'Alf'
+            },
+            newsletter: {
+                title: 'Best newsletter ever'
             }
         },
         {

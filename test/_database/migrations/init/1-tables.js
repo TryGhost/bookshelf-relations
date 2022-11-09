@@ -5,10 +5,14 @@ exports.up = function up(options) {
     return schema.createTable('authors', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('name', 100).nullable(false);
+    }).createTable('newsletters', function (table) {
+        table.increments('id').primary().nullable(false);
+        table.string('title', 100).nullable(false);
     }).createTable('posts', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('title');
         table.integer('author_id').unsigned().nullable(false).references('authors.id');
+        table.integer('newsletter_id').unsigned().nullable(true).references('newsletters.id');
     }).createTable('tags', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('slug', 191).unique().nullable(false);

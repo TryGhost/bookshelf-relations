@@ -29,7 +29,7 @@ module.exports = function (bookshelf) {
         tableName: 'posts',
         requireFetch: false,
 
-        relationships: ['tags', 'news', 'custom_fields', 'author', 'events'],
+        relationships: ['tags', 'news', 'custom_fields', 'author', 'events', 'newsletter'],
 
         relationshipConfig: {
             events: {
@@ -59,6 +59,10 @@ module.exports = function (bookshelf) {
 
         author: function () {
             return this.belongsTo('Author', 'author_id');
+        },
+
+        newsletter: function () {
+            return this.belongsTo('Newsletter', 'newsletter_id');
         },
 
         events: function () {
