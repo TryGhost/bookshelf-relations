@@ -43,14 +43,15 @@ exports.database = {
 };
 
 let fixtures = {
-    posts: []
+    posts: [],
+    newsletters: []
 };
 
 exports.fixtures = {
     add: function (key, obj) {
         fixtures[key].push(obj);
     },
-    getAll: function () {
-        return fixtures;
+    getAll: function (key) {
+        return key ? fixtures[key] : fixtures;
     }
 };

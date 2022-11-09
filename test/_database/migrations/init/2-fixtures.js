@@ -2,6 +2,16 @@ const models = require('../../models');
 const testUtils = require('../../../utils');
 
 exports.up = async function up() {
+    const newsletters = [{
+        title: 'Best newsletter ever'
+    }];
+
+    for (const newsletter of newsletters) {
+        const addedNewsletter = await models.Newsletter.add(newsletter);
+        testUtils.fixtures.add('newsletters', addedNewsletter.toJSON());
+    }
+
+    const bestNewsletter = testUtils.fixtures.getAll('newsletters').find(n => n.title === 'Best newsletter ever');
     const posts = [
         {
             title: 'First Post',
@@ -9,7 +19,7 @@ exports.up = async function up() {
                 name: 'Alf'
             },
             newsletter: {
-                title: 'Best newsletter ever'
+                id: bestNewsletter.id
             }
         },
         {
