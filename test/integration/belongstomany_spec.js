@@ -23,7 +23,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
     });
 
     describe('add', function () {
-        it('postWithoutTags', function () {
+        it('creates a post without tags', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -48,7 +48,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('postWithExistingTags', function () {
+        it('attaches existing tag to a newly created post', async function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -79,7 +79,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('throws ValidationErrors', function () {
+        it('throws ValidationErrors when slug property value is set to an invalid one', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -100,7 +100,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('withTagForeignKey', function () {
+        it('attaches a tag to a posts using foreign key syntax', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -129,7 +129,8 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 }
             });
         });
-        it('postWithNewAndExistingTags', function () {
+
+        it('attaches a mix of newly created and existing tags to a post', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -162,7 +163,8 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 }
             });
         });
-        it('postsWithUnknownTagIds', function () {
+
+        it('creates a new tag when the id is not matching any existing tags', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -194,7 +196,8 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 }
             });
         });
-        it('postWithNewTags', function () {
+
+        it('creates two new tags', function () {
             return testUtils.testPostModel({
                 method: 'add',
                 values: {
@@ -229,7 +232,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
     });
 
     describe('destroy', function () {
-        it('existingPostWithTags', function () {
+        it('does not remove related tags when the post with tags is removed', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 2,
@@ -251,7 +254,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('existingPostWithoutTags', function () {
+        it('does not remove any tags when the post without tags is removed', function () {
             return testUtils.testPostModel({
                 method: 'destroy',
                 id: 1,
@@ -275,7 +278,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
     });
 
     describe('edit', function () {
-        it('editPostOnly', function () {
+        it('only edits the post', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -304,7 +307,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('deleteAllExistingTags', function () {
+        it('detaches all existing tags when empty array syntax is used', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -330,7 +333,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('sendEmptyTag', function () {
+        it('detaches all existing tags when empty object syntax is used', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -356,7 +359,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('deleteAllExistingTagsFromPostWhichHasNone', function () {
+        it('does not remove any tags when none have been assigned to the post when using empty array syntax', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 1,
@@ -382,7 +385,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('deleteAllExistingTagsAndEditPost', function () {
+        it('does not remove any tags when none have been assigned to the post when using empty array syntax while editing the post', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -409,7 +412,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('deleteLastExistingTag', function () {
+        it('removes an exiting tag from the post when not present in the relation', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -440,7 +443,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('addNewTagAndKeepExisting', function () {
+        it('adds a new tag while keeping an existing one', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -537,7 +540,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
-        it('editExistingTag', function () {
+        it('edits existing tag property', async function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
