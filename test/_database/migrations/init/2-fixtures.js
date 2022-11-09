@@ -1,8 +1,7 @@
-const Promise = require('bluebird');
 const models = require('../../models');
 const testUtils = require('../../../utils');
 
-exports.up = function up() {
+exports.up = async function up() {
     const posts = [
         {
             title: 'First Post',
@@ -50,9 +49,8 @@ exports.up = function up() {
         }
     ];
 
-    return Promise.each(posts, function (post) {
-        return models.Post.add(post).then(function (result) {
-            testUtils.fixtures.add('posts', result.toJSON({withRelated: ['tags', 'news', 'customFields', 'author', 'events']}));
-        });
-    });
+    for (const post of posts) {
+        const addedPost = await models.Post.add(post);
+        testUtils.fixtures.add('posts', addedPost.toJSON({withRelated: ['tags', 'news', 'customFields', 'author', 'events']}));
+    }
 };
