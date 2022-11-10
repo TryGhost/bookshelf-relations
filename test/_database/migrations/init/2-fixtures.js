@@ -45,9 +45,6 @@ exports.up = async function up() {
                 }
             ],
             tiers: [platinumTier],
-            news: {
-                keywords: 'future,world,sun-down'
-            },
             custom_fields: [
                 {
                     key: 'field1',
@@ -78,5 +75,15 @@ exports.up = async function up() {
     for (const post of posts) {
         const addedPost = await models.Post.add(post);
         testUtils.fixtures.add('posts', addedPost.toJSON({withRelated: ['tags', 'tiers', 'news', 'customFields', 'author', 'events']}));
+    }
+
+    const secondPost = testUtils.fixtures.getAll('posts').find(p => p.title === 'Second Post');
+    const news = [{
+        keywords: 'future,world,sun-down',
+        post_id: secondPost.id
+    }];
+    for (const newsItem of news) {
+        const addedNewsItem = await models.News.add(newsItem);
+        testUtils.fixtures.add('news', addedNewsItem.toJSON());
     }
 };

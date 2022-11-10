@@ -44,7 +44,7 @@ module.exports = function (bookshelf) {
             //     editable: false
             // },
             news: {
-                editable: true
+                editable: false
             },
             author: {
                 editable: true

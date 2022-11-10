@@ -19,7 +19,7 @@ describe('[Integration] Mixed', function () {
                     posts.models[1].related('author').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].author);
 
                     posts.models[0].related('news').toJSON().should.eql({});
-                    posts.models[1].related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+                    posts.models[1].related('news').toJSON().should.eql(testUtils.fixtures.getAll('news')[0]);
 
                     posts.models[0].related('tags').length.should.eql(0);
                     posts.models[1].related('tags').length.should.eql(2);
@@ -39,7 +39,7 @@ describe('[Integration] Mixed', function () {
                 values: {
                     title: 'only-me',
                     news: {
-                        id: testUtils.fixtures.getAll().posts[1].news.id,
+                        id: testUtils.fixtures.getAll('news')[0].id,
                         keywords: 'future,something'
                     },
                     tags: [
@@ -54,7 +54,7 @@ describe('[Integration] Mixed', function () {
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
-                    result.related('news').toJSON().keywords.should.eql('future,something');
+                    result.related('news').toJSON().keywords.should.eql('future,world,sun-down');
                     result.related('author').toJSON().name.should.eql('Franz');
                     result.related('tags').models.length.should.eql(1);
                     result.related('tags').models[0].get('slug').should.eql('football');

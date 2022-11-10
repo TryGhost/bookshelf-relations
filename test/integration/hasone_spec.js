@@ -16,14 +16,16 @@ describe('[Integration] HasOne: Posts/News', function () {
                 expectSuccess: (posts) => {
                     posts.length.should.eql(3);
                     posts.models[0].related('news').toJSON().should.eql({});
-                    posts.models[1].related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+
+                    const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === testUtils.fixtures.getAll().posts[1].id);
+                    posts.models[1].related('news').toJSON().should.eql(newsItem);
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
                             result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
@@ -65,10 +67,13 @@ describe('[Integration] HasOne: Posts/News', function () {
     });
 
     describe('edit', function () {
-        it('editPostOnlyWithNews', function () {
+        it('edits the post with news without touching news relation', function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     title: 'only-me'
                 },
@@ -77,24 +82,27 @@ describe('[Integration] HasOne: Posts/News', function () {
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
-                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+                    result.related('news').toJSON().should.eql(newsItem);
 
                     return testUtils.database.getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                            result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].id.should.eql(newsItem.id);
+                            result[0].post_id.should.eql(post.id);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('editPostOnlyWithoutNews', function () {
+        it('edits the post without news without touching news relation', function () {
+            const post = testUtils.fixtures.getAll().posts[0];
+            const newsItem = testUtils.fixtures.getAll('news')[0];
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 1,
+                id: post.id,
                 values: {
                     title: 'only-me'
                 },
@@ -110,50 +118,56 @@ describe('[Integration] HasOne: Posts/News', function () {
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].id.should.eql(newsItem.id);
                             result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('editNewsAndPost', function () {
+        it('edits the post with news and NOT changing news relation', function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     title: 'only-me',
                     news: {
-                        id: testUtils.fixtures.getAll().posts[1].news.id,
+                        id: newsItem.id,
                         keywords: 'future,something'
                     }
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
-                    result.related('news').toJSON().keywords.should.eql('future,something');
+                    result.related('news').toJSON().keywords.should.eql(newsItem.keywords);
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].id.should.eql(newsItem.id);
                             result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql('future,something');
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('withRelated', function () {
+        it('edits the post with news and NOT changing news relation using withRelated', function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     news: {
-                        id: testUtils.fixtures.getAll().posts[1].news.id,
-                        keywords: testUtils.fixtures.getAll().posts[1].news.keywords
+                        id: newsItem.id,
+                        keywords: newsItem.keywords
                     }
                 },
                 options: {
@@ -161,14 +175,18 @@ describe('[Integration] HasOne: Posts/News', function () {
                 },
                 expectSuccess: (result) => {
                     result.related('news').toJSON().keywords
-                        .should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                        .should.eql(newsItem.keywords);
                 }
             });
         });
-        it('addNewsToPostWithNews', function () {
+
+        it('cannot add new news through post', function () {
+            const post = testUtils.fixtures.getAll().posts[2];
+            const newsItem = testUtils.fixtures.getAll('news')[0];
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     title: 'only-me',
                     news: {
@@ -177,25 +195,28 @@ describe('[Integration] HasOne: Posts/News', function () {
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
-                    result.related('news').toJSON().keywords.should.eql('self,this');
+                    should.equal(result.related('news').toJSON().keywords, undefined);
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].id.should.eql(newsItem.id);
                             result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql('self,this');
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('addNewsToPostWithoutNews', function () {
+        it('cannot add new news to a post without news', function () {
+            const post = testUtils.fixtures.getAll().posts[0];
+            const newsItem = testUtils.fixtures.getAll('news')[0];
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 1,
+                id: post.id,
                 values: {
                     news: {
                         keywords: 'self,this'
@@ -203,28 +224,28 @@ describe('[Integration] HasOne: Posts/News', function () {
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
-                    result.related('news').toJSON().keywords.should.eql('self,this');
+                    result.related('news').toJSON().should.eql({});
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
-                            result.length.should.eql(2);
+                            result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                            result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
-
-                            result[1].post_id.should.eql(1);
-                            result[1].keywords.should.eql('self,this');
+                            result[0].id.should.eql(newsItem.id);
+                            result[0].post_id.should.eql(newsItem.post_id);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('setNull', function () {
+        it('setting null removes the relation', function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     news: null
                 },
@@ -232,26 +253,29 @@ describe('[Integration] HasOne: Posts/News', function () {
                     withRelated: ['news']
                 },
                 expectSuccess: function (result) {
-                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+                    result.get('title').should.eql(post.title);
+                    result.related('news').toJSON().should.eql(newsItem);
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                            result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].id.should.eql(newsItem.id);
+                            result[0].post_id.should.eql(post.id);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('setUndefined', function () {
+        it('setting undefined keeps the relation', function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 2,
+                id: post.id,
                 values: {
                     news: undefined
                 },
@@ -259,23 +283,23 @@ describe('[Integration] HasOne: Posts/News', function () {
                     withRelated: ['news']
                 },
                 expectSuccess: (result) => {
-                    result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                    result.related('news').toJSON().should.eql(testUtils.fixtures.getAll().posts[1].news);
+                    result.get('title').should.eql(post.title);
+                    result.related('news').toJSON().should.eql(newsItem);
 
                     return testUtils.database
                         .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
-                            result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].id.should.eql(newsItem.id);
+                            result[0].post_id.should.eql(post.id);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
         });
 
-        it('setEmptyNewsForPostWithNews', function () {
+        it('removes related news relation from the post with news', function () {
             return testUtils.testPostModel({
                 method: 'edit',
                 id: 2,
@@ -297,10 +321,13 @@ describe('[Integration] HasOne: Posts/News', function () {
             });
         });
 
-        it('setEmptyNewsForPostWithoutNews', function () {
+        it('does nothing when removing the news relation from the post without news', function () {
+            const post = testUtils.fixtures.getAll().posts[0];
+            const newsItem = testUtils.fixtures.getAll('news')[0];
+
             return testUtils.testPostModel({
                 method: 'edit',
-                id: 1,
+                id: post.id,
                 values: {
                     news: {}
                 },
@@ -315,9 +342,9 @@ describe('[Integration] HasOne: Posts/News', function () {
                         .then((result) => {
                             result.length.should.eql(1);
 
-                            result[0].id.should.eql(testUtils.fixtures.getAll().posts[1].news.id);
+                            result[0].id.should.eql(newsItem.id);
                             result[0].post_id.should.eql(2);
-                            result[0].keywords.should.eql(testUtils.fixtures.getAll().posts[1].news.keywords);
+                            result[0].keywords.should.eql(newsItem.keywords);
                         });
                 }
             });
