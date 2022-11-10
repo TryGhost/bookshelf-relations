@@ -40,4 +40,14 @@ describe('[Unit] strip relational values', function () {
         const result = stripNonRelationalValues(loadsOfProps);
         assert.deepEqual(result, [{}, {}]);
     });
+
+    it('does nothing to a null value', function () {
+        const result = stripNonRelationalValues(null);
+        assert.deepEqual(result, null);
+    });
+
+    it('does nothing to an undefined value', function () {
+        const result = stripNonRelationalValues(undefined);
+        assert.deepEqual(result, undefined);
+    });
 });

@@ -1,6 +1,6 @@
 const testUtils = require('../utils');
 
-describe('[Integration] BelongsTo: Posts/Author', function () {
+describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
     beforeEach(function () {
         return testUtils.database.reset()
             .then(function () {
@@ -234,6 +234,33 @@ describe('[Integration] BelongsTo: Posts/Author', function () {
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
+                }
+            });
+        });
+
+        it('does not remove related records when setting non-editable the relationship value to null', function () {
+            const post = testUtils.fixtures.getAll().posts[0];
+            const newsletter = testUtils.fixtures.getAll('newsletters').find(n => n.id === post.newsletter_id);
+
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: post.id,
+                values: {
+                    newsletter: null
+                },
+                options: {
+                    withRelated: ['author']
+                },
+                expectSuccess: async (result) => {
+                    result.get('title').should.eql(post.title);
+                    result.get('newsletter_id').should.eql(newsletter.id);
+
+                    const editedPosts = await testUtils.database.getConnection()('posts').where('newsletter_id', newsletter.id);
+                    editedPosts[0].newsletter_id.should.eql(newsletter.id);
+
+                    const newsletters = await testUtils.database.getConnection()('newsletters');
+                    newsletters.length.should.eql(1);
+                    newsletters[0].id.should.eql(newsletter.id);
                 }
             });
         });
