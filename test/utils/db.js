@@ -44,6 +44,7 @@ exports.database = {
 
 let fixtures = {
     posts: [],
+    tiers: [],
     newsletters: []
 };
 

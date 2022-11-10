@@ -22,6 +22,14 @@ exports.up = function up(options) {
         table.integer('post_id').unsigned().nullable(false).references('posts.id');
         table.integer('tag_id').unsigned().nullable(false).references('tags.id');
         table.integer('sort_order').nullable(false).defaultTo(0);
+    }).createTable('tiers', function (table) {
+        table.increments('id').primary().nullable(false);
+        table.string('name', 100).nullable(false);
+    }).createTable('posts_tiers', function (table) {
+        table.increments('id').primary().nullable(false);
+        table.integer('post_id').unsigned().nullable(false).references('posts.id');
+        table.integer('tier_id').unsigned().nullable(false).references('tiers.id');
+        table.integer('sort_order').nullable(false).defaultTo(0);
     }).createTable('news', function (table) {
         table.increments('id').primary().nullable(false);
         table.string('keywords', 100).nullable(true);

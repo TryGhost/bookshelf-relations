@@ -5,14 +5,17 @@ require('../../utils');
 
 module.exports = function (bookshelf) {
     bookshelf.plugin(require('../../../lib/plugin'), {
+        editRelations: false,
         extendChanged: '_changed',
         hooks: {
             belongsToMany: {
                 after: function (existing, targets, options) {
                     return Promise.each(targets.models, function (target, index) {
-                        return existing.updatePivot({
-                            sort_order: index
-                        }, _.extend({}, options, {query: {where: {tag_id: target.id}}}));
+                        if (target.tableName === 'tags') {
+                            return existing.updatePivot({
+                                sort_order: index
+                            }, _.extend({}, options, {query: {where: {tag_id: target.id}}}));
+                        }
                     });
                 },
                 beforeRelationCreation: function (collection, data, opts) {
@@ -29,12 +32,17 @@ module.exports = function (bookshelf) {
         tableName: 'posts',
         requireFetch: false,
 
-        relationships: ['tags', 'news', 'custom_fields', 'author', 'events', 'newsletter'],
+        relationships: ['tags', 'tiers', 'news', 'custom_fields', 'author', 'events', 'newsletter'],
 
         relationshipConfig: {
             tags: {
                 editable: true
             },
+            // no need to declare this as relations are not editable as configured
+            // it is here for illustrative purposes
+            // tiers: {
+            //     editable: false
+            // },
             news: {
                 editable: true
             },
@@ -65,6 +73,10 @@ module.exports = function (bookshelf) {
 
         tags: function () {
             return this.belongsToMany('Tag', 'posts_tags', 'post_id', 'tag_id').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
+        },
+
+        tiers: function () {
+            return this.belongsToMany('Tier', 'posts_tiers', 'post_id', 'tier_id').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
         },
 
         news: function () {

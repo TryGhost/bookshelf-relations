@@ -11,7 +11,18 @@ exports.up = async function up() {
         testUtils.fixtures.add('newsletters', addedNewsletter.toJSON());
     }
 
+    const tiers = [{
+        name: 'Platinum Elite Tier'
+    }];
+
+    for (const tier of tiers) {
+        const addedTier = await models.Tier.add(tier);
+        testUtils.fixtures.add('tiers', addedTier.toJSON());
+    }
+
     const bestNewsletter = testUtils.fixtures.getAll('newsletters').find(n => n.title === 'Best newsletter ever');
+    const platinumTier = testUtils.fixtures.getAll('tiers').find(t => t.name === 'Platinum Elite Tier');
+
     const posts = [
         {
             title: 'First Post',
@@ -20,7 +31,8 @@ exports.up = async function up() {
             },
             newsletter: {
                 id: bestNewsletter.id
-            }
+            },
+            tiers: [platinumTier]
         },
         {
             title: 'Second Post',
@@ -32,6 +44,7 @@ exports.up = async function up() {
                     slug: 'slug2'
                 }
             ],
+            tiers: [platinumTier],
             news: {
                 keywords: 'future,world,sun-down'
             },
@@ -64,6 +77,6 @@ exports.up = async function up() {
 
     for (const post of posts) {
         const addedPost = await models.Post.add(post);
-        testUtils.fixtures.add('posts', addedPost.toJSON({withRelated: ['tags', 'news', 'customFields', 'author', 'events']}));
+        testUtils.fixtures.add('posts', addedPost.toJSON({withRelated: ['tags', 'tiers', 'news', 'customFields', 'author', 'events']}));
     }
 };
