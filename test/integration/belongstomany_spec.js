@@ -578,6 +578,51 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
+        it('edits ONLY "editable" tag properties but NOT the "read-only" labels', async function () {
+            const post = testUtils.fixtures.getAll().posts[1];
+            await testUtils.testPostModel({
+                method: 'edit',
+                id: post.id,
+                values: {
+                    tags: [
+                        {
+                            id: post.tags[0].id,
+                            slug: 'edited'
+                        }
+                    ],
+                    tiers: [
+                        {
+                            id: post.tiers[0].id,
+                            name: 'Pesky edit shall not pass'
+                        }
+                    ]
+                },
+                expectSuccess: async (result) => {
+                    result.get('title').should.eql(post.title);
+
+                    result.related('tags').length.should.eql(1);
+                    result.related('tags').models[0].id.should.eql(post.tags[0].id);
+                    result.related('tags').models[0].get('slug').should.eql('edited');
+
+                    result.related('tiers').length.should.eql(1);
+                    result.related('tiers').models[0].id.should.eql(post.tiers[0].id);
+                    result.related('tiers').models[0].get('name').should.eql(post.tiers[0].name);
+
+                    const postTags = await testUtils.database.getConnection()('posts_tags');
+                    postTags.length.should.eql(1);
+
+                    const tags = await testUtils.database.getConnection()('tags');
+                    tags.length.should.eql(2);
+
+                    const postTiers = await testUtils.database.getConnection()('posts_tiers');
+                    postTiers.length.should.eql(2);
+
+                    const tiers = await testUtils.database.getConnection()('tiers');
+                    tiers.length.should.eql(1);
+                }
+            });
+        });
+
         it('matchingUnknown', function () {
             return testUtils.testPostModel({
                 method: 'edit',
