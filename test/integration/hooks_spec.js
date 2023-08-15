@@ -123,10 +123,17 @@ function setupModel(knex, hookConfig) {
 }
 
 describe('[Integration] Hooks: Posts/Tags', function () {
+    let authorId;
     beforeEach(function () {
         return testUtils.database.reset()
             .then(function () {
                 return testUtils.database.init();
+            })
+            .then(function () {
+                const knex = testUtils.database.getConnection();
+                return knex('authors').select('id').first().then((row) => {
+                    authorId = row.id;
+                });
             });
     });
 
@@ -143,7 +150,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 420,
+            author_id: authorId,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, false);
@@ -166,7 +173,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 420,
+            author_id: authorId,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, true);
@@ -189,7 +196,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 420,
+            author_id: authorId,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, false);
