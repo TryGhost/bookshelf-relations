@@ -143,7 +143,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 'fake_author_id',
+            author_id: 420,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, false);
@@ -166,7 +166,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 'fake_author_id',
+            author_id: 420,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, true);
@@ -189,7 +189,7 @@ describe('[Integration] Hooks: Posts/Tags', function () {
         });
 
         return result.Post.add({
-            author_id: 'fake_author_id',
+            author_id: 420,
             tags: ['blah']
         }).then(() => {
             should.equal(result.globalAfterHookCalled, false);
