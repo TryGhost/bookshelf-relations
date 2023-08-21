@@ -28,9 +28,32 @@ or
 | editRelations           | Boolean | true    | If `false` value is passed in the plugin will not edit the properties of related models unless specified otherwise on model-level `relationshipConfig` through `editable` flag.                         |
 | extendChanged           | String  | -       | Define a variable name and Bookshelf-relations will store the information which relations were changed.                                                                                                 |
 | attachPreviousRelations | Boolean | false   | An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.                                                               |
-| hooks                   | Object  | -       | <ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, beforeRelationCreation: Function}}``` |
+| hooks                   | Object  | -       | <ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, before: Function}}``` |
 
 Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/base/index.js#L52).
+
+## Hooks
+
+Hooks can be defined globally on the plugin options as described above, or they can be defined on a model by model basis.
+A model hook will replace a global hook if present - only one of them will run.
+
+Hook should have a structure like so: 
+
+```js
+hooks: {
+    belongsToMany: {
+        before() {},
+        after() {}
+    }
+}
+```
+
+The hooks we support are:
+ - `belongsToMany`
+    - `before` / `beforeRelationCreated`
+    - `after` / `afterRelationCreated`
+
+Either name can be used but the shorter name will be preferred if both exist.
 
 ## Automatic
 
