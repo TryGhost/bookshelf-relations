@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     strategy:
       matrix:
-        node: [ 16, 18, 20 ]
+        node: [ 18, 20 ]
         env:
           - DB: sqlite3
             NODE_ENV: testing
