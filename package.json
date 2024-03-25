@@ -48,7 +48,7 @@
     "bookshelf": "1.2.0",
     "deep-diff": "1.0.2",
     "eslint": "8.24.0",
-    "eslint-plugin-ghost": "2.15.1",
+    "eslint-plugin-ghost": "3.4.0",
     "knex": "2.4.0",
     "knex-migrator": "5.2.0",
     "mocha": "10.0.0",
@@ -56,7 +56,7 @@
     "nconf": "0.12.0",
     "nyc": "15.1.0",
     "should": "13.2.3",
-    "sinon": "15.0.0",
+    "sinon": "17.0.1",
     "sqlite3": "5.1.4"
   },
   "dependencies": {
