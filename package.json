@@ -49,7 +49,7 @@
     "deep-diff": "1.0.2",
     "eslint": "8.24.0",
     "eslint-plugin-ghost": "2.15.1",
-    "knex": "2.4.0",
+    "knex": "2.5.1",
     "knex-migrator": "5.2.0",
     "mocha": "10.0.0",
     "mysql2": "3.2.0",
