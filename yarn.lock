@@ -1235,11 +1235,11 @@
   integrity sha512-AwljcoXFUjSKFIoB/V9uohTLvWY8g+fIaHHjgPLH4Cq1tBZgcAlBIZR2ridhXiY1iDX7m3cws36uAxrN0KnoUw==
 
 "@tryghost/debug@^0.1.13", "@tryghost/debug@^0.1.34":
-  version "0.1.34"
-  resolved "https://registry.yarnpkg.com/@tryghost/debug/-/debug-0.1.34.tgz#cac7100b092b358e54637ed620dc9cd9ac76355c"
-  integrity sha512-TuTI/BCktv3NY+QhJWrcDBRN6qxgy7zgKHj18MzCZEqPVRXdzYdsd8ldO/Q7jSNgHjf0UHuwDTc5VFuNzCUABA==
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/@tryghost/debug/-/debug-0.1.35.tgz#6bff0a16b946b25cb14a75942c2f17bd8c993aa2"
+  integrity sha512-NNKMKV6xuaOaXjTJ/NBMWEzfSkFLahtxARlyYbFuxb9y95jhyJb2+mu9Zsd+gKWZZIkP7ACkWqyooTm4rr9eCQ==
   dependencies:
-    "@tryghost/root-utils" "^0.3.32"
+    "@tryghost/root-utils" "^0.3.33"
     debug "^4.3.1"
 
 "@tryghost/elasticsearch@^3.0.22":
@@ -1318,10 +1318,10 @@
     got "13.0.0"
     lodash "^4.17.21"
 
-"@tryghost/root-utils@^0.3.31", "@tryghost/root-utils@^0.3.32":
-  version "0.3.32"
-  resolved "https://registry.yarnpkg.com/@tryghost/root-utils/-/root-utils-0.3.32.tgz#686acf0aa4e1ab4b2578fc0acf9fe552d51f73f1"
-  integrity sha512-fR//LmG+5iapR6sHsh727nD5xu0cLPtEhPpsI8cy/chaBADmJyWMr6ewzq/HenjKxyOH6LIT7Bdmv+kEUvu+Fg==
+"@tryghost/root-utils@^0.3.31", "@tryghost/root-utils@^0.3.32", "@tryghost/root-utils@^0.3.33":
+  version "0.3.33"
+  resolved "https://registry.yarnpkg.com/@tryghost/root-utils/-/root-utils-0.3.33.tgz#208e3d15520131c2d4157c7e62fe74771a7a110f"
+  integrity sha512-Gmc/TrKtiRT7PV9JOPoSZ7jAOl/jJDWJFKNaLZbDQaiJIBP5C6PucqEfRqGb2Ko/S9j73HzEEBu6B7+qZMvbBg==
   dependencies:
     caller "^1.0.1"
     find-root "^1.1.0"
@@ -1911,9 +1911,9 @@ date-format@^4.0.14:
   integrity sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==
 
 debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.0.tgz#2b3f2aea2ffeb776477460267377dc8710faba8a"
-  integrity sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.1.tgz#e5a8bc6cbc4c6cd3e64308b0693a3d4fa550189b"
+  integrity sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==
   dependencies:
     ms "^2.1.3"
 
