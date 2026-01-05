@@ -1725,9 +1725,9 @@ camelcase@^6.0.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001759:
-  version "1.0.30001761"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001761.tgz#4ca4c6e3792b24e8e2214baa568fc0e43de28191"
-  integrity sha512-JF9ptu1vP2coz98+5051jZ4PwQgd2ni8A+gYSN7EA7dPKIMf0pDlSUxhdmVOaV3/fYK5uWBkgSXJaRLr4+3A6g==
+  version "1.0.30001762"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001762.tgz#e4dbfeda63d33258cdde93e53af2023a13ba27d4"
+  integrity sha512-PxZwGNvH7Ak8WX5iXzoK1KPZttBXNPuaOvI2ZYU7NrlM+d9Ov+TUvlLOBNGzVXAntMSMMlJPd+jY6ovrVjSmUw==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -2312,9 +2312,9 @@ esprima@^4.0.0:
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
 esquery@^1.4.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.6.0.tgz#91419234f804d852a82dceec3e16cdc22cf9dae7"
-  integrity sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.7.0.tgz#08d048f261f0ddedb5bae95f46809463d9c9496d"
+  integrity sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==
   dependencies:
     estraverse "^5.1.0"
 
@@ -3783,9 +3783,9 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
 normalize-url@^8.0.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.1.0.tgz#d33504f67970decf612946fd4880bc8c0983486d"
-  integrity sha512-X06Mfd/5aKsRHc0O0J5CUedwnPmnDtLF2+nq+KN9KSDlJHkPuh0JUviWjEWMe0SW/9TDdSLVPuk7L5gGTIA1/w==
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.1.1.tgz#751a20c8520e5725404c06015fea21d7567f25ef"
+  integrity sha512-JYc0DPlpGWB40kH5g07gGTrYuMqV653k3uBKY6uITPWds3M0ov3GaWGp9lbE3Bzngx8+XkfzgvASb9vk9JDFXQ==
 
 npmlog@^5.0.1:
   version "5.0.1"
