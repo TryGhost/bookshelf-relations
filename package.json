@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@tryghost/debug": "^0.1.13",
-    "@tryghost/errors": "^1.2.3",
+    "@tryghost/errors": "^2.0.0",
     "bluebird": "^3.7.2",
     "lodash": "^4.17.21"
   },
