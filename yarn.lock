@@ -1672,13 +1672,21 @@
     "@stdlib/utils-copy" "^0.2.0"
     uuid "^9.0.0"
 
-"@tryghost/errors@^1.2.3", "@tryghost/errors@^1.3.9":
+"@tryghost/errors@^1.3.9":
   version "1.3.13"
   resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.3.13.tgz#e604160bd5a4b26b6c30cdc82dad22d9ce892dce"
   integrity sha512-sXFcuU8Nn3mDcVrLBLFThQZImn+T2w7v/jJGJzdFnSKJstqxd1LyTRlMjpCpgCnqAgHFCaP+uFg7x4CX64VBJQ==
   dependencies:
     "@stdlib/utils-copy" "^0.2.0"
     uuid "^9.0.0"
+
+"@tryghost/errors@^2.0.0":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-2.2.1.tgz#e6b98aa35d077c240d4cf00eb0a788f3775258c0"
+  integrity sha512-7zR5Wu9UMalFZbWZs3nN3MzJg6mKek11W51AP8UGz5sN4fQofoeLwXHLI/AuT7nDuWiJZHsJcI1EGJg0iQHV3g==
+  dependencies:
+    "@stdlib/utils-copy" "^0.2.0"
+    uuid "^13.0.0"
 
 "@tryghost/http-stream@^0.1.34":
   version "0.1.38"
@@ -5244,6 +5252,11 @@ util-deprecate@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+uuid@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-13.0.0.tgz#263dc341b19b4d755eb8fe36b78d95a6b65707e8"
+  integrity sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==
 
 uuid@^3.3.2:
   version "3.4.0"
