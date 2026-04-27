@@ -1647,13 +1647,21 @@
   resolved "https://registry.yarnpkg.com/@tryghost/database-info/-/database-info-0.3.22.tgz#8db1433f35fcee8fbca182ba8b7ea7e682a45fcd"
   integrity sha512-AwljcoXFUjSKFIoB/V9uohTLvWY8g+fIaHHjgPLH4Cq1tBZgcAlBIZR2ridhXiY1iDX7m3cws36uAxrN0KnoUw==
 
-"@tryghost/debug@^0.1.13", "@tryghost/debug@^0.1.36":
+"@tryghost/debug@^0.1.36":
   version "0.1.36"
   resolved "https://registry.yarnpkg.com/@tryghost/debug/-/debug-0.1.36.tgz#54561ffad4d24632406824aa8b78148a59a826e2"
   integrity sha512-6B3zrO7Y3SWlxTB9M+dwhj63whE2R4ktmDYI7r1L1Ao9S//Y0XYOPVVlqUDxHfig7T29JliZfbhZw9VdSEUYjg==
   dependencies:
     "@tryghost/root-utils" "^0.3.34"
     debug "^4.3.1"
+
+"@tryghost/debug@^2.0.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/debug/-/debug-2.2.0.tgz#be346253982decd227eb30dd35e450c20144d1f3"
+  integrity sha512-/fcOMvRzbRDJrBbuGKfb+XXnA7iUJIuigLt4K9I6zYIbTnqbIrnpQ3kwxEM0/f3Wc+bNYUqtAHxsfjeYQBSPaQ==
+  dependencies:
+    "@tryghost/root-utils" "2.2.0"
+    debug "4.4.3"
 
 "@tryghost/elasticsearch@^3.0.22":
   version "3.0.25"
@@ -1730,6 +1738,14 @@
     cacheable-lookup "7.0.0"
     got "13.0.0"
     lodash "^4.17.21"
+
+"@tryghost/root-utils@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/root-utils/-/root-utils-2.2.0.tgz#b41e7a0c7d07c1943f17b0e857989d1c713f8f3c"
+  integrity sha512-xqjlS197TqhKmAZpLrnkHbpxHzL3iHdw7Pd2sBXc/LJOHTvMFXJ1QAwjDY87OIREZIthg/t+LsCo8PpE9uaAsA==
+  dependencies:
+    caller "1.1.0"
+    find-root "1.1.0"
 
 "@tryghost/root-utils@^0.3.31", "@tryghost/root-utils@^0.3.34":
   version "0.3.34"
@@ -2118,7 +2134,7 @@ caching-transform@^4.0.0:
     package-hash "^4.0.0"
     write-file-atomic "^3.0.0"
 
-caller@^1.0.1:
+caller@1.1.0, caller@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/caller/-/caller-1.1.0.tgz#46228555cfecb57d82bcd173b493f87cee9680fe"
   integrity sha512-n+21IZC3j06YpCWaxmUy5AnVqhmCIM2bQtqQyy00HJlmStRt6kwDX5F9Z97pqwAB+G/tgSz6q/kUBbNyQzIubw==
@@ -2329,7 +2345,7 @@ date-format@^4.0.14:
   resolved "https://registry.yarnpkg.com/date-format/-/date-format-4.0.14.tgz#7a8e584434fb169a521c8b7aa481f355810d9400"
   integrity sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==
 
-debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4:
+debug@4, debug@4.4.3, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.3.tgz#c6ae432d9bd9662582fce08709b038c58e9e3d6a"
   integrity sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==
@@ -2830,7 +2846,7 @@ find-cache-dir@^3.2.0:
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
 
-find-root@^1.1.0:
+find-root@1.1.0, find-root@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
   integrity sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==
