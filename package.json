@@ -6,10 +6,11 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --ext .js --cache",
-    "test": "mocha --exit --timeout 10000 --report lcovonly test/integration/*_spec.js test/unit/*_spec.js",
+    "test": "mocha --exit --timeout 10000 test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "yarn lint",
     "perf": "mocha --report lcovonly test/perf/*_spec.js",
-    "coverage": "nyc --reporter=lcov _mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
+    "coverage": "nyc --check-coverage --lines 80 --functions 80 --branches 80 --reporter=lcov --reporter=text-summary _mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
+    "test:ci": "yarn coverage && yarn lint",
     "preship": "yarn test",
     "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn publish && git push --follow-tags; fi"
   },
