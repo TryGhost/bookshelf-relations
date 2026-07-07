@@ -6,6 +6,9 @@ on:
       - main
       - 'renovate/*'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -38,10 +41,11 @@ jobs:
       database__connection__password: root
     name: Node ${{ matrix.node }} - ${{ matrix.env.DB }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node }}
+          cache: yarn
 
       - name: Set env vars (MySQL)
         if: contains(matrix.env.DB, 'mysql')
@@ -49,5 +53,5 @@ jobs:
           echo "database__connection__host=127.0.0.1" >> $GITHUB_ENV
           echo "database__connection__port=${{ job.services.mysql.ports['3306'] }}" >> $GITHUB_ENV
 
-      - run: yarn
-      - run: yarn test
+      - run: yarn install --frozen-lockfile
+      - run: yarn test:ci
