@@ -1,22 +1,31 @@
 # Bookshelf Relations
 
-Insert, update and remove relationships on your Bookshelf models.
-This plugin supports all relationship types: belongs-to, belongs-to-many has-one and has-many.
+Bookshelf Relations is a Bookshelf.js plugin for applying nested relation changes while saving a model.
 
-# Install
+It lets API payloads insert, update, attach, detach, and remove related records through the parent Bookshelf model. The plugin supports `belongsTo`, `belongsToMany`, `hasOne`, and `hasMany` relations and is used by Ghost model code that accepts relational data such as tags, authors, and related settings.
 
-`npm install bookshelf-relations --save`
+## Requirements
+
+- Node.js `^18.12.1 || ^20.11.1 || ^22.13.1`
+- Bookshelf `>=1.1.0`
+
+## Install
+
+```sh
+pnpm add bookshelf-relations
+```
 
 or
 
-`pnpm add bookshelf-relations`
+```sh
+npm install bookshelf-relations --save
+```
 
+## Usage
 
-# Usage
+### Transactions
 
-## Pre-word
-
-- It's highly recommended to insert/update/delete your models within [transactions](http://bookshelfjs.org/#Bookshelf-instance-transaction) when using this plugin, because updating nested relationships requires additional queries to the database. Otherwise if an error occurs during any query, you can't expect data to be rolled back fully.
+Use [Bookshelf transactions](https://bookshelfjs.org/api.html#Bookshelf-instance-transaction) when inserting, updating, or deleting models with nested relation data. Updating relations requires additional database queries, so transactions keep the parent model and related records from being partially written if one query fails.
 
 ## Options
 
@@ -34,10 +43,10 @@ Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/G
 
 ## Hooks
 
-Hooks can be defined globally on the plugin options as described above, or they can be defined on a model by model basis.
+Hooks can be defined globally on the plugin options as described above, or they can be defined on a model-by-model basis.
 A model hook will replace a global hook if present - only one of them will run.
 
-Hook should have a structure like so: 
+Hooks should have a structure like so:
 
 ```js
 hooks: {
@@ -50,7 +59,7 @@ hooks: {
 
 The hooks we support are:
  - `belongsToMany`
-    - `before` / `beforeRelationCreated`
+    - `before` / `beforeRelationCreation`
     - `after` / `afterRelationCreated`
 
 Either name can be used but the shorter name will be preferred if both exist.
@@ -63,7 +72,7 @@ It's required to register your relationships in Bookshelf before you can use boo
 1. Register the plugin.
 
 ```js
-    bookshelf.plugin('bookshelf-relations', {options});
+    bookshelf.plugin(require('bookshelf-relations'), options);
 ```
 
 2. Define your relationships on each model.
@@ -108,7 +117,7 @@ It's required to register your relationships in Bookshelf before you can use boo
 1. Register the plugin.
 
 ```js
-    bookshelf.plugin('bookshelf-relations', {options});
+    bookshelf.plugin(require('bookshelf-relations'), options);
 ```
 
 2. Manually call bookshelf-relations.
@@ -118,7 +127,7 @@ It's required to register your relationships in Bookshelf before you can use boo
         model: model,
         relations: {tags: [...]},
         pluginOptions: {options}
-    })
+    });
 ```
 
 ## Notations
@@ -132,18 +141,19 @@ model.set('tags', []);
 model.set('tags', [{slug: 'test'}]);
 ```
 
-# Test
+## Development
 
+- `pnpm install` to install dependencies with the pinned package manager
 - `pnpm test` to run tests and lint
 - `pnpm lint` to run oxlint and oxfmt checks
-- `NODE_ENV=testing-mysql pnpm test` to run tests with mysql db
-- `pnpm perf` to run a performance test
 - `pnpm coverage` to run test coverage
+- `NODE_ENV=testing-mysql pnpm test` to run tests with MySQL
+- `pnpm perf` to run a performance test
 
-# Publish
+## Publish
 
-- `pnpm ship`
+Use `pnpm ship` to prepare a release. Publishing to npm runs from `.github/workflows/publish.yml` on `main` when `package.json` changes, using npm trusted publishing with provenance.
 
-# Copyright & License
+## Copyright & License
 
 Copyright (c) 2013-2026 Ghost Foundation - Released under the [MIT license](LICENSE).
