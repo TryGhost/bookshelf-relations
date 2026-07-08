@@ -13,7 +13,7 @@
     "coverage": "nyc --check-coverage --lines 80 --functions 80 --branches 80 --reporter=lcov --reporter=text-summary _mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
     "test:ci": "pnpm coverage && pnpm lint",
     "preship": "pnpm test",
-    "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then pnpm publish && git push --follow-tags; fi"
+    "ship": "pro-ship"
   },
   "files": [
     "errors.js",
@@ -47,6 +47,7 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
+    "@tryghost/pro-ship": "1.1.5",
     "bookshelf": "1.2.0",
     "eslint": "8.57.1",
     "eslint-plugin-ghost": "2.18.1",
