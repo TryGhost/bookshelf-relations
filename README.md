@@ -9,7 +9,7 @@ This plugin supports all relationship types: belongs-to, belongs-to-many has-one
 
 or
 
-`yarn add bookshelf-relations`
+`pnpm add bookshelf-relations`
 
 
 # Usage
@@ -134,15 +134,15 @@ model.set('tags', [{slug: 'test'}]);
 
 # Test
 
-- `yarn test` to run tests & eslint
-- `yarn lint` to run eslint only
-- `NODE_ENV=testing-mysql yarn test` to run tests with mysql db
-- `yarn perf` to run a performance test
-- `yarn coverage` to run test coverage
+- `pnpm test` to run tests & eslint
+- `pnpm lint` to run eslint only
+- `NODE_ENV=testing-mysql pnpm test` to run tests with mysql db
+- `pnpm perf` to run a performance test
+- `pnpm coverage` to run test coverage
 
 # Publish
 
-- `yarn ship`
+- `pnpm ship`
 
 # Copyright & License
 
