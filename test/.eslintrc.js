@@ -4,6 +4,7 @@ module.exports = {
         'plugin:ghost/test'
     ],
     rules: {
-        'ghost/mocha/no-setup-in-describe': 'off'
+        'ghost/mocha/no-setup-in-describe': 'off',
+        'no-shadow': 'warn'
     }
 };
