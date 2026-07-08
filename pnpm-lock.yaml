@@ -23,7 +23,7 @@ importers:
     devDependencies:
       bookshelf:
         specifier: 1.2.0
-        version: 1.2.0(knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)))
+        version: 1.2.0(knex@2.5.1(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@5.1.7(bluebird@3.7.2)))
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -32,7 +32,7 @@ importers:
         version: 2.18.1(eslint@8.57.1)
       knex:
         specifier: 2.5.1
-        version: 2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
+        version: 2.5.1(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@5.1.7(bluebird@3.7.2))
       knex-migrator:
         specifier: 5.4.1
         version: 5.4.1(@types/node@26.1.1)(bluebird@3.7.2)
@@ -40,8 +40,8 @@ importers:
         specifier: 10.8.2
         version: 10.8.2
       mysql2:
-        specifier: 3.9.8
-        version: 3.9.8
+        specifier: 3.22.5
+        version: 3.22.5(@types/node@26.1.1)
       nconf:
         specifier: 0.12.0
         version: 0.12.0
@@ -2639,10 +2639,6 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lru-cache@8.0.5:
-    resolution: {integrity: sha512-MhWWlVnuab1RG5/zMRRcVGXZLCXrZTgfwMikgzCegsPnG62yDQo5JnqKkrK4jO5iKqDAZGItAqN5CtKBCBWRUA==}
-    engines: {node: '>=16.14'}
-
   lru.min@1.1.4:
     resolution: {integrity: sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
@@ -2793,10 +2789,6 @@ packages:
     engines: {node: '>= 8.0'}
     peerDependencies:
       '@types/node': '>= 8'
-
-  mysql2@3.9.8:
-    resolution: {integrity: sha512-+5JKNjPuks1FNMoy9TYpl77f+5frbTklz7eb3XDwbpsERRLEeXiW2PDEkakYF50UuKU2qwfGnyXpKYvukv8mGA==}
-    engines: {node: '>= 8.0'}
 
   named-placeholders@1.1.6:
     resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
@@ -3262,9 +3254,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  seq-queue@0.0.5:
-    resolution: {integrity: sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==}
-
   serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
 
@@ -3407,10 +3396,6 @@ packages:
 
   sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
-
-  sqlstring@2.3.3:
-    resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
-    engines: {node: '>= 0.6'}
 
   sshpk@1.18.0:
     resolution: {integrity: sha512-2p2KJZTSqQ/I3+HX42EpYOa2l3f8Erv8MWKsy2I9uf4wA7yFIkXRffYdsx86y6z4vHtV8u7g+pPlr8/4ouAxsQ==}
@@ -5187,12 +5172,12 @@ snapshots:
 
   bluebird@3.7.2: {}
 
-  bookshelf@1.2.0(knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))):
+  bookshelf@1.2.0(knex@2.5.1(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@5.1.7(bluebird@3.7.2))):
     dependencies:
       bluebird: 3.7.2
       create-error: 0.3.1
       inflection: 1.13.4
-      knex: 2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
+      knex: 2.5.1(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@5.1.7(bluebird@3.7.2))
       lodash: 4.18.1
 
   brace-expansion@1.1.16:
@@ -6337,6 +6322,7 @@ snapshots:
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+    optional: true
 
   iconv-lite@0.7.3:
     dependencies:
@@ -6676,7 +6662,7 @@ snapshots:
       - supports-color
       - tedious
 
-  knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)):
+  knex@2.5.1(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@5.1.7(bluebird@3.7.2)):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -6693,7 +6679,7 @@ snapshots:
       tarn: 3.1.0
       tildify: 2.0.0
     optionalDependencies:
-      mysql2: 3.9.8
+      mysql2: 3.22.5(@types/node@26.1.1)
       sqlite3: 5.1.7(bluebird@3.7.2)
     transitivePeerDependencies:
       - supports-color
@@ -6793,8 +6779,6 @@ snapshots:
     dependencies:
       yallist: 4.0.0
     optional: true
-
-  lru-cache@8.0.5: {}
 
   lru.min@1.1.4: {}
 
@@ -6983,17 +6967,6 @@ snapshots:
       lru.min: 1.1.4
       named-placeholders: 1.1.6
       sql-escaper: 1.4.0
-
-  mysql2@3.9.8:
-    dependencies:
-      denque: 2.1.0
-      generate-function: 2.3.1
-      iconv-lite: 0.6.3
-      long: 5.3.2
-      lru-cache: 8.0.5
-      named-placeholders: 1.1.6
-      seq-queue: 0.0.5
-      sqlstring: 2.3.3
 
   named-placeholders@1.1.6:
     dependencies:
@@ -7520,8 +7493,6 @@ snapshots:
 
   semver@7.8.5: {}
 
-  seq-queue@0.0.5: {}
-
   serialize-javascript@6.0.2:
     dependencies:
       randombytes: 2.1.0
@@ -7710,8 +7681,6 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
-
-  sqlstring@2.3.3: {}
 
   sshpk@1.18.0:
     dependencies:
