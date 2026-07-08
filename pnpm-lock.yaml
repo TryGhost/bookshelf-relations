@@ -23,7 +23,7 @@ importers:
     devDependencies:
       bookshelf:
         specifier: 1.2.0
-        version: 1.2.0(knex@2.4.0(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)))
+        version: 1.2.0(knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)))
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -31,8 +31,8 @@ importers:
         specifier: 2.18.1
         version: 2.18.1(eslint@8.57.1)
       knex:
-        specifier: 2.4.0
-        version: 2.4.0(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
+        specifier: 2.5.1
+        version: 2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
       knex-migrator:
         specifier: 5.3.0
         version: 5.3.0(bluebird@3.7.2)
@@ -1484,6 +1484,10 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
+  commander@10.0.1:
+    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
+    engines: {node: '>=14'}
+
   commander@5.1.0:
     resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
     engines: {node: '>= 6'}
@@ -2511,8 +2515,8 @@ packages:
     engines: {node: ^14.18.0 || ^16.13.0 || ^18.12.1 || ^20.11.1 || ^22.13.1}
     hasBin: true
 
-  knex@2.4.0:
-    resolution: {integrity: sha512-i0GWwqYp1Hs2yvc2rlDO6nzzkLhwdyOZKRdsMTB8ZxOs2IXQyL5rBjSbS1krowCh6V65T4X9CJaKtuIfkaPGSA==}
+  knex@2.4.2:
+    resolution: {integrity: sha512-tMI1M7a+xwHhPxjbl/H9K1kHX+VncEYcvCx5K00M16bWvpYPKAZd6QrCu68PtHAdIZNQPWZn0GVhqVBEthGWCg==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -2539,8 +2543,8 @@ packages:
       tedious:
         optional: true
 
-  knex@2.4.2:
-    resolution: {integrity: sha512-tMI1M7a+xwHhPxjbl/H9K1kHX+VncEYcvCx5K00M16bWvpYPKAZd6QrCu68PtHAdIZNQPWZn0GVhqVBEthGWCg==}
+  knex@2.5.1:
+    resolution: {integrity: sha512-z78DgGKUr4SE/6cm7ku+jHvFT0X97aERh/f0MUKAKgFnwCYBEW4TFBqtHWFYiJFid7fMrtpZ/gxJthvz5mEByA==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -3022,6 +3026,9 @@ packages:
 
   pg-connection-string@2.5.0:
     resolution: {integrity: sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==}
+
+  pg-connection-string@2.6.1:
+    resolution: {integrity: sha512-w6ZzNu6oMmIzEAYVw+RLK0+nqHPt8K3ZnknKi+g48Ak2pr3dtljJW3o+D/n2zzCG07Zoe9VOX3aiKpj+BN0pjg==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -5205,12 +5212,12 @@ snapshots:
 
   bluebird@3.7.2: {}
 
-  bookshelf@1.2.0(knex@2.4.0(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))):
+  bookshelf@1.2.0(knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))):
     dependencies:
       bluebird: 3.7.2
       create-error: 0.3.1
       inflection: 1.13.4
-      knex: 2.4.0(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
+      knex: 2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2))
       lodash: 4.18.1
 
   brace-expansion@1.1.16:
@@ -5496,6 +5503,8 @@ snapshots:
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
+
+  commander@10.0.1: {}
 
   commander@5.1.0: {}
 
@@ -6698,28 +6707,6 @@ snapshots:
       - supports-color
       - tedious
 
-  knex@2.4.0(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)):
-    dependencies:
-      colorette: 2.0.19
-      commander: 9.5.0
-      debug: 4.3.4(supports-color@8.1.1)
-      escalade: 3.2.0
-      esm: 3.2.25
-      get-package-type: 0.1.0
-      getopts: 2.3.0
-      interpret: 2.2.0
-      lodash: 4.18.1
-      pg-connection-string: 2.5.0
-      rechoir: 0.8.0
-      resolve-from: 5.0.0
-      tarn: 3.1.0
-      tildify: 2.0.0
-    optionalDependencies:
-      mysql2: 3.9.8
-      sqlite3: 5.1.7(bluebird@3.7.2)
-    transitivePeerDependencies:
-      - supports-color
-
   knex@2.4.2(mysql2@3.11.4)(sqlite3@5.1.7(bluebird@3.7.2)):
     dependencies:
       colorette: 2.0.19
@@ -6738,6 +6725,28 @@ snapshots:
       tildify: 2.0.0
     optionalDependencies:
       mysql2: 3.11.4
+      sqlite3: 5.1.7(bluebird@3.7.2)
+    transitivePeerDependencies:
+      - supports-color
+
+  knex@2.5.1(mysql2@3.9.8)(sqlite3@5.1.7(bluebird@3.7.2)):
+    dependencies:
+      colorette: 2.0.19
+      commander: 10.0.1
+      debug: 4.3.4(supports-color@8.1.1)
+      escalade: 3.2.0
+      esm: 3.2.25
+      get-package-type: 0.1.0
+      getopts: 2.3.0
+      interpret: 2.2.0
+      lodash: 4.18.1
+      pg-connection-string: 2.6.1
+      rechoir: 0.8.0
+      resolve-from: 5.0.0
+      tarn: 3.1.0
+      tildify: 2.0.0
+    optionalDependencies:
+      mysql2: 3.9.8
       sqlite3: 5.1.7(bluebird@3.7.2)
     transitivePeerDependencies:
       - supports-color
@@ -7274,6 +7283,8 @@ snapshots:
   performance-now@2.1.0: {}
 
   pg-connection-string@2.5.0: {}
+
+  pg-connection-string@2.6.1: {}
 
   picocolors@1.1.1: {}
 
