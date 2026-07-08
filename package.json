@@ -50,7 +50,7 @@
     "bookshelf": "1.2.0",
     "eslint": "10.6.0",
     "eslint-plugin-ghost": "3.5.0",
-    "knex": "2.5.1",
+    "knex": "3.3.0",
     "knex-migrator": "5.4.1",
     "mocha": "10.8.2",
     "mysql2": "3.22.5",
