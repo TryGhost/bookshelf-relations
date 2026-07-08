@@ -21,6 +21,9 @@ importers:
         specifier: 4.18.1
         version: 4.18.1
     devDependencies:
+      '@tryghost/pro-ship':
+        specifier: 1.1.5
+        version: 1.1.5
       bookshelf:
         specifier: 1.2.0
         version: 1.2.0(knex@3.3.0(mysql2@3.22.5(@types/node@26.1.1))(sqlite3@6.0.1))
@@ -1075,6 +1078,11 @@ packages:
   '@tryghost/pretty-stream@0.2.5':
     resolution: {integrity: sha512-2bc5mk+7BAOt/mrcbjTsmUQhTKqysbIDOUUThSemPVbnij6487DhaRbnYWZW2IGKfAucrEO3h6TTm3kfioKJSw==}
 
+  '@tryghost/pro-ship@1.1.5':
+    resolution: {integrity: sha512-gwd4ynAnEHkj6bx+tfkZCYaL+WlNHQQmCkAJn7Q2H0Uq+mG74i2wwxUWr+wTuyxjLg8KviMux5uwtkEQfzi1VA==}
+    engines: {node: '>=20.20.0'}
+    hasBin: true
+
   '@tryghost/promise@0.3.20':
     resolution: {integrity: sha512-afHCBoS72XabqRi7GmHdVAWC/UMsVPGlxnL/epNVp0c/C7tEn6+MgHABXNAW4wViZFhuOda3k7fk3i2K0FAZQg==}
 
@@ -1083,6 +1091,9 @@ packages:
 
   '@tryghost/root-utils@0.3.38':
     resolution: {integrity: sha512-ARn8wC6qv867lCr7BZ+IS8S/88K5go0j6HgQFhP27rKje4b40PsxH/P3rO4Ez2NzF/Do8ywFrTWHoLCSsCazXQ==}
+
+  '@tryghost/root-utils@2.3.1':
+    resolution: {integrity: sha512-1g0HskTTDJzn3CzcEWhd4aKtcmPm3IztD7cyfQQiG4QX+6gfpPOkYk7Y5gDOwTKAYtfor0nc8npSY90vvIj93A==}
 
   '@tryghost/tpl@0.1.40':
     resolution: {integrity: sha512-8w94lbNxXptRCIS8pe/IHjzgVFLxljxXx8+UQLO8NRFKraoEXthkPjAphN2MXKp1UGtj5ldh4Ye4D82bUWceOw==}
@@ -4968,6 +4979,11 @@ snapshots:
       lodash: 4.18.1
       prettyjson: 1.2.5
 
+  '@tryghost/pro-ship@1.1.5':
+    dependencies:
+      '@tryghost/root-utils': 2.3.1
+      semver: 7.8.5
+
   '@tryghost/promise@0.3.20': {}
 
   '@tryghost/request@1.0.17':
@@ -4982,6 +4998,11 @@ snapshots:
       - supports-color
 
   '@tryghost/root-utils@0.3.38':
+    dependencies:
+      caller: 1.1.0
+      find-root: 1.1.0
+
+  '@tryghost/root-utils@2.3.1':
     dependencies:
       caller: 1.1.0
       find-root: 1.1.0
