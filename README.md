@@ -134,8 +134,8 @@ model.set('tags', [{slug: 'test'}]);
 
 # Test
 
-- `pnpm test` to run tests & eslint
-- `pnpm lint` to run eslint only
+- `pnpm test` to run tests and lint
+- `pnpm lint` to run oxlint and oxfmt checks
 - `NODE_ENV=testing-mysql pnpm test` to run tests with mysql db
 - `pnpm perf` to run a performance test
 - `pnpm coverage` to run test coverage

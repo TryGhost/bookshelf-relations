@@ -20,8 +20,8 @@ const createKnexMigrator = function createKnexMigrator() {
         knexMigratorConfig: {
             currentVersion: '1.0',
             database: getDatabaseConfig(),
-            migrationPath: path.join(migrationRoot, 'migrations')
-        }
+            migrationPath: path.join(migrationRoot, 'migrations'),
+        },
     });
 };
 
@@ -33,7 +33,8 @@ exports.database = {
         return knex(getDatabaseConfig());
     },
     init: function () {
-        return createKnexMigrator().init()
+        return createKnexMigrator()
+            .init()
             .then(() => {
                 return knex(getDatabaseConfig());
             })
@@ -44,22 +45,21 @@ exports.database = {
     },
     reset: function () {
         if (!connection) {
-            return createKnexMigrator().reset({force: true});
+            return createKnexMigrator().reset({ force: true });
         }
 
-        return connection.destroy()
-            .then(() => {
-                connection = null;
-                return createKnexMigrator().reset({force: true});
-            });
-    }
+        return connection.destroy().then(() => {
+            connection = null;
+            return createKnexMigrator().reset({ force: true });
+        });
+    },
 };
 
 let fixtures = {
     posts: [],
     tiers: [],
     newsletters: [],
-    news: []
+    news: [],
 };
 
 exports.fixtures = {
@@ -68,5 +68,5 @@ exports.fixtures = {
     },
     getAll: function (key) {
         return key ? fixtures[key] : fixtures;
-    }
+    },
 };

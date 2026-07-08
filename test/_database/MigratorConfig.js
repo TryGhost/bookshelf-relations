@@ -8,5 +8,5 @@ const getDatabaseConfig = function getDatabaseConfig() {
 module.exports = {
     currentVersion: '1.0',
     database: getDatabaseConfig(),
-    migrationPath: path.join(__dirname, 'migrations')
+    migrationPath: path.join(__dirname, 'migrations'),
 };

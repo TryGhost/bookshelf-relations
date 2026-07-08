@@ -5,15 +5,15 @@ module.exports = function (bookshelf) {
 
         post: function () {
             return this.belongsTo('Post', 'post_id');
-        }
+        },
     });
 
     let Events = bookshelf.Collection.extend({
-        model: Event
+        model: Event,
     });
 
     return {
         Event: bookshelf.model('Event', Event),
-        Events: bookshelf.model('Events', Events)
+        Events: bookshelf.model('Events', Events),
     };
 };

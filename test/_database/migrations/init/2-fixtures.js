@@ -2,86 +2,104 @@ const models = require('../../models');
 const testUtils = require('../../../utils');
 
 exports.up = async function up() {
-    const newsletters = [{
-        title: 'Best newsletter ever'
-    }];
+    const newsletters = [
+        {
+            title: 'Best newsletter ever',
+        },
+    ];
 
     for (const newsletter of newsletters) {
         const addedNewsletter = await models.Newsletter.add(newsletter);
         testUtils.fixtures.add('newsletters', addedNewsletter.toJSON());
     }
 
-    const tiers = [{
-        name: 'Platinum Elite Tier'
-    }];
+    const tiers = [
+        {
+            name: 'Platinum Elite Tier',
+        },
+    ];
 
     for (const tier of tiers) {
         const addedTier = await models.Tier.add(tier);
         testUtils.fixtures.add('tiers', addedTier.toJSON());
     }
 
-    const bestNewsletter = testUtils.fixtures.getAll('newsletters').find(n => n.title === 'Best newsletter ever');
-    const platinumTier = testUtils.fixtures.getAll('tiers').find(t => t.name === 'Platinum Elite Tier');
+    const bestNewsletter = testUtils.fixtures
+        .getAll('newsletters')
+        .find((n) => n.title === 'Best newsletter ever');
+    const platinumTier = testUtils.fixtures
+        .getAll('tiers')
+        .find((t) => t.name === 'Platinum Elite Tier');
 
     const posts = [
         {
             title: 'First Post',
             author: {
-                name: 'Alf'
+                name: 'Alf',
             },
             newsletter: {
-                id: bestNewsletter.id
+                id: bestNewsletter.id,
             },
-            tiers: [platinumTier]
+            tiers: [platinumTier],
         },
         {
             title: 'Second Post',
             tags: [
                 {
-                    slug: 'slug1'
+                    slug: 'slug1',
                 },
                 {
-                    slug: 'slug2'
-                }
+                    slug: 'slug2',
+                },
             ],
             tiers: [platinumTier],
             custom_fields: [
                 {
                     key: 'field1',
-                    value: 'value1'
+                    value: 'value1',
                 },
                 {
                     key: 'field2',
-                    value: 'value2'
-                }
+                    value: 'value2',
+                },
             ],
             author: {
-                name: 'Mozart'
-            }
+                name: 'Mozart',
+            },
         },
         {
             title: 'Third Post',
             author: {
-                id: 1
+                id: 1,
             },
-            events: [{
-                type: 'Created'
-            }, {
-                type: 'Destroyed'
-            }]
-        }
+            events: [
+                {
+                    type: 'Created',
+                },
+                {
+                    type: 'Destroyed',
+                },
+            ],
+        },
     ];
 
     for (const post of posts) {
         const addedPost = await models.Post.add(post);
-        testUtils.fixtures.add('posts', addedPost.toJSON({withRelated: ['tags', 'tiers', 'news', 'customFields', 'author', 'events']}));
+        testUtils.fixtures.add(
+            'posts',
+            addedPost.toJSON({
+                withRelated: ['tags', 'tiers', 'news', 'customFields', 'author', 'events'],
+            }),
+        );
     }
 
-    const secondPost = testUtils.fixtures.getAll('posts').find(p => p.title === 'Second Post');
-    const news = [{
-        keywords: 'future,world,sun-down',
-        post_id: secondPost.id
-    }];
+    const secondPost = testUtils.fixtures.getAll('posts').find((p) => p.title === 'Second Post');
+    const news = [
+        {
+            keywords: 'future,world,sun-down',
+            post_id: secondPost.id,
+        },
+    ];
     for (const newsItem of news) {
         const addedNewsItem = await models.News.add(newsItem);
         testUtils.fixtures.add('news', addedNewsItem.toJSON());

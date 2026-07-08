@@ -6,7 +6,9 @@
   "packageManager": "pnpm@10.34.4",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --ext .js --cache",
+    "lint": "oxlint --quiet && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
+    "format": "oxfmt .",
     "test": "mocha --exit --timeout 10000 test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "pnpm lint",
     "perf": "mocha --report lcovonly test/perf/*_spec.js",
@@ -49,14 +51,14 @@
   "devDependencies": {
     "@tryghost/pro-ship": "1.1.5",
     "bookshelf": "1.2.0",
-    "eslint": "8.57.1",
-    "eslint-plugin-ghost": "2.18.1",
     "knex": "3.3.0",
     "knex-migrator": "5.4.1",
     "mocha": "11.7.6",
     "mysql2": "3.22.5",
     "nconf": "0.13.0",
     "nyc": "18.0.0",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
     "should": "13.2.3",
     "sinon": "22.0.0",
     "sqlite3": "6.0.1"
