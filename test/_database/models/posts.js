@@ -12,9 +12,12 @@ module.exports = function (bookshelf) {
                 after: function (existing, targets, options) {
                     return Promise.each(targets.models, function (target, index) {
                         if (target.tableName === 'tags') {
-                            return existing.updatePivot({
-                                sort_order: index
-                            }, _.extend({}, options, {query: {where: {tag_id: target.id}}}));
+                            return existing.updatePivot(
+                                {
+                                    sort_order: index,
+                                },
+                                _.extend({}, options, { query: { where: { tag_id: target.id } } }),
+                            );
                         }
                     });
                 },
@@ -23,117 +26,135 @@ module.exports = function (bookshelf) {
                     should.exist(collection);
                     should.exist(data);
                     should.exist(opts);
-                }
-            }
-        }
+                },
+            },
+        },
     });
 
-    let Post = bookshelf.Model.extend({
-        tableName: 'posts',
-        requireFetch: false,
+    let Post = bookshelf.Model.extend(
+        {
+            tableName: 'posts',
+            requireFetch: false,
 
-        relationships: ['tags', 'tiers', 'news', 'custom_fields', 'author', 'events', 'newsletter'],
+            relationships: [
+                'tags',
+                'tiers',
+                'news',
+                'custom_fields',
+                'author',
+                'events',
+                'newsletter',
+            ],
 
-        relationshipConfig: {
-            tags: {
-                editable: true
-            },
-            // no need to declare this as relations are not editable as configured
-            // it is here for illustrative purposes
-            // tiers: {
-            //     editable: false
-            // },
-            news: {
-                editable: false
-            },
-            author: {
-                editable: true
-            },
-            custom_fields: {
-                editable: true
-            },
-            events: {
-                editable: true,
-                destroyRelated: false
-            },
-            newsletter: {
-                // setting 'false' below is not necessary, as it's a default value
+            relationshipConfig: {
+                tags: {
+                    editable: true,
+                },
+                // no need to declare this as relations are not editable as configured
                 // it is here for illustrative purposes
-                editable: false
-            }
+                // tiers: {
+                //     editable: false
+                // },
+                news: {
+                    editable: false,
+                },
+                author: {
+                    editable: true,
+                },
+                custom_fields: {
+                    editable: true,
+                },
+                events: {
+                    editable: true,
+                    destroyRelated: false,
+                },
+                newsletter: {
+                    // setting 'false' below is not necessary, as it's a default value
+                    // it is here for illustrative purposes
+                    editable: false,
+                },
+            },
+
+            initialize: function () {
+                bookshelf.Model.prototype.initialize.call(this);
+
+                this.on('updating', function (model) {
+                    model._changed = _.cloneDeep(model.changed);
+                });
+            },
+
+            tags: function () {
+                return this.belongsToMany('Tag', 'posts_tags', 'post_id', 'tag_id')
+                    .withPivot('sort_order')
+                    .query('orderBy', 'sort_order', 'ASC');
+            },
+
+            tiers: function () {
+                return this.belongsToMany('Tier', 'posts_tiers', 'post_id', 'tier_id')
+                    .withPivot('sort_order')
+                    .query('orderBy', 'sort_order', 'ASC');
+            },
+
+            news: function () {
+                return this.hasOne('News', 'post_id');
+            },
+
+            custom_fields: function () {
+                return this.hasMany('CustomFields', 'post_id');
+            },
+
+            author: function () {
+                return this.belongsTo('Author', 'author_id');
+            },
+
+            newsletter: function () {
+                return this.belongsTo('Newsletter', 'newsletter_id');
+            },
+
+            events: function () {
+                return this.hasMany('Events', 'post_id');
+            },
         },
+        {
+            add: function (data, options) {
+                options = options || {};
 
-        initialize: function () {
-            bookshelf.Model.prototype.initialize.call(this);
+                return bookshelf.transaction((transacting) => {
+                    options.transacting = transacting;
 
-            this.on('updating', function (model) {
-                model._changed = _.cloneDeep(model.changed);
-            });
+                    let post = this.forge(data);
+                    return post.save(null, options);
+                });
+            },
+
+            edit: function (data, options) {
+                return bookshelf.transaction((transacting) => {
+                    let post = this.forge(_.pick(data, 'id'));
+
+                    return post
+                        .fetch(_.merge({ transacting: transacting }, options))
+                        .then((dbPost) => {
+                            if (!dbPost) {
+                                throw new Error('Post does not exist');
+                            }
+
+                            return dbPost.save(
+                                _.omit(data, 'id'),
+                                _.merge({ transacting: transacting }, options),
+                            );
+                        });
+                });
+            },
+
+            destroy: function (data) {
+                return bookshelf.transaction((transacting) => {
+                    return this.forge(_.pick(data, 'id')).destroy({ transacting: transacting });
+                });
+            },
         },
-
-        tags: function () {
-            return this.belongsToMany('Tag', 'posts_tags', 'post_id', 'tag_id').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
-        },
-
-        tiers: function () {
-            return this.belongsToMany('Tier', 'posts_tiers', 'post_id', 'tier_id').withPivot('sort_order').query('orderBy', 'sort_order', 'ASC');
-        },
-
-        news: function () {
-            return this.hasOne('News', 'post_id');
-        },
-
-        custom_fields: function () {
-            return this.hasMany('CustomFields', 'post_id');
-        },
-
-        author: function () {
-            return this.belongsTo('Author', 'author_id');
-        },
-
-        newsletter: function () {
-            return this.belongsTo('Newsletter', 'newsletter_id');
-        },
-
-        events: function () {
-            return this.hasMany('Events', 'post_id');
-        }
-    }, {
-        add: function (data, options) {
-            options = options || {};
-
-            return bookshelf.transaction((transacting) => {
-                options.transacting = transacting;
-
-                let post = this.forge(data);
-                return post.save(null, options);
-            });
-        },
-
-        edit: function (data, options) {
-            return bookshelf.transaction((transacting) => {
-                let post = this.forge(_.pick(data, 'id'));
-
-                return post.fetch(_.merge({transacting: transacting}, options))
-                    .then((dbPost) => {
-                        if (!dbPost) {
-                            throw new Error('Post does not exist');
-                        }
-
-                        return dbPost.save(_.omit(data, 'id'), _.merge({transacting: transacting}, options));
-                    });
-            });
-        },
-
-        destroy: function (data) {
-            return bookshelf.transaction((transacting) => {
-                return this.forge(_.pick(data, 'id'))
-                    .destroy({transacting: transacting});
-            });
-        }
-    });
+    );
 
     return {
-        Post: bookshelf.model('Post', Post)
+        Post: bookshelf.model('Post', Post),
     };
 };

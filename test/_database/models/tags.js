@@ -17,13 +17,13 @@ module.exports = function (bookshelf) {
                 });
 
                 if (model.get('slug').length === 0) {
-                    throw new errors.ValidationError({message: 'Slug should not be empty'});
+                    throw new errors.ValidationError({ message: 'Slug should not be empty' });
                 }
             });
-        }
+        },
     });
 
     return {
-        Tag: bookshelf.model('Tag', Tag)
+        Tag: bookshelf.model('Tag', Tag),
     };
 };

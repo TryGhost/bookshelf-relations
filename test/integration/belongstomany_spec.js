@@ -2,22 +2,21 @@ const testUtils = require('../utils');
 
 describe('[Integration] BelongsToMany: Posts/Tags', function () {
     beforeEach(function () {
-        return testUtils.database.reset()
-            .then(function () {
-                return testUtils.database.init();
-            });
+        return testUtils.database.reset().then(function () {
+            return testUtils.database.init();
+        });
     });
 
     describe('fetch', function () {
         it('existing', function () {
             return testUtils.testPostModel({
                 method: 'fetchAll',
-                options: {withRelated: ['tags']},
+                options: { withRelated: ['tags'] },
                 expectSuccess: (posts) => {
                     posts.length.should.eql(3);
                     posts.models[0].related('tags').length.should.eql(0);
                     posts.models[1].related('tags').length.should.eql(2);
-                }
+                },
             });
         });
     });
@@ -28,13 +27,14 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'}
+                    author: { name: 'Tomas' },
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id)
                         .then((result) => {
                             result.length.should.eql(0);
 
@@ -44,7 +44,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -58,13 +58,13 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
+                        },
+                    ],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('test-post-no-tags');
@@ -78,7 +78,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags.length.should.eql(2);
                     should.equal(tags[0].slug, 'slug1');
                     should.equal(tags[1].slug, 'slug2');
-                }
+                },
             });
         });
 
@@ -87,19 +87,19 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: ''
-                        }
-                    ]
+                            slug: '',
+                        },
+                    ],
                 },
                 expectError: (err) => {
                     err.message.should.match(/slug/gi);
                     err.errorType.should.eql('ValidationError');
                     err.statusCode.should.eql(422);
-                }
+                },
             });
         });
 
@@ -108,18 +108,19 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
-                            tag_id: testUtils.fixtures.getAll().posts[1].tags[1].id
-                        }
-                    ]
+                            tag_id: testUtils.fixtures.getAll().posts[1].tags[1].id,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id)
                         .then((result) => {
                             result.length.should.eql(1);
 
@@ -129,7 +130,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -138,22 +139,23 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
-                            slug: 'tada'
+                            slug: 'tada',
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id)
                         .then((result) => {
                             result.length.should.eql(2);
 
@@ -163,7 +165,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -172,22 +174,23 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
                             id: 11111,
-                            slug: 'lalalala'
-                        }
-                    ]
+                            slug: 'lalalala',
+                        },
+                    ],
                 },
                 options: {
-                    withRelated: ['tags']
+                    withRelated: ['tags'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id)
                         .then((result) => {
                             result.length.should.eql(1);
                             return testUtils.database
@@ -196,7 +199,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -205,21 +208,22 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'add',
                 values: {
                     title: 'test-post-no-tags',
-                    author: {name: 'Tomas'},
+                    author: { name: 'Tomas' },
                     tags: [
                         {
-                            slug: 'tada'
+                            slug: 'tada',
                         },
                         {
-                            slug: 'tada1'
-                        }
-                    ]
+                            slug: 'tada1',
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('test-post-no-tags');
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', result.id)
+                        .getConnection()('posts_tags')
+                        .where('post_id', result.id)
                         .then((result) => {
                             result.length.should.eql(2);
 
@@ -229,7 +233,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(4);
                                 });
                         });
-                }
+                },
             });
         });
     });
@@ -253,7 +257,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -265,7 +269,8 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     result.related('tags').models.length.should.eql(0);
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', 1)
+                        .getConnection()('posts_tags')
+                        .where('post_id', 1)
                         .then((result) => {
                             result.length.should.eql(0);
 
@@ -275,7 +280,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
     });
@@ -286,10 +291,10 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    title: 'only-me'
+                    title: 'only-me',
                 },
                 options: {
-                    withRelated: ['tags']
+                    withRelated: ['tags'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
@@ -306,7 +311,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -315,7 +320,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    tags: []
+                    tags: [],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -332,7 +337,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -341,7 +346,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    tags: [{}]
+                    tags: [{}],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -358,7 +363,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -367,14 +372,15 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'edit',
                 id: 1,
                 values: {
-                    tags: []
+                    tags: [],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
                     result.related('tags').length.should.eql(0);
 
                     return testUtils.database
-                        .getConnection()('posts_tags').where('post_id', 1)
+                        .getConnection()('posts_tags')
+                        .where('post_id', 1)
                         .then((result) => {
                             result.length.should.eql(0);
 
@@ -384,7 +390,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -394,7 +400,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 id: 2,
                 values: {
                     title: 'new',
-                    tags: []
+                    tags: [],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('new');
@@ -411,12 +417,14 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
         it('removes an exiting tag from the post when not present in the relation', async function () {
-            const postTags = await testUtils.database.getConnection()('posts_tags').where('post_id', 2);
+            const postTags = await testUtils.database
+                .getConnection()('posts_tags')
+                .where('post_id', 2);
             should.equal(postTags.length, 2);
 
             await testUtils.testPostModel({
@@ -426,9 +434,9 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -447,7 +455,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -460,19 +468,24 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
                         },
                         {
-                            slug: 'case2'
-                        }
-                    ]
+                            slug: 'case2',
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('case2');
                     result.related('tags').length.should.eql(2);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
-                    result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
 
                     result.related('tags').models[1].get('slug').should.eql('case2');
 
@@ -487,7 +500,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -500,9 +513,9 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: 20,
-                            slug: 'unknown-id'
-                        }
-                    ]
+                            slug: 'unknown-id',
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('case2');
@@ -522,7 +535,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -534,17 +547,17 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
+                        },
+                    ],
                 },
                 options: {
-                    withRelated: ['tags']
+                    withRelated: ['tags'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(1);
-                }
+                },
             });
         });
 
@@ -556,15 +569,17 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: 'edited'
-                        }
-                    ]
+                            slug: 'edited',
+                        },
+                    ],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(1);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
                     result.related('tags').models[0].get('slug').should.eql('edited');
 
                     const postTags = await testUtils.database.getConnection()('posts_tags');
@@ -574,7 +589,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     const tags = await testUtils.database.getConnection()('tags');
 
                     tags.length.should.eql(2);
-                }
+                },
             });
         });
 
@@ -587,15 +602,15 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: post.tags[0].id,
-                            slug: 'edited'
-                        }
+                            slug: 'edited',
+                        },
                     ],
                     tiers: [
                         {
                             id: post.tiers[0].id,
-                            name: 'Pesky edit shall not pass'
-                        }
-                    ]
+                            name: 'Pesky edit shall not pass',
+                        },
+                    ],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(post.title);
@@ -619,7 +634,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
 
                     const tiers = await testUtils.database.getConnection()('tiers');
                     tiers.length.should.eql(1);
-                }
+                },
             });
         });
 
@@ -631,9 +646,9 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             slug: 'test',
-                            name: undefined
-                        }
-                    ]
+                            name: undefined,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
@@ -651,7 +666,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -663,23 +678,33 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(2);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
-                    result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
 
-                    result.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
-                    result.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+                    result
+                        .related('tags')
+                        .models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                    result
+                        .related('tags')
+                        .models[1].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
 
                     return testUtils.database
                         .getConnection()('posts_tags')
@@ -692,7 +717,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -706,23 +731,33 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
                             slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
-                            parent: null
+                            parent: null,
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(2);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
-                    result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
 
-                    result.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
-                    result.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+                    result
+                        .related('tags')
+                        .models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                    result
+                        .related('tags')
+                        .models[1].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
 
                     return testUtils.database
                         .getConnection()('posts_tags')
@@ -735,7 +770,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -747,12 +782,12 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     tags: [
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
                         },
                         {
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.related('tags').length.should.eql(1);
@@ -768,7 +803,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -779,9 +814,9 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 values: {
                     tags: [
                         {
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
+                        },
+                    ],
                 },
                 expectSuccess: (result) => {
                     result.related('tags').length.should.eql(1);
@@ -797,7 +832,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -808,31 +843,36 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 values: {
                     tags: [
                         {
-                            slug: 'something'
+                            slug: 'something',
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[0].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug
-                        }
-                    ]
+                            slug: testUtils.fixtures.getAll().posts[1].tags[0].slug,
+                        },
+                    ],
                 },
                 expectSuccess: () => {
                     return testUtils.database
-                        .getConnection()('posts_tags').orderBy('sort_order', 'ASC')
+                        .getConnection()('posts_tags')
+                        .orderBy('sort_order', 'ASC')
                         .then((result) => {
                             result.length.should.eql(3);
                             result[0].sort_order.should.eql(0);
                             result[0].sort_order.should.eql(0);
 
                             result[1].sort_order.should.eql(1);
-                            result[1].tag_id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                            result[1].tag_id.should.eql(
+                                testUtils.fixtures.getAll().posts[1].tags[1].id,
+                            );
 
                             result[2].sort_order.should.eql(2);
-                            result[2].tag_id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                            result[2].tag_id.should.eql(
+                                testUtils.fixtures.getAll().posts[1].tags[0].id,
+                            );
 
                             return testUtils.database
                                 .getConnection()('tags')
@@ -840,7 +880,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(3);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -851,16 +891,16 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 values: {
                     tags: [
                         {
-                            slug: 'something'
+                            slug: 'something',
                         },
                         {
                             id: testUtils.fixtures.getAll().posts[1].tags[1].id,
-                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug
+                            slug: testUtils.fixtures.getAll().posts[1].tags[1].slug,
                         },
                         {
-                            slug: 'else'
-                        }
-                    ]
+                            slug: 'else',
+                        },
+                    ],
                 },
                 expectSuccess: (outerResult) => {
                     outerResult.related('tags').models.length.should.eql(3);
@@ -868,14 +908,20 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                     outerResult.related('tags').models[0].id.should.eql(3);
                     outerResult.related('tags').models[0].get('slug').should.eql('something');
 
-                    outerResult.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
-                    outerResult.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+                    outerResult
+                        .related('tags')
+                        .models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                    outerResult
+                        .related('tags')
+                        .models[1].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
 
                     outerResult.related('tags').models[2].get('slug').should.eql('else');
                     outerResult.related('tags').models[2].id.should.eql(4);
 
                     return testUtils.database
-                        .getConnection()('posts_tags').orderBy('sort_order', 'ASC')
+                        .getConnection()('posts_tags')
+                        .orderBy('sort_order', 'ASC')
                         .then((result) => {
                             result.length.should.eql(3);
 
@@ -883,7 +929,9 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                             result[0].tag_id.should.eql(outerResult.related('tags').models[0].id);
 
                             result[1].sort_order.should.eql(1);
-                            result[1].tag_id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                            result[1].tag_id.should.eql(
+                                testUtils.fixtures.getAll().posts[1].tags[1].id,
+                            );
 
                             result[2].sort_order.should.eql(2);
                             result[2].tag_id.should.eql(outerResult.related('tags').models[2].id);
@@ -894,7 +942,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(4);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -904,20 +952,30 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 id: 2,
                 values: {
                     title: 'new title',
-                    tags: null
+                    tags: null,
                 },
                 options: {
-                    withRelated: ['tags']
+                    withRelated: ['tags'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('new title');
                     result.related('tags').length.should.eql(2);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
-                    result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
 
-                    result.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
-                    result.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+                    result
+                        .related('tags')
+                        .models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                    result
+                        .related('tags')
+                        .models[1].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
 
                     return testUtils.database
                         .getConnection()('posts_tags')
@@ -930,7 +988,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
 
@@ -939,20 +997,30 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    tags: undefined
+                    tags: undefined,
                 },
                 options: {
-                    withRelated: ['tags']
+                    withRelated: ['tags'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
                     result.related('tags').length.should.eql(2);
 
-                    result.related('tags').models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
-                    result.related('tags').models[0].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
+                    result
+                        .related('tags')
+                        .models[0].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[0].id);
+                    result
+                        .related('tags')
+                        .models[0].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[0].slug);
 
-                    result.related('tags').models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
-                    result.related('tags').models[1].get('slug').should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
+                    result
+                        .related('tags')
+                        .models[1].id.should.eql(testUtils.fixtures.getAll().posts[1].tags[1].id);
+                    result
+                        .related('tags')
+                        .models[1].get('slug')
+                        .should.eql(testUtils.fixtures.getAll().posts[1].tags[1].slug);
 
                     return testUtils.database
                         .getConnection()('posts_tags')
@@ -965,7 +1033,7 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
                                     result.length.should.eql(2);
                                 });
                         });
-                }
+                },
             });
         });
     });

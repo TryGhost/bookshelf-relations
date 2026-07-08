@@ -9,3 +9,5 @@
 //     this.params = {operator: 'to be a valid Example Assertion'};
 //     this.obj.should.be.an.Object;
 // });
+
+module.exports = {};

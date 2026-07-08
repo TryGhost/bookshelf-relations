@@ -1,10 +1,10 @@
 module.exports = function (bookshelf) {
     let Author = bookshelf.Model.extend({
         tableName: 'authors',
-        requireFetch: false
+        requireFetch: false,
     });
 
     return {
-        Author: bookshelf.model('Author', Author)
+        Author: bookshelf.model('Author', Author),
     };
 };

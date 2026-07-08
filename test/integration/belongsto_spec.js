@@ -2,27 +2,30 @@ const testUtils = require('../utils');
 
 describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
     beforeEach(function () {
-        return testUtils.database.reset()
-            .then(function () {
-                return testUtils.database.init();
-            });
+        return testUtils.database.reset().then(function () {
+            return testUtils.database.init();
+        });
     });
 
     describe('fetch', function () {
         it('fetches the record with specified relations', async function () {
             await testUtils.testPostModel({
                 method: 'fetchAll',
-                options: {withRelated: ['author']},
+                options: { withRelated: ['author'] },
                 expectSuccess: async (posts) => {
                     posts.length.should.eql(3);
-                    posts.models[0].related('author').toJSON().name
-                        .should.eql(testUtils.fixtures.getAll().posts[0].author.name);
-                    posts.models[1].related('author').toJSON().name
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+                    posts.models[0]
+                        .related('author')
+                        .toJSON()
+                        .name.should.eql(testUtils.fixtures.getAll().posts[0].author.name);
+                    posts.models[1]
+                        .related('author')
+                        .toJSON()
+                        .name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
     });
@@ -38,16 +41,16 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                     title: 'post-title',
                     author: {
                         id: 11111,
-                        name: 'test-unknown'
-                    }
+                        name: 'test-unknown',
+                    },
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('post-title');
                     result.related('author').toJSON().should.containEql({
-                        name: 'test-unknown'
+                        name: 'test-unknown',
                     });
 
                     const authors = await testUtils.database.getConnection()('authors');
@@ -55,7 +58,7 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                     authors[0].name.should.eql('Alf');
                     authors[1].name.should.eql('Mozart');
                     authors[2].name.should.eql('test-unknown');
-                }
+                },
             });
         });
     });
@@ -70,7 +73,7 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
     });
@@ -84,19 +87,21 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    title: 'only-me'
+                    title: 'only-me',
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('only-me');
-                    result.related('author').toJSON()
+                    result
+                        .related('author')
+                        .toJSON()
                         .should.eql(testUtils.fixtures.getAll().posts[1].author);
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
 
@@ -112,20 +117,22 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                     title: 'lala',
                     author: {
                         id: testUtils.fixtures.getAll().posts[1].author.id,
-                        name: 'Peter'
-                    }
+                        name: 'Peter',
+                    },
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('lala');
-                    result.related('author').toJSON().id
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name.should.eql('Peter');
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
                     authors[0].name.should.eql('Alf');
                     authors[1].name.should.eql('Peter');
-                }
+                },
             });
         });
 
@@ -141,19 +148,19 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                     title: 'Changed post title',
                     author: {
                         id: post.author.id,
-                        name: 'Peter'
+                        name: 'Peter',
                     },
                     newsletter: {
                         id: post.newsletter.id,
-                        title: 'Should NOT change the newsletter title'
-                    }
+                        title: 'Should NOT change the newsletter title',
+                    },
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql('Changed post title');
                     result.related('author').toJSON().id.should.eql(post.author.id);
                     result.related('author').toJSON().name.should.eql('Peter');
                     result.related('newsletter').toJSON().title.should.eql('Best newsletter ever');
-                }
+                },
             });
         });
 
@@ -167,22 +174,21 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                 values: {
                     author: {
                         id: 20,
-                        name: 'Frank'
-                    }
+                        name: 'Frank',
+                    },
                 },
                 expectSuccess: async (result) => {
                     result.related('author').toJSON().id.should.not.eql(20);
                     result.related('author').toJSON().name.should.eql('Frank');
 
-                    const authors = await testUtils.database
-                        .getConnection()('authors');
+                    const authors = await testUtils.database.getConnection()('authors');
 
                     authors.length.should.eql(3);
 
                     authors[0].name.should.eql('Alf');
                     authors[1].name.should.eql('Mozart');
                     authors[2].name.should.eql('Frank');
-                }
+                },
             });
         });
 
@@ -195,23 +201,24 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                 id: 2,
                 values: {
                     author: {
-                        name: 'Karl'
-                    }
+                        name: 'Karl',
+                    },
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                    result.related('author').toJSON().id
-                        .should.not.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .id.should.not.eql(testUtils.fixtures.getAll().posts[1].author.id);
                     result.related('author').toJSON().name.should.eql('Karl');
 
-                    const authors = await testUtils.database
-                        .getConnection()('authors');
+                    const authors = await testUtils.database.getConnection()('authors');
 
                     authors.length.should.eql(3);
                     authors[0].name.should.eql('Alf');
                     authors[1].name.should.eql('Mozart');
                     authors[2].name.should.eql('Karl');
-                }
+                },
             });
         });
 
@@ -220,48 +227,56 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    author: null
+                    author: null,
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                    result.related('author').toJSON().id
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                    result.related('author').toJSON().name
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
 
         it('does not remove related records when setting non-editable the relationship value to null', function () {
             const post = testUtils.fixtures.getAll().posts[0];
-            const newsletter = testUtils.fixtures.getAll('newsletters').find(n => n.id === post.newsletter_id);
+            const newsletter = testUtils.fixtures
+                .getAll('newsletters')
+                .find((n) => n.id === post.newsletter_id);
 
             return testUtils.testPostModel({
                 method: 'edit',
                 id: post.id,
                 values: {
-                    newsletter: null
+                    newsletter: null,
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(post.title);
                     result.get('newsletter_id').should.eql(newsletter.id);
 
-                    const editedPosts = await testUtils.database.getConnection()('posts').where('newsletter_id', newsletter.id);
+                    const editedPosts = await testUtils.database
+                        .getConnection()('posts')
+                        .where('newsletter_id', newsletter.id);
                     editedPosts[0].newsletter_id.should.eql(newsletter.id);
 
                     const newsletters = await testUtils.database.getConnection()('newsletters');
                     newsletters.length.should.eql(1);
                     newsletters[0].id.should.eql(newsletter.id);
-                }
+                },
             });
         });
 
@@ -271,21 +286,25 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
                 id: 2,
 
                 values: {
-                    author: undefined
+                    author: undefined,
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[1].title);
-                    result.related('author').toJSON().id
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.id);
-                    result.related('author').toJSON().name
-                        .should.eql(testUtils.fixtures.getAll().posts[1].author.name);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .id.should.eql(testUtils.fixtures.getAll().posts[1].author.id);
+                    result
+                        .related('author')
+                        .toJSON()
+                        .name.should.eql(testUtils.fixtures.getAll().posts[1].author.name);
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
 
@@ -296,11 +315,11 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
 
                 values: {
                     author: {
-                        id: testUtils.fixtures.getAll().posts[1].author.id
-                    }
+                        id: testUtils.fixtures.getAll().posts[1].author.id,
+                    },
                 },
                 options: {
-                    withRelated: ['author']
+                    withRelated: ['author'],
                 },
                 expectSuccess: async (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
@@ -308,7 +327,7 @@ describe('[Integration] BelongsTo: Posts/Author/Newsletter', function () {
 
                     const authors = await testUtils.database.getConnection()('authors');
                     authors.length.should.eql(2);
-                }
+                },
             });
         });
     });

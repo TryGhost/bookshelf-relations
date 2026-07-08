@@ -8,7 +8,7 @@ describe('[Unit] plugin', function () {
     let bookshelfMock = {};
 
     beforeEach(function () {
-        const bookshelf = Bookshelf(Knex({client: 'sqlite3', useNullAsDefault: true}));
+        const bookshelf = Bookshelf(Knex({ client: 'sqlite3', useNullAsDefault: true }));
         bookshelfMock.Model = bookshelf.Model;
         sinon.spy(bookshelfMock.Model, 'extend');
     });
@@ -18,16 +18,19 @@ describe('[Unit] plugin', function () {
     });
 
     it('can disable auto hooking', function () {
-        plugin(bookshelfMock, {autoHook: false});
+        plugin(bookshelfMock, { autoHook: false });
         bookshelfMock.Model.extend.called.should.eql(false);
     });
 
     it('creating: unknown relation type', function () {
-        plugin(bookshelfMock, {autoHook: true});
+        plugin(bookshelfMock, { autoHook: true });
 
-        let TestModel = bookshelfMock.Model.extend({
-            relationships: ['fake']
-        }, {});
+        let TestModel = bookshelfMock.Model.extend(
+            {
+                relationships: ['fake'],
+            },
+            {},
+        );
 
         let testModel = new TestModel();
         testModel.set('fake', 'fake');
@@ -42,11 +45,14 @@ describe('[Unit] plugin', function () {
     });
 
     it('saved: unknown relation type', function () {
-        plugin(bookshelfMock, {autoHook: true});
+        plugin(bookshelfMock, { autoHook: true });
 
-        let TestModel = bookshelfMock.Model.extend({
-            relationships: ['fake']
-        }, {});
+        let TestModel = bookshelfMock.Model.extend(
+            {
+                relationships: ['fake'],
+            },
+            {},
+        );
 
         let testModel = new TestModel();
         testModel.set('fake', 'fake');
@@ -61,11 +67,14 @@ describe('[Unit] plugin', function () {
     });
 
     it('destroying: unknown relation type', function () {
-        plugin(bookshelfMock, {autoHook: true});
+        plugin(bookshelfMock, { autoHook: true });
 
-        let TestModel = bookshelfMock.Model.extend({
-            relationships: ['fake']
-        }, {});
+        let TestModel = bookshelfMock.Model.extend(
+            {
+                relationships: ['fake'],
+            },
+            {},
+        );
 
         let testModel = new TestModel();
         testModel.set('fake', 'fake');
@@ -80,15 +89,18 @@ describe('[Unit] plugin', function () {
     });
 
     it('creating: expect no relationship update', function () {
-        plugin(bookshelfMock, {autoHook: true});
+        plugin(bookshelfMock, { autoHook: true });
 
-        let TestModel = bookshelfMock.Model.extend({
-            relationships: ['fake']
-        }, {});
+        let TestModel = bookshelfMock.Model.extend(
+            {
+                relationships: ['fake'],
+            },
+            {},
+        );
 
         let testModel = new TestModel();
         testModel.set('fake', {
-            name: 'fake'
+            name: 'fake',
         });
 
         testModel.related = function () {
@@ -97,7 +109,7 @@ describe('[Unit] plugin', function () {
 
         testModel.fake = function () {
             this.relatedData = {
-                type: 'hasOne'
+                type: 'hasOne',
             };
 
             return this;

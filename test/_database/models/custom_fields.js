@@ -5,15 +5,15 @@ module.exports = function (bookshelf) {
 
         posts: function () {
             return this.belongsToMany('Post');
-        }
+        },
     });
 
     let CustomFields = bookshelf.Collection.extend({
-        model: CustomField
+        model: CustomField,
     });
 
     return {
         CustomField: bookshelf.model('CustomField', CustomField),
-        CustomFields: bookshelf.collection('CustomFields', CustomFields)
+        CustomFields: bookshelf.collection('CustomFields', CustomFields),
     };
 };

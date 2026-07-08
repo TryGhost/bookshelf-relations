@@ -2,22 +2,23 @@ const testUtils = require('../utils');
 
 describe('[Integration] HasOne: Posts/News', function () {
     beforeEach(function () {
-        return testUtils.database.reset()
-            .then(function () {
-                return testUtils.database.init();
-            });
+        return testUtils.database.reset().then(function () {
+            return testUtils.database.init();
+        });
     });
 
     describe('fetch', function () {
         it('existing', function () {
             return testUtils.testPostModel({
                 method: 'fetchAll',
-                options: {withRelated: ['news']},
+                options: { withRelated: ['news'] },
                 expectSuccess: (posts) => {
                     posts.length.should.eql(3);
                     posts.models[0].related('news').toJSON().should.eql({});
 
-                    const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === testUtils.fixtures.getAll().posts[1].id);
+                    const newsItem = testUtils.fixtures
+                        .getAll('news')
+                        .find((n) => n.post_id === testUtils.fixtures.getAll().posts[1].id);
                     posts.models[1].related('news').toJSON().should.eql(newsItem);
 
                     return testUtils.database
@@ -27,7 +28,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(2);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
     });
@@ -45,7 +46,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                         .then((result) => {
                             result.length.should.eql(0);
                         });
-                }
+                },
             });
         });
 
@@ -57,11 +58,12 @@ describe('[Integration] HasOne: Posts/News', function () {
                     result.related('news').toJSON().should.eql({});
 
                     return testUtils.database
-                        .getConnection()('news').where('post_id', 1)
+                        .getConnection()('news')
+                        .where('post_id', 1)
                         .then((result) => {
                             result.length.should.eql(0);
                         });
-                }
+                },
             });
         });
     });
@@ -69,22 +71,23 @@ describe('[Integration] HasOne: Posts/News', function () {
     describe('edit', function () {
         it('edits the post with news without touching news relation', function () {
             const post = testUtils.fixtures.getAll().posts[1];
-            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+            const newsItem = testUtils.fixtures.getAll('news').find((n) => n.post_id === post.id);
 
             return testUtils.testPostModel({
                 method: 'edit',
                 id: post.id,
                 values: {
-                    title: 'only-me'
+                    title: 'only-me',
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
                     result.related('news').toJSON().should.eql(newsItem);
 
-                    return testUtils.database.getConnection()('news')
+                    return testUtils.database
+                        .getConnection()('news')
                         .then((result) => {
                             result.length.should.eql(1);
 
@@ -92,7 +95,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(post.id);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
@@ -104,10 +107,10 @@ describe('[Integration] HasOne: Posts/News', function () {
                 method: 'edit',
                 id: post.id,
                 values: {
-                    title: 'only-me'
+                    title: 'only-me',
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
@@ -122,13 +125,13 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(2);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
         it('edits the post with news and NOT changing news relation', function () {
             const post = testUtils.fixtures.getAll().posts[1];
-            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+            const newsItem = testUtils.fixtures.getAll('news').find((n) => n.post_id === post.id);
 
             return testUtils.testPostModel({
                 method: 'edit',
@@ -137,8 +140,8 @@ describe('[Integration] HasOne: Posts/News', function () {
                     title: 'only-me',
                     news: {
                         id: newsItem.id,
-                        keywords: 'future,something'
-                    }
+                        keywords: 'future,something',
+                    },
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
@@ -153,13 +156,13 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(2);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
         it('edits the post with news and NOT changing news relation using withRelated', function () {
             const post = testUtils.fixtures.getAll().posts[1];
-            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+            const newsItem = testUtils.fixtures.getAll('news').find((n) => n.post_id === post.id);
 
             return testUtils.testPostModel({
                 method: 'edit',
@@ -167,16 +170,15 @@ describe('[Integration] HasOne: Posts/News', function () {
                 values: {
                     news: {
                         id: newsItem.id,
-                        keywords: newsItem.keywords
-                    }
+                        keywords: newsItem.keywords,
+                    },
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
-                    result.related('news').toJSON().keywords
-                        .should.eql(newsItem.keywords);
-                }
+                    result.related('news').toJSON().keywords.should.eql(newsItem.keywords);
+                },
             });
         });
 
@@ -190,8 +192,8 @@ describe('[Integration] HasOne: Posts/News', function () {
                 values: {
                     title: 'only-me',
                     news: {
-                        keywords: 'self,this'
-                    }
+                        keywords: 'self,this',
+                    },
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql('only-me');
@@ -206,7 +208,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(2);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
@@ -219,8 +221,8 @@ describe('[Integration] HasOne: Posts/News', function () {
                 id: post.id,
                 values: {
                     news: {
-                        keywords: 'self,this'
-                    }
+                        keywords: 'self,this',
+                    },
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(testUtils.fixtures.getAll().posts[0].title);
@@ -235,22 +237,22 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(newsItem.post_id);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
         it('setting null removes the relation', function () {
             const post = testUtils.fixtures.getAll().posts[1];
-            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+            const newsItem = testUtils.fixtures.getAll('news').find((n) => n.post_id === post.id);
 
             return testUtils.testPostModel({
                 method: 'edit',
                 id: post.id,
                 values: {
-                    news: null
+                    news: null,
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: function (result) {
                     result.get('title').should.eql(post.title);
@@ -265,22 +267,22 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(post.id);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
         it('setting undefined keeps the relation', function () {
             const post = testUtils.fixtures.getAll().posts[1];
-            const newsItem = testUtils.fixtures.getAll('news').find(n => n.post_id === post.id);
+            const newsItem = testUtils.fixtures.getAll('news').find((n) => n.post_id === post.id);
 
             return testUtils.testPostModel({
                 method: 'edit',
                 id: post.id,
                 values: {
-                    news: undefined
+                    news: undefined,
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
                     result.get('title').should.eql(post.title);
@@ -295,7 +297,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(post.id);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
 
@@ -304,10 +306,10 @@ describe('[Integration] HasOne: Posts/News', function () {
                 method: 'edit',
                 id: 2,
                 values: {
-                    news: {}
+                    news: {},
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
                     result.related('news').toJSON().should.eql({});
@@ -317,7 +319,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                         .then((result) => {
                             result.length.should.eql(0);
                         });
-                }
+                },
             });
         });
 
@@ -329,10 +331,10 @@ describe('[Integration] HasOne: Posts/News', function () {
                 method: 'edit',
                 id: post.id,
                 values: {
-                    news: {}
+                    news: {},
                 },
                 options: {
-                    withRelated: ['news']
+                    withRelated: ['news'],
                 },
                 expectSuccess: (result) => {
                     result.related('news').toJSON().should.eql({});
@@ -346,7 +348,7 @@ describe('[Integration] HasOne: Posts/News', function () {
                             result[0].post_id.should.eql(2);
                             result[0].keywords.should.eql(newsItem.keywords);
                         });
-                }
+                },
             });
         });
     });
