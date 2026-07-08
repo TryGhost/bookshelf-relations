@@ -49,7 +49,7 @@
   "devDependencies": {
     "bookshelf": "1.2.0",
     "eslint": "8.57.1",
-    "eslint-plugin-ghost": "2.18.1",
+    "eslint-plugin-ghost": "3.5.0",
     "knex": "3.3.0",
     "knex-migrator": "5.4.1",
     "mocha": "11.7.6",
