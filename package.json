@@ -49,7 +49,7 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "@tryghost/pro-ship": "1.1.5",
+    "@tryghost/pro-ship": "1.1.7",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
     "knex-migrator": "5.4.1",
