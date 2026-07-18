@@ -26,10 +26,10 @@ importers:
         version: 1.1.7
       bookshelf:
         specifier: 1.2.0
-        version: 1.2.0(knex@3.3.0(mysql2@3.22.6(@types/node@26.1.1))(sqlite3@6.0.1))
+        version: 1.2.0(knex@3.3.0(mysql2@3.23.0(@types/node@26.1.1))(sqlite3@6.0.1))
       knex:
         specifier: 3.3.0
-        version: 3.3.0(mysql2@3.22.6(@types/node@26.1.1))(sqlite3@6.0.1)
+        version: 3.3.0(mysql2@3.23.0(@types/node@26.1.1))(sqlite3@6.0.1)
       knex-migrator:
         specifier: 5.4.1
         version: 5.4.1(@types/node@26.1.1)(bluebird@3.7.2)
@@ -37,8 +37,8 @@ importers:
         specifier: 11.7.6
         version: 11.7.6
       mysql2:
-        specifier: 3.22.6
-        version: 3.22.6(@types/node@26.1.1)
+        specifier: 3.23.0
+        version: 3.23.0(@types/node@26.1.1)
       nconf:
         specifier: 0.13.0
         version: 0.13.0
@@ -2333,8 +2333,8 @@ packages:
     peerDependencies:
       '@types/node': '>= 8'
 
-  mysql2@3.22.6:
-    resolution: {integrity: sha512-fPKmeDGUzvFP7bMD5SASlJ5zIgvCC4hbanTmhbUlEmhyrY1hR4Hi3xLOWgTd3luYjLVifx6uGvMNJ2m/LlqEpg==}
+  mysql2@3.23.0:
+    resolution: {integrity: sha512-ZwyGLoG9BRlL7hKNDcIy7q18hA6WTWGEpLAerGHXj5Xahemia4msZdwjIOUIzesjK3B5z5gWLktf+2tYSLAyTA==}
     engines: {node: '>= 8.0'}
     peerDependencies:
       '@types/node': '>= 8'
@@ -2748,6 +2748,10 @@ packages:
 
   sql-escaper@1.4.0:
     resolution: {integrity: sha512-Ti/Zx9J3aITMYUMFhCKbkplQjyi7Kk2SyYXp+rzrkyKZetIy19XbQtVZ+0ZR5aVm/178tIJ6+aVvBqXkH+Xs7w==}
+    engines: {bun: '>=1.0.0', deno: '>=2.0.0', node: '>=12.0.0'}
+
+  sql-escaper@1.5.1:
+    resolution: {integrity: sha512-4toX5E1fQbBrpfXidaHnF0669nkAdETeIPTs2SUjxxD7RRIs9ICG4gtpmfc68JCEKehsdwLFqBu9VlQqZ1P1gg==}
     engines: {bun: '>=1.0.0', deno: '>=2.0.0', node: '>=12.0.0'}
 
   sqlite3@5.1.7:
@@ -4399,12 +4403,12 @@ snapshots:
 
   bluebird@3.7.2: {}
 
-  bookshelf@1.2.0(knex@3.3.0(mysql2@3.22.6(@types/node@26.1.1))(sqlite3@6.0.1)):
+  bookshelf@1.2.0(knex@3.3.0(mysql2@3.23.0(@types/node@26.1.1))(sqlite3@6.0.1)):
     dependencies:
       bluebird: 3.7.2
       create-error: 0.3.1
       inflection: 1.13.4
-      knex: 3.3.0(mysql2@3.22.6(@types/node@26.1.1))(sqlite3@6.0.1)
+      knex: 3.3.0(mysql2@3.23.0(@types/node@26.1.1))(sqlite3@6.0.1)
       lodash: 4.18.1
 
   brace-expansion@1.1.16:
@@ -5123,7 +5127,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  knex@3.3.0(mysql2@3.22.6(@types/node@26.1.1))(sqlite3@6.0.1):
+  knex@3.3.0(mysql2@3.23.0(@types/node@26.1.1))(sqlite3@6.0.1):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -5140,7 +5144,7 @@ snapshots:
       tarn: 3.1.0
       tildify: 2.0.0
     optionalDependencies:
-      mysql2: 3.22.6(@types/node@26.1.1)
+      mysql2: 3.23.0(@types/node@26.1.1)
       sqlite3: 6.0.1
     transitivePeerDependencies:
       - supports-color
@@ -5364,7 +5368,7 @@ snapshots:
       named-placeholders: 1.1.6
       sql-escaper: 1.4.0
 
-  mysql2@3.22.6(@types/node@26.1.1):
+  mysql2@3.23.0(@types/node@26.1.1):
     dependencies:
       '@types/node': 26.1.1
       aws-ssl-profiles: 1.1.2
@@ -5374,7 +5378,7 @@ snapshots:
       long: 5.3.2
       lru.min: 1.1.4
       named-placeholders: 1.1.6
-      sql-escaper: 1.4.0
+      sql-escaper: 1.5.1
 
   named-placeholders@1.1.6:
     dependencies:
@@ -5871,6 +5875,8 @@ snapshots:
   sprintf-js@1.0.3: {}
 
   sql-escaper@1.4.0: {}
+
+  sql-escaper@1.5.1: {}
 
   sqlite3@5.1.7(bluebird@3.7.2):
     dependencies:
