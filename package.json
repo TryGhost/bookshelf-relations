@@ -52,7 +52,7 @@
     "@tryghost/pro-ship": "1.1.7",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
-    "knex-migrator": "5.4.1",
+    "knex-migrator": "6.1.0",
     "mocha": "11.7.6",
     "mysql2": "3.23.0",
     "nconf": "0.13.0",
