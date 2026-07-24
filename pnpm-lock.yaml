@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@tryghost/debug':
-        specifier: 0.1.40
-        version: 0.1.40
+        specifier: 2.3.6
+        version: 2.3.6
       '@tryghost/errors':
-        specifier: 1.3.13
-        version: 1.3.13
+        specifier: 3.3.6
+        version: 3.3.6
       bluebird:
         specifier: 3.7.2
         version: 3.7.2
@@ -1240,11 +1240,17 @@ packages:
   '@tryghost/debug@0.1.40':
     resolution: {integrity: sha512-r8ecoTeoickPsn/59tkrouCNHhUEy79MNhJdPNkhx/Q3Oevw+SQBjnVYa5mHaxTaXryM4nNguKM5fbxPGPBo3Q==}
 
+  '@tryghost/debug@2.3.6':
+    resolution: {integrity: sha512-AVrTMCPM+8IMTJvzIyrZfqnmAkRv0m9GMHuXiPuNGy7peGH5Yyrh16TXMsLjDf/nBXnvpicfIp4cNwHLfNbnBQ==}
+
   '@tryghost/elasticsearch@3.0.29':
     resolution: {integrity: sha512-WGfoGbPXzX7SYPKeD7naYyoF8Lc7KruQPixFSJGLciRQ3wkrZQANQIguD4nA71upp0dhsT4D4aWP296VfJxuPw==}
 
   '@tryghost/errors@1.3.13':
     resolution: {integrity: sha512-sXFcuU8Nn3mDcVrLBLFThQZImn+T2w7v/jJGJzdFnSKJstqxd1LyTRlMjpCpgCnqAgHFCaP+uFg7x4CX64VBJQ==}
+
+  '@tryghost/errors@3.3.6':
+    resolution: {integrity: sha512-F4eR8iyccP/UkuHEbwgVMLDYGRv8vaXsPVDsYNcNmFbOi5TaC1RmOxpwx9ggdTc5SToKuO1YL+cvqaa+EO4O7w==}
 
   '@tryghost/http-stream@0.1.42':
     resolution: {integrity: sha512-wQBwTMLaMAFmKwi0nQeRPcnRvQYFtgYp9d4dJx0b1IkHLmhRwoRGcOkxYd6ajSEGfv7w0GkaaQH4Qd2s/pzuzw==}
@@ -1271,6 +1277,9 @@ packages:
 
   '@tryghost/root-utils@2.3.2':
     resolution: {integrity: sha512-tUyMS4xJUceE62JjZIjWAXCeoVlbNHWF2dIy6xJkaYgeHw4oZ5YoKMu9Mzqa7TPHIapU+BxwdWV0HvMj9dZGlA==}
+
+  '@tryghost/root-utils@2.3.6':
+    resolution: {integrity: sha512-f3SCFsxOhlH3FPUkhnoTYC87X4wS3B+YXJNEsjpIKKy52Q7ly2k/E3S5/JRh1vgPeoCSqrcHuldV6Zfk98nlQg==}
 
   '@tryghost/tpl@0.1.40':
     resolution: {integrity: sha512-8w94lbNxXptRCIS8pe/IHjzgVFLxljxXx8+UQLO8NRFKraoEXthkPjAphN2MXKp1UGtj5ldh4Ye4D82bUWceOw==}
@@ -4195,6 +4204,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tryghost/debug@2.3.6':
+    dependencies:
+      '@tryghost/root-utils': 2.3.6
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@tryghost/elasticsearch@3.0.29':
     dependencies:
       '@elastic/elasticsearch': 8.13.1
@@ -4209,6 +4225,8 @@ snapshots:
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
+
+  '@tryghost/errors@3.3.6': {}
 
   '@tryghost/http-stream@0.1.42':
     dependencies:
@@ -4263,6 +4281,11 @@ snapshots:
       find-root: 1.1.0
 
   '@tryghost/root-utils@2.3.2':
+    dependencies:
+      caller: 1.1.0
+      find-root: 1.1.0
+
+  '@tryghost/root-utils@2.3.6':
     dependencies:
       caller: 1.1.0
       find-root: 1.1.0
