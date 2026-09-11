@@ -49,16 +49,17 @@
     "url": "https://github.com/TryGhost/bookshelf-relations/issues"
   },
   "devDependencies": {
-    "@tryghost/pro-ship": "^1.1.8",
-    "better-sqlite3": "12.11.1",
+    "@tryghost/pro-ship": "1.1.8",
+    "better-sqlite3": "13.0.3",
+    "@tryghost/pro-ship": "1.1.8",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
     "knex-migrator": "5.4.1",
     "mocha": "12.0.0",
-    "mysql2": "3.24.2",
+    "mysql2": "3.24.4",
     "nconf": "0.13.0",
     "nyc": "18.0.0",
-    "oxfmt": "0.65.0",
+    "oxfmt": "0.67.0",
     "oxlint": "1.82.0",
     "should": "13.2.3",
     "sinon": "22.1.0"
