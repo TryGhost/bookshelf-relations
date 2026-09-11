@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-relations",
-  "version": "2.8.0",
+  "version": "3.0.0",
   "alias": "bookshelf-relations",
   "description": "Auto update relations",
   "packageManager": "pnpm@10.34.5",
