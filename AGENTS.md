@@ -13,14 +13,14 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 
 ## Test Configuration
 
-- The default test environment is sqlite and writes `test.db`; leave that file untracked.
+- The default test environment is better-sqlite3 and writes `test.db`; leave that file untracked.
 - MySQL tests use `config/env/config.testing-mysql.json`. Override nested values with double-underscore env vars, for example `database__connection__password=root`.
-- CI runs the test matrix on Node 18, 20, and 22 against sqlite3 and MySQL, with a separate Node 22.23.1 lint job. Keep the `Required checks pass` aggregator as the stable required check.
+- CI runs the test matrix on Node 20, 22, and 24 against better-sqlite3 and MySQL, with a separate Node 22.23.1 lint job. Keep the `Required checks pass` aggregator as the stable required check.
 
 ## Repository Boundaries
 
-- Do not replace pnpm with npm or Yarn. `packageManager` is pinned to pnpm 10 because the repo still supports Node 18.
-- Keep `pnpm-workspace.yaml` even though this is not a workspace; it approves the native sqlite3 build script and disables optional `dtrace-provider` builds.
+- Do not replace pnpm with npm or Yarn. `packageManager` is pinned to pnpm 10.
+- Keep `pnpm-workspace.yaml` even though this is not a workspace; it approves the native better-sqlite3 build script and disables optional `dtrace-provider` builds.
 - Do not commit generated output: `node_modules/`, `coverage/`, `.nyc_output/`, `test.db`, or packed `*.tgz` files.
 - Publishing is handled by `.github/workflows/publish.yml` with npm trusted publishing. Do not add npm tokens or token-based publish steps.
 
