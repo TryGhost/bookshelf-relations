@@ -9,30 +9,30 @@ importers:
   .:
     dependencies:
       '@tryghost/debug':
-        specifier: 0.1.40
-        version: 0.1.40
+        specifier: ^2.3.14
+        version: 2.3.14
       '@tryghost/errors':
-        specifier: 1.3.13
-        version: 1.3.13
+        specifier: ^3.3.14
+        version: 3.3.14
       bluebird:
-        specifier: 3.7.2
+        specifier: ^3.7.2
         version: 3.7.2
       lodash:
-        specifier: 4.18.1
+        specifier: ^4.18.1
         version: 4.18.1
     devDependencies:
       '@tryghost/pro-ship':
-        specifier: 1.1.8
+        specifier: ^1.1.8
         version: 1.1.8
       better-sqlite3:
-        specifier: 13.0.3
-        version: 13.0.3
+        specifier: 12.11.1
+        version: 12.11.1
       bookshelf:
         specifier: 1.2.0
-        version: 1.2.0(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@22.20.2)))
+        version: 1.2.0(knex@3.3.0(better-sqlite3@12.11.1)(mysql2@3.24.4(@types/node@22.20.2)))
       knex:
         specifier: 3.3.0
-        version: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@22.20.2))
+        version: 3.3.0(better-sqlite3@12.11.1)(mysql2@3.24.4(@types/node@22.20.2))
       knex-migrator:
         specifier: 5.4.1
         version: 5.4.1(@types/node@22.20.2)(bluebird@3.7.2)
@@ -1228,11 +1228,17 @@ packages:
   '@tryghost/debug@0.1.40':
     resolution: {integrity: sha512-r8ecoTeoickPsn/59tkrouCNHhUEy79MNhJdPNkhx/Q3Oevw+SQBjnVYa5mHaxTaXryM4nNguKM5fbxPGPBo3Q==}
 
+  '@tryghost/debug@2.3.14':
+    resolution: {integrity: sha512-CuxfDTsuS8uPnAeJVCaokd7izIDhUzIi/mZo8ytKgKupx/K5UY03Pu0KwWJCuRRV2ZrDYeq00p8bBCM/H8uScg==}
+
   '@tryghost/elasticsearch@3.0.29':
     resolution: {integrity: sha512-WGfoGbPXzX7SYPKeD7naYyoF8Lc7KruQPixFSJGLciRQ3wkrZQANQIguD4nA71upp0dhsT4D4aWP296VfJxuPw==}
 
   '@tryghost/errors@1.3.13':
     resolution: {integrity: sha512-sXFcuU8Nn3mDcVrLBLFThQZImn+T2w7v/jJGJzdFnSKJstqxd1LyTRlMjpCpgCnqAgHFCaP+uFg7x4CX64VBJQ==}
+
+  '@tryghost/errors@3.3.14':
+    resolution: {integrity: sha512-Z49f+Wy6benC35x+x30FAjBWDMllJN7mMg5mWrOtxK67ipAflKlcQgubT03ZTYbbPPc9J8Kx2In7fOcvyp6a5g==}
 
   '@tryghost/http-stream@0.1.42':
     resolution: {integrity: sha512-wQBwTMLaMAFmKwi0nQeRPcnRvQYFtgYp9d4dJx0b1IkHLmhRwoRGcOkxYd6ajSEGfv7w0GkaaQH4Qd2s/pzuzw==}
@@ -1256,6 +1262,9 @@ packages:
 
   '@tryghost/root-utils@0.3.38':
     resolution: {integrity: sha512-ARn8wC6qv867lCr7BZ+IS8S/88K5go0j6HgQFhP27rKje4b40PsxH/P3rO4Ez2NzF/Do8ywFrTWHoLCSsCazXQ==}
+
+  '@tryghost/root-utils@2.3.14':
+    resolution: {integrity: sha512-VmHSaPdjTCQNOTNvpLTmphi+TdorWbGbjgqTeCYFPgsWw3XUlByWaERYe3PV2JOmd2XeAhpG2KCegrmnPWMlKA==}
 
   '@tryghost/root-utils@2.3.8':
     resolution: {integrity: sha512-n12HsmW0mms6hlfYYSOcsJ9um6jifBvBFXJak2yPBySSmoTZpCgPezG9JlTXtPjG+4VmfvKaOE7NxlbEJyegiw==}
@@ -1366,10 +1375,6 @@ packages:
   better-sqlite3@12.11.1:
     resolution: {integrity: sha512-dq9AtApgg5PGFtBzPFSBl3HZQjHok5gaQCM6zh2Yk0aSmDCs1CbnVI8/HgASQkNKsWFpseIO9beg5xxpYhbIfA==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x || 26.x}
-
-  better-sqlite3@13.0.3:
-    resolution: {integrity: sha512-RbOBxmLBG8uvFUc15X9+9SFemKcQ0WBuISBVkpuiaUB2qblC8UWlHEjdWVoZ8AdhSwmoEgsiXKfopX0CQxaACQ==}
-    engines: {node: '>=22'}
 
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
@@ -2259,10 +2264,6 @@ packages:
 
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
-
-  node-addon-api@8.9.2:
-    resolution: {integrity: sha512-VijLXbi3UACN69I0JVXJsX4tjACjNoQDgv2gTF6sx2wWEi8tkSg2eX8p5gSIFi8z2+DL3oHmY6OyKce38SDolg==}
-    engines: {node: ^18 || ^20 || >= 21}
 
   node-gyp@8.4.1:
     resolution: {integrity: sha512-olTJRgUtAb/hOXG0E93wZDs5YiJlgbXxTwQAFHyNlRsXQnYzUaF2aGgujZbw+hR8aF4ZG/rST57bWMWD16jr9w==}
@@ -3998,6 +3999,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tryghost/debug@2.3.14':
+    dependencies:
+      '@tryghost/root-utils': 2.3.14
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@tryghost/elasticsearch@3.0.29':
     dependencies:
       '@elastic/elasticsearch': 8.13.1
@@ -4012,6 +4020,8 @@ snapshots:
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
+
+  '@tryghost/errors@3.3.14': {}
 
   '@tryghost/http-stream@0.1.42':
     dependencies:
@@ -4061,6 +4071,11 @@ snapshots:
       - supports-color
 
   '@tryghost/root-utils@0.3.38':
+    dependencies:
+      caller: 1.1.0
+      find-root: 1.1.0
+
+  '@tryghost/root-utils@2.3.14':
     dependencies:
       caller: 1.1.0
       find-root: 1.1.0
@@ -4170,8 +4185,7 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
-  base64-js@1.5.1:
-    optional: true
+  base64-js@1.5.1: {}
 
   baseline-browser-mapping@2.11.22: {}
 
@@ -4183,32 +4197,25 @@ snapshots:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.3
-    optional: true
-
-  better-sqlite3@13.0.3:
-    dependencies:
-      node-addon-api: 8.9.2
 
   bindings@1.5.0:
     dependencies:
       file-uri-to-path: 1.0.0
-    optional: true
 
   bl@4.1.0:
     dependencies:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
-    optional: true
 
   bluebird@3.7.2: {}
 
-  bookshelf@1.2.0(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@22.20.2))):
+  bookshelf@1.2.0(knex@3.3.0(better-sqlite3@12.11.1)(mysql2@3.24.4(@types/node@22.20.2))):
     dependencies:
       bluebird: 3.7.2
       create-error: 0.3.1
       inflection: 1.13.4
-      knex: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@22.20.2))
+      knex: 3.3.0(better-sqlite3@12.11.1)(mysql2@3.24.4(@types/node@22.20.2))
       lodash: 4.18.1
 
   brace-expansion@1.1.18:
@@ -4235,7 +4242,6 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    optional: true
 
   bunyan-loggly@2.0.1:
     dependencies:
@@ -4306,8 +4312,7 @@ snapshots:
     dependencies:
       readdirp: 5.1.1
 
-  chownr@1.1.4:
-    optional: true
+  chownr@1.1.4: {}
 
   chownr@2.0.0:
     optional: true
@@ -4400,10 +4405,8 @@ snapshots:
   decompress-response@6.0.0:
     dependencies:
       mimic-response: 3.1.0
-    optional: true
 
-  deep-extend@0.6.0:
-    optional: true
+  deep-extend@0.6.0: {}
 
   default-require-extensions@3.0.1:
     dependencies:
@@ -4416,8 +4419,7 @@ snapshots:
 
   denque@2.1.0: {}
 
-  detect-libc@2.1.2:
-    optional: true
+  detect-libc@2.1.2: {}
 
   diff@9.0.0: {}
 
@@ -4443,7 +4445,6 @@ snapshots:
   end-of-stream@1.4.5:
     dependencies:
       once: 1.4.0
-    optional: true
 
   env-paths@2.2.1:
     optional: true
@@ -4461,8 +4462,7 @@ snapshots:
 
   esprima@4.0.1: {}
 
-  expand-template@2.0.3:
-    optional: true
+  expand-template@2.0.3: {}
 
   extend@3.0.2: {}
 
@@ -4472,8 +4472,7 @@ snapshots:
 
   fast-json-stable-stringify@2.1.0: {}
 
-  file-uri-to-path@1.0.0:
-    optional: true
+  file-uri-to-path@1.0.0: {}
 
   find-cache-dir@3.3.2:
     dependencies:
@@ -4515,8 +4514,7 @@ snapshots:
 
   fromentries@1.3.2: {}
 
-  fs-constants@1.0.0:
-    optional: true
+  fs-constants@1.0.0: {}
 
   fs-extra@11.4.0:
     dependencies:
@@ -4573,8 +4571,7 @@ snapshots:
     dependencies:
       assert-plus: 1.0.0
 
-  github-from-package@0.0.0:
-    optional: true
+  github-from-package@0.0.0: {}
 
   glob@13.0.6:
     dependencies:
@@ -4687,8 +4684,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  ieee754@1.2.1:
-    optional: true
+  ieee754@1.2.1: {}
 
   imurmurhash@0.1.4: {}
 
@@ -4705,11 +4701,9 @@ snapshots:
       wrappy: 1.0.2
     optional: true
 
-  inherits@2.0.4:
-    optional: true
+  inherits@2.0.4: {}
 
-  ini@1.3.8:
-    optional: true
+  ini@1.3.8: {}
 
   ini@2.0.0: {}
 
@@ -4879,7 +4873,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@22.20.2)):
+  knex@3.3.0(better-sqlite3@12.11.1)(mysql2@3.24.4(@types/node@22.20.2)):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -4896,7 +4890,7 @@ snapshots:
       tarn: 3.1.2
       tildify: 2.0.0
     optionalDependencies:
-      better-sqlite3: 13.0.3
+      better-sqlite3: 12.11.1
       mysql2: 3.24.4(@types/node@22.20.2)
     transitivePeerDependencies:
       - supports-color
@@ -4980,8 +4974,7 @@ snapshots:
     dependencies:
       mime-db: 1.52.0
 
-  mimic-response@3.1.0:
-    optional: true
+  mimic-response@3.1.0: {}
 
   mimic-response@4.0.0: {}
 
@@ -5041,8 +5034,7 @@ snapshots:
       yallist: 4.0.0
     optional: true
 
-  mkdirp-classic@0.5.3:
-    optional: true
+  mkdirp-classic@0.5.3: {}
 
   mkdirp@0.5.6:
     dependencies:
@@ -5120,8 +5112,7 @@ snapshots:
   nan@2.28.0:
     optional: true
 
-  napi-build-utils@2.0.0:
-    optional: true
+  napi-build-utils@2.0.0: {}
 
   nconf@0.13.0:
     dependencies:
@@ -5139,12 +5130,9 @@ snapshots:
   node-abi@3.96.0:
     dependencies:
       semver: 7.8.5
-    optional: true
 
   node-addon-api@7.1.1:
     optional: true
-
-  node-addon-api@8.9.2: {}
 
   node-gyp@8.4.1(bluebird@3.7.2):
     dependencies:
@@ -5227,7 +5215,6 @@ snapshots:
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
-    optional: true
 
   oxfmt@0.67.0:
     dependencies:
@@ -5351,7 +5338,6 @@ snapshots:
       simple-get: 4.0.1
       tar-fs: 2.1.5
       tunnel-agent: 0.6.0
-    optional: true
 
   prettyjson@1.2.5:
     dependencies:
@@ -5381,7 +5367,6 @@ snapshots:
     dependencies:
       end-of-stream: 1.4.5
       once: 1.4.0
-    optional: true
 
   punycode@2.3.1: {}
 
@@ -5395,14 +5380,12 @@ snapshots:
       ini: 1.3.8
       minimist: 1.2.8
       strip-json-comments: 2.0.1
-    optional: true
 
   readable-stream@3.6.2:
     dependencies:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
-    optional: true
 
   readdirp@5.1.1: {}
 
@@ -5529,15 +5512,13 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  simple-concat@1.0.1:
-    optional: true
+  simple-concat@1.0.1: {}
 
   simple-get@4.0.1:
     dependencies:
       decompress-response: 6.0.0
       once: 1.4.0
       simple-concat: 1.0.1
-    optional: true
 
   sinon@22.1.0:
     dependencies:
@@ -5621,7 +5602,6 @@ snapshots:
   string_decoder@1.3.0:
     dependencies:
       safe-buffer: 5.2.1
-    optional: true
 
   strip-ansi@6.0.1:
     dependencies:
@@ -5629,8 +5609,7 @@ snapshots:
 
   strip-bom@4.0.0: {}
 
-  strip-json-comments@2.0.1:
-    optional: true
+  strip-json-comments@2.0.1: {}
 
   strip-json-comments@5.0.3: {}
 
@@ -5650,7 +5629,6 @@ snapshots:
       mkdirp-classic: 0.5.3
       pump: 3.0.4
       tar-stream: 2.2.0
-    optional: true
 
   tar-stream@2.2.0:
     dependencies:
@@ -5659,7 +5637,6 @@ snapshots:
       fs-constants: 1.0.0
       inherits: 2.0.4
       readable-stream: 3.6.2
-    optional: true
 
   tar@6.2.1:
     dependencies:
@@ -5736,8 +5713,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  util-deprecate@1.0.2:
-    optional: true
+  util-deprecate@1.0.2: {}
 
   uuid@3.4.0: {}
 
@@ -5776,8 +5752,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  wrappy@1.0.2:
-    optional: true
+  wrappy@1.0.2: {}
 
   write-file-atomic@3.0.3:
     dependencies:

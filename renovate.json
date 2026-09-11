@@ -10,6 +10,20 @@
         "pnpm"
       ],
       "allowedVersions": "<11"
+    },
+    {
+      "description": "Keep better-sqlite3 on 12.x while this repo's CI matrix tests Node 20; better-sqlite3 13 requires Node >=22.",
+      "matchPackageNames": [
+        "better-sqlite3"
+      ],
+      "allowedVersions": "<13"
+    },
+    {
+      "description": "Allow caret ranges for production dependencies (this is a library, not an app) so Renovate bumps them without repinning to exact versions.",
+      "matchDepTypes": [
+        "dependencies"
+      ],
+      "rangeStrategy": "replace"
     }
   ]
 }
