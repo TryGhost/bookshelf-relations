@@ -10,6 +10,13 @@
         "pnpm"
       ],
       "allowedVersions": "<11"
+    },
+    {
+      "description": "Allow caret ranges for production dependencies (this is a library, not an app) so Renovate bumps them without repinning to exact versions.",
+      "matchDepTypes": [
+        "dependencies"
+      ],
+      "rangeStrategy": "replace"
     }
   ]
 }

@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       '@tryghost/debug':
-        specifier: 0.1.40
-        version: 0.1.40
+        specifier: ^2.3.14
+        version: 2.3.14
       '@tryghost/errors':
-        specifier: 1.3.13
-        version: 1.3.13
+        specifier: ^3.3.14
+        version: 3.3.14
       bluebird:
-        specifier: 3.7.2
+        specifier: ^3.7.2
         version: 3.7.2
       lodash:
-        specifier: 4.18.1
+        specifier: ^4.18.1
         version: 4.18.1
     devDependencies:
       '@tryghost/pro-ship':
-        specifier: 1.1.8
+        specifier: ^1.1.8
         version: 1.1.8
       better-sqlite3:
         specifier: 12.11.1
@@ -1228,11 +1228,17 @@ packages:
   '@tryghost/debug@0.1.40':
     resolution: {integrity: sha512-r8ecoTeoickPsn/59tkrouCNHhUEy79MNhJdPNkhx/Q3Oevw+SQBjnVYa5mHaxTaXryM4nNguKM5fbxPGPBo3Q==}
 
+  '@tryghost/debug@2.3.14':
+    resolution: {integrity: sha512-CuxfDTsuS8uPnAeJVCaokd7izIDhUzIi/mZo8ytKgKupx/K5UY03Pu0KwWJCuRRV2ZrDYeq00p8bBCM/H8uScg==}
+
   '@tryghost/elasticsearch@3.0.29':
     resolution: {integrity: sha512-WGfoGbPXzX7SYPKeD7naYyoF8Lc7KruQPixFSJGLciRQ3wkrZQANQIguD4nA71upp0dhsT4D4aWP296VfJxuPw==}
 
   '@tryghost/errors@1.3.13':
     resolution: {integrity: sha512-sXFcuU8Nn3mDcVrLBLFThQZImn+T2w7v/jJGJzdFnSKJstqxd1LyTRlMjpCpgCnqAgHFCaP+uFg7x4CX64VBJQ==}
+
+  '@tryghost/errors@3.3.14':
+    resolution: {integrity: sha512-Z49f+Wy6benC35x+x30FAjBWDMllJN7mMg5mWrOtxK67ipAflKlcQgubT03ZTYbbPPc9J8Kx2In7fOcvyp6a5g==}
 
   '@tryghost/http-stream@0.1.42':
     resolution: {integrity: sha512-wQBwTMLaMAFmKwi0nQeRPcnRvQYFtgYp9d4dJx0b1IkHLmhRwoRGcOkxYd6ajSEGfv7w0GkaaQH4Qd2s/pzuzw==}
@@ -1256,6 +1262,9 @@ packages:
 
   '@tryghost/root-utils@0.3.38':
     resolution: {integrity: sha512-ARn8wC6qv867lCr7BZ+IS8S/88K5go0j6HgQFhP27rKje4b40PsxH/P3rO4Ez2NzF/Do8ywFrTWHoLCSsCazXQ==}
+
+  '@tryghost/root-utils@2.3.14':
+    resolution: {integrity: sha512-VmHSaPdjTCQNOTNvpLTmphi+TdorWbGbjgqTeCYFPgsWw3XUlByWaERYe3PV2JOmd2XeAhpG2KCegrmnPWMlKA==}
 
   '@tryghost/root-utils@2.3.8':
     resolution: {integrity: sha512-n12HsmW0mms6hlfYYSOcsJ9um6jifBvBFXJak2yPBySSmoTZpCgPezG9JlTXtPjG+4VmfvKaOE7NxlbEJyegiw==}
@@ -3990,6 +3999,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tryghost/debug@2.3.14':
+    dependencies:
+      '@tryghost/root-utils': 2.3.14
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@tryghost/elasticsearch@3.0.29':
     dependencies:
       '@elastic/elasticsearch': 8.13.1
@@ -4004,6 +4020,8 @@ snapshots:
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
+
+  '@tryghost/errors@3.3.14': {}
 
   '@tryghost/http-stream@0.1.42':
     dependencies:
@@ -4053,6 +4071,11 @@ snapshots:
       - supports-color
 
   '@tryghost/root-utils@0.3.38':
+    dependencies:
+      caller: 1.1.0
+      find-root: 1.1.0
+
+  '@tryghost/root-utils@2.3.14':
     dependencies:
       caller: 1.1.0
       find-root: 1.1.0
