@@ -15,7 +15,7 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 
 - The default test environment is sqlite and writes `test.db`; leave that file untracked.
 - MySQL tests use `config/env/config.testing-mysql.json`. Override nested values with double-underscore env vars, for example `database__connection__password=root`.
-- CI runs the test matrix on Node 20 and 22 against sqlite3 and MySQL, with a separate Node 22.23.1 lint job. Keep the `Required checks pass` aggregator as the stable required check.
+- CI runs the test matrix on Node 20, 22, and 24 against sqlite3 and MySQL, with a separate Node 22.23.1 lint job. Keep the `Required checks pass` aggregator as the stable required check.
 
 ## Repository Boundaries
 
