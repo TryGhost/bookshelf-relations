@@ -45,7 +45,7 @@ jobs:
       matrix:
         node: [ 20, 22, 24 ]
         env:
-          - DB: sqlite3
+          - DB: better-sqlite3
             NODE_ENV: testing
           - DB: mysql
             NODE_ENV: testing-mysql

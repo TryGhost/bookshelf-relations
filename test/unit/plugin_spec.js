@@ -8,7 +8,7 @@ describe('[Unit] plugin', function () {
     let bookshelfMock = {};
 
     beforeEach(function () {
-        const bookshelf = Bookshelf(Knex({ client: 'sqlite3', useNullAsDefault: true }));
+        const bookshelf = Bookshelf(Knex({ client: 'better-sqlite3', useNullAsDefault: true }));
         bookshelfMock.Model = bookshelf.Model;
         sinon.spy(bookshelfMock.Model, 'extend');
     });

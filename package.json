@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@tryghost/pro-ship": "1.1.8",
+    "better-sqlite3": "12.11.1",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
     "knex-migrator": "5.4.1",
@@ -60,8 +61,7 @@
     "oxfmt": "0.65.0",
     "oxlint": "1.82.0",
     "should": "13.2.3",
-    "sinon": "22.1.0",
-    "sqlite3": "6.0.1"
+    "sinon": "22.1.0"
   },
   "dependencies": {
     "@tryghost/debug": "0.1.40",
