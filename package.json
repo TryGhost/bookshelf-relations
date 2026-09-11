@@ -12,7 +12,7 @@
     "test": "mocha --exit --timeout 10000 test/integration/*_spec.js test/unit/*_spec.js",
     "posttest": "pnpm lint",
     "perf": "mocha --report lcovonly test/perf/*_spec.js",
-    "coverage": "nyc --check-coverage --lines 80 --functions 80 --branches 80 --reporter=lcov --reporter=text-summary _mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
+    "coverage": "nyc --check-coverage --lines 80 --functions 80 --branches 80 --reporter=lcov --reporter=text-summary mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
     "test:ci": "pnpm coverage && pnpm lint",
     "preship": "pnpm test",
     "ship": "pro-ship"
