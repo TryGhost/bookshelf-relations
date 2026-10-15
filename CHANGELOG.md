@@ -1,3 +1,7 @@
+### Unreleased
+
+- Breaking change: drop Node 20 support and align with Ghost's supported Node 22 and 24 runtimes. See `engines.node` in `package.json` for the minimum versions.
+
 ### 2.1.0 - 2020-01-05
 
 - Adds per-relationship config allowing opt-out of default child record deletion for `hasMany` relationships

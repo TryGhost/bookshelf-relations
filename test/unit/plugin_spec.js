@@ -1,3 +1,4 @@
+const assert = require('node:assert/strict');
 const Bookshelf = require('bookshelf');
 const Knex = require('knex');
 const plugin = require('../../lib/plugin');
@@ -5,16 +6,19 @@ const plugin = require('../../lib/plugin');
 require('../utils');
 
 describe('[Unit] plugin', function () {
-    let bookshelfMock = {};
+    let bookshelfMock;
+    let knex;
 
     beforeEach(function () {
-        const bookshelf = Bookshelf(Knex({ client: 'better-sqlite3', useNullAsDefault: true }));
-        bookshelfMock.Model = bookshelf.Model;
+        knex = Knex({ client: 'better-sqlite3', useNullAsDefault: true });
+        const bookshelf = Bookshelf(knex);
+        bookshelfMock = { Model: bookshelf.Model };
         sinon.spy(bookshelfMock.Model, 'extend');
     });
 
-    afterEach(function () {
+    afterEach(async function () {
         sinon.restore();
+        await knex.destroy();
     });
 
     it('can disable auto hooking', function () {
@@ -22,73 +26,20 @@ describe('[Unit] plugin', function () {
         bookshelfMock.Model.extend.called.should.eql(false);
     });
 
-    it('creating: unknown relation type', function () {
-        plugin(bookshelfMock, { autoHook: true });
+    for (const event of ['saving creating', 'saving updating', 'destroying']) {
+        it(`${event}: rejects an unknown relation type`, async function () {
+            plugin(bookshelfMock, { autoHook: true });
+            const TestModel = bookshelfMock.Model.extend({ relationships: ['fake'] });
+            const model = new TestModel({ fake: 'fake' });
 
-        let TestModel = bookshelfMock.Model.extend(
-            {
-                relationships: ['fake'],
-            },
-            {},
-        );
+            await assert.rejects(model.triggerThen(event, model, {}, {}), {
+                message: 'No relation found.',
+                code: 'UNKNOWN_RELATION',
+            });
+        });
+    }
 
-        let testModel = new TestModel();
-        testModel.set('fake', 'fake');
-
-        testModel.emit('saving', testModel);
-
-        try {
-            testModel.emit('creating', testModel);
-        } catch (err) {
-            err.message.should.eql('No relation found.');
-        }
-    });
-
-    it('saved: unknown relation type', function () {
-        plugin(bookshelfMock, { autoHook: true });
-
-        let TestModel = bookshelfMock.Model.extend(
-            {
-                relationships: ['fake'],
-            },
-            {},
-        );
-
-        let testModel = new TestModel();
-        testModel.set('fake', 'fake');
-
-        testModel.emit('saving', testModel);
-
-        try {
-            testModel.emit('saved', testModel);
-        } catch (err) {
-            err.message.should.eql('No relation found.');
-        }
-    });
-
-    it('destroying: unknown relation type', function () {
-        plugin(bookshelfMock, { autoHook: true });
-
-        let TestModel = bookshelfMock.Model.extend(
-            {
-                relationships: ['fake'],
-            },
-            {},
-        );
-
-        let testModel = new TestModel();
-        testModel.set('fake', 'fake');
-
-        testModel.emit('saving', testModel);
-
-        try {
-            testModel.emit('destroying', testModel);
-        } catch (err) {
-            err.message.should.eql('No relation found.');
-        }
-    });
-
-    it('creating: expect no relationship update', function () {
+    it('creating: defers hasOne updates until the parent is saved', async function () {
         plugin(bookshelfMock, { autoHook: true });
 
         let TestModel = bookshelfMock.Model.extend(
@@ -117,9 +68,11 @@ describe('[Unit] plugin', function () {
 
         sinon.spy(bookshelfMock.manager, 'updateRelations');
 
-        testModel.emit('saving', testModel);
-        testModel.emit('creating', testModel);
+        await testModel.triggerThen('saving creating', testModel, {}, {});
 
         bookshelfMock.manager.updateRelations.called.should.eql(false);
+        // oxlint-disable-next-line no-underscore-dangle -- Plugin state uses this API name.
+        assert.deepEqual(testModel._relations.hasOne.fake, { name: 'fake' });
+        assert.equal(testModel.has('fake'), false);
     });
 });

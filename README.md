@@ -149,10 +149,14 @@ model.set('tags', [{slug: 'test'}]);
 
 ## Development
 
+Use the Node version in [.nvmrc](.nvmrc) and the package manager pinned in [package.json](package.json). CI tests the supported runtime floors separately from the development runtime.
+
 - `pnpm install` to install dependencies with the pinned package manager
 - `pnpm test` to run tests and lint
 - `pnpm lint` to run oxlint and oxfmt checks
 - `pnpm coverage` to run test coverage
+- `pnpm smoke:consumer` to check the packed package with Ghost's Bookshelf and Knex combination
+- `pnpm test:ci` to run coverage, lint, and the consumer smoke
 - `NODE_ENV=testing-mysql pnpm test` to run tests with MySQL
 - `pnpm perf` to run a performance test
 

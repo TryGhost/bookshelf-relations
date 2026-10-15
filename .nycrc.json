@@ -1,0 +1,16 @@
+{
+  "all": true,
+  "include": [
+    "index.js",
+    "errors.js",
+    "lib/**/*.js"
+  ],
+  "check-coverage": true,
+  "lines": 94,
+  "functions": 98,
+  "branches": 84,
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ]
+}
