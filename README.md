@@ -6,8 +6,8 @@ It lets API payloads insert, update, attach, detach, and remove related records 
 
 ## Requirements
 
-- Node.js `^18.12.1 || ^20.11.1 || ^22.13.1`
-- Bookshelf `>=1.1.0`
+- Node.js: see `engines.node` in [package.json](package.json)
+- Bookshelf: see `peerDependencies.bookshelf` in [package.json](package.json)
 
 ## Install
 
@@ -33,11 +33,12 @@ Use [Bookshelf transactions](https://bookshelfjs.org/api.html#Bookshelf-instance
 | ----------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | autoHook                | Boolean | true    | The plugin takes over everything for you and hooks into the Bookshelf workflow.                                                                                                                         |
 | allowedOptions          | Array   | -       | An array of allowed model options the plugin passes on when executing Bookshelf queries.                                                                                                                |
-| unsetRelations          | Boolean | true    | The plugin will unset the relations after they are detected (e.g. `model.unset('tags')`). If you are disabling "autoHook", you manually need to unset the relations.                                    |
 | editRelations           | Boolean | true    | If `false` value is passed in the plugin will not edit the properties of related models unless specified otherwise on model-level `relationshipConfig` through `editable` flag.                         |
 | extendChanged           | String  | -       | Define a variable name and Bookshelf-relations will store the information which relations were changed.                                                                                                 |
 | attachPreviousRelations | Boolean | false   | An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.                                                               |
 | hooks                   | Object  | -       | <ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, before: Function}}``` |
+
+Automatic mode unsets relation attributes when processing relation changes; `unsetRelations: false` does not disable this behavior. In manual mode, unset any relation attributes yourself before saving the parent.
 
 Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/base/index.js#L52).
 
@@ -111,24 +112,29 @@ To opt-in for automatic relation editing pass in `editable` flag in per-relation
 
 ## Manual
 
-You manually need to call the plugin to update relationships.
+Disable automatic hooks to update relationships manually.
 It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
 
-1. Register the plugin.
+1. Register the plugin with automatic hooks disabled.
 
 ```js
-    bookshelf.plugin(require('bookshelf-relations'), options);
+const pluginOptions = {autoHook: false};
+bookshelf.plugin(require('bookshelf-relations'), pluginOptions);
 ```
 
-2. Manually call bookshelf-relations.
+2. Update the relations inside a transaction, passing plugin options and query options separately. This example uses an existing, saved parent `model` with a `belongsToMany` `tags` relation and an existing tag with ID `1`. It replaces the parent's tag associations with that tag.
 
 ```js
-    bookshelf.manager.updateRelations({
+bookshelf.transaction((transacting) => {
+    return bookshelf.manager.updateRelations({
         model: model,
-        relations: {tags: [...]},
-        pluginOptions: {options}
-    });
+        relations: {tags: [{id: 1}]},
+        pluginOptions: pluginOptions
+    }, {transacting: transacting});
+});
 ```
+
+`updateRelations` returns a promise and updates relations only; save any parent attributes separately in the same transaction.
 
 ## Notations
 
