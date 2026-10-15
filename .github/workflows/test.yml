@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 'renovate/*'
 
 permissions:
   contents: read
@@ -18,7 +17,7 @@ jobs:
       - run: corepack enable
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: '24.22.0'
+          node-version-file: .nvmrc
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -26,7 +25,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     services:
       mysql:
         image: ${{ matrix.env.DB == 'mysql' && 'mysql:8.0' || '' }}
@@ -42,8 +40,9 @@ jobs:
           --health-timeout=5s
           --health-retries=12
     strategy:
+      fail-fast: false
       matrix:
-        node: [ 20, 22, 24 ]
+        node: [ '22.23.1', '24.20.0' ]
         env:
           - DB: better-sqlite3
             NODE_ENV: testing
@@ -65,18 +64,35 @@ jobs:
       - name: Set env vars (MySQL)
         if: contains(matrix.env.DB, 'mysql')
         run: |
-          echo "database__connection__host=127.0.0.1" >> $GITHUB_ENV
-          echo "database__connection__port=${{ job.services.mysql.ports['3306'] }}" >> $GITHUB_ENV
+          echo "database__connection__host=127.0.0.1" >> "$GITHUB_ENV"
+          echo "database__connection__port=${{ job.services.mysql.ports['3306'] }}" >> "$GITHUB_ENV"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm coverage
 
+  consumer-smoke:
+    name: Ghost consumer (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ '22.23.1', '24.20.0' ]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - run: corepack enable
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm smoke:consumer
+
   required-checks-pass:
     name: Required checks pass
     if: always()
-    needs: [lint, test]
+    needs: [lint, test, consumer-smoke]
     runs-on: ubuntu-latest
     steps:
       - name: Verify all required jobs succeeded
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        if: needs.lint.result != 'success' || needs.test.result != 'success' || needs.consumer-smoke.result != 'success'
         run: exit 1

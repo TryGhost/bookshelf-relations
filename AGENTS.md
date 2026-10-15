@@ -5,9 +5,10 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 ## Commands
 
 - Use the pinned package manager: `pnpm install --frozen-lockfile`.
-- Run `pnpm test:ci` for CI parity: it runs coverage with the 80% line/function/branch gates, then oxlint/oxfmt.
+- Run `pnpm test:ci` for CI parity: it runs the coverage gates in `.nycrc.json`, oxlint/oxfmt, and the packed-package consumer smoke.
 - Use `pnpm test` for the default sqlite test suite plus the `posttest` lint hook.
 - Use `pnpm coverage` when you only need the coverage-gated sqlite test suite.
+- Use `pnpm smoke:consumer` to check the packed package against Ghost's Bookshelf and Knex combination, using an isolated in-memory database.
 - Use `pnpm lint` for oxlint and oxfmt checks; `pnpm lint:fix` is the autofix path.
 - Use `NODE_ENV=testing-mysql pnpm test` only when a local MySQL database is available.
 
@@ -15,7 +16,7 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 
 - The default test environment is better-sqlite3 and writes `test.db`; leave that file untracked.
 - MySQL tests use `config/env/config.testing-mysql.json`. Override nested values with double-underscore env vars, for example `database__connection__password=root`.
-- CI tests better-sqlite3 and MySQL. The Node test matrix and separate lint runtime are defined in `.github/workflows/test.yml`; library runtime support is declared in `package.json` `engines.node`. Keep the `Required checks pass` aggregator as the stable required check.
+- Use the development runtime in `.nvmrc`. CI tests the supported runtime floors against better-sqlite3 and MySQL, plus the packed package against the `knex2` consumer-test dependency. The exact matrix lives in `.github/workflows/test.yml`; support is declared in `package.json` `engines.node`. Keep the `Required checks pass` aggregator as the stable required check.
 
 ## Repository Boundaries
 
