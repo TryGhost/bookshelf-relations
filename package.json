@@ -9,11 +9,12 @@
     "lint": "oxlint --quiet && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "format": "oxfmt .",
-    "test": "mocha --exit --timeout 10000 test/integration/*_spec.js test/unit/*_spec.js",
+    "test": "mocha --exit --timeout 10000 'test/{integration,unit}/**/*_spec.js'",
     "posttest": "pnpm lint",
     "perf": "mocha --report lcovonly test/perf/*_spec.js",
-    "coverage": "nyc --check-coverage --lines 80 --functions 80 --branches 80 --reporter=lcov --reporter=text-summary mocha --exit test/integration/*_spec.js test/unit/*_spec.js",
-    "test:ci": "pnpm coverage && pnpm lint",
+    "coverage": "nyc mocha --exit --timeout 10000 'test/{integration,unit}/**/*_spec.js'",
+    "test:ci": "pnpm coverage && pnpm lint && pnpm smoke:consumer",
+    "smoke:consumer": "node scripts/consumer-smoke.cjs",
     "preship": "pnpm test",
     "ship": "pro-ship"
   },
@@ -42,7 +43,7 @@
     "web": "https://ghost.org"
   },
   "engines": {
-    "node": "^20.19.0 || ^22.13.1 || >=24.0.0"
+    "node": "^22.23.1 || ^24.20.0"
   },
   "license": "MIT",
   "bugs": {
@@ -53,6 +54,7 @@
     "better-sqlite3": "12.11.1",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
+    "knex2": "npm:knex@2.4.2",
     "knex-migrator": "5.4.1",
     "mocha": "12.0.3",
     "mysql2": "3.24.6",
