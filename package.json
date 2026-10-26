@@ -2,7 +2,7 @@
   "name": "bookshelf-relations",
   "version": "3.0.0",
   "alias": "bookshelf-relations",
-  "description": "Auto update relations",
+  "description": "Bookshelf.js plugin that applies nested relation changes while saving models",
   "packageManager": "pnpm@10.34.7",
   "main": "index.js",
   "scripts": {

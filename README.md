@@ -29,46 +29,75 @@ Use [Bookshelf transactions](https://bookshelfjs.org/api.html#Bookshelf-instance
 
 ## Options
 
-| hook                    | type    | default | description                                                                                                                                                                                             |
+| option                  | type    | default | description                                                                                                                                                                                             |
 | ----------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | autoHook                | Boolean | true    | The plugin takes over everything for you and hooks into the Bookshelf workflow.                                                                                                                         |
 | allowedOptions          | Array   | -       | An array of allowed model options the plugin passes on when executing Bookshelf queries.                                                                                                                |
 | editRelations           | Boolean | true    | If `false` value is passed in the plugin will not edit the properties of related models unless specified otherwise on model-level `relationshipConfig` through `editable` flag.                         |
 | extendChanged           | String  | -       | Define a variable name and Bookshelf-relations will store the information which relations were changed.                                                                                                 |
 | attachPreviousRelations | Boolean | false   | An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.                                                               |
-| hooks                   | Object  | -       | <ul><li>**belongsToMany**: Hook into the process of updating belongsToMany relationships. </ul> <br><br> **Example**: ```hooks: {belongsToMany: {after: Function, before: Function}}``` |
+| unsetRelations          | Boolean | true    | Accepted but currently has no effect. Automatic mode always unsets relation attributes on the parent model before saving it, whatever this option is set to.                                            |
+| hooks                   | Object  | -       | Functions to run while updating `belongsToMany` relationships. See [Hooks](#hooks).                                                                                                                     |
 
-Automatic mode unsets relation attributes when processing relation changes; `unsetRelations: false` does not disable this behavior. In manual mode, unset any relation attributes yourself before saving the parent.
+In manual mode, unset any relation attributes yourself before saving the parent.
 
-Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/base/index.js#L52).
+Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/Ghost/blob/f962ce37734ae6296ea8af126f76a209d303c354/ghost/core/server/models/base/bookshelf.js#L73-L112).
 
 ## Hooks
 
-Hooks can be defined globally on the plugin options as described above, or they can be defined on a model-by-model basis.
-A model hook will replace a global hook if present - only one of them will run.
+Hooks let you run code while the plugin attaches and detaches `belongsToMany` relations through their join table, for example to set extra pivot columns or store a sort order.
 
-Hooks should have a structure like so:
+Hooks can be defined globally in the plugin `hooks` option, or on a model-by-model basis with a `hooks` property on the model. Each hook is resolved separately: if the model defines a hook, it replaces the global hook of the same name and only one of them runs.
 
-```js
-hooks: {
-    belongsToMany: {
-        before() {},
-        after() {}
-    }
-}
-```
-
-The hooks we support are:
- - `belongsToMany`
-    - `before` / `beforeRelationCreation`
-    - `after` / `afterRelationCreated`
+| hook     | alias                    | runs                                                                        | arguments                      |
+| -------- | ------------------------ | --------------------------------------------------------------------------- | ------------------------------ |
+| `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted | `(collection, data, options)`  |
+| `after`  | `afterRelationCreated`   | once per `belongsToMany` relation update, after attaching and detaching     | `(existing, targets, options)` |
 
 Either name can be used but the shorter name will be preferred if both exist.
+
+- `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
+- `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
+- `targets`: a collection of the related models the parent now points to, in the order they were passed in.
+- `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`.
+
+Model hooks are called with `this` bound to the parent model; global hooks are called without a `this` binding. A hook can return a promise, and the plugin waits for it before continuing.
+
+```js
+bookshelf.plugin(require('bookshelf-relations'), {
+    hooks: {
+        belongsToMany: {
+            before(collection, data, options) {
+                data.id = generateId();
+            },
+            after(existing, targets, options) {
+                // store the requested order in the join table
+                return Promise.all(targets.models.map((target, index) => {
+                    return existing.updatePivot({sort_order: index}, Object.assign({}, options, {
+                        query: {where: {[existing.relatedData.otherKey]: target.id}}
+                    }));
+                }));
+            }
+        }
+    }
+});
+
+bookshelf.Model.extend({
+    relationships: ['tags'],
+    hooks: {
+        belongsToMany: {
+            after(existing, targets, options) {
+                // replaces the global `after` hook for this model; `this` is the parent model
+            }
+        }
+    }
+});
+```
 
 ## Automatic
 
 The plugin will automatically deal with relationships upserts and cascading deletions through hasMany relationships.
-It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
+It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see the [`tags` relation](https://github.com/TryGhost/Ghost/blob/f962ce37734ae6296ea8af126f76a209d303c354/ghost/core/server/models/post.js#L1085-L1097) and [`relationships` config](https://github.com/TryGhost/Ghost/blob/f962ce37734ae6296ea8af126f76a209d303c354/ghost/core/server/models/post.js#L101-L125) in Ghost's post model.
 
 1. Register the plugin.
 
@@ -113,7 +142,7 @@ To opt-in for automatic relation editing pass in `editable` flag in per-relation
 ## Manual
 
 Disable automatic hooks to update relationships manually.
-It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see [this example](https://github.com/TryGhost/Ghost/blob/2.21.0/core/server/models/post.js#L502).
+It's required to register your relationships in Bookshelf before you can use bookshelf-relations, see the [`tags` relation](https://github.com/TryGhost/Ghost/blob/f962ce37734ae6296ea8af126f76a209d303c354/ghost/core/server/models/post.js#L1085-L1097) and [`relationships` config](https://github.com/TryGhost/Ghost/blob/f962ce37734ae6296ea8af126f76a209d303c354/ghost/core/server/models/post.js#L101-L125) in Ghost's post model.
 
 1. Register the plugin with automatic hooks disabled.
 
@@ -154,7 +183,7 @@ model.set('tags', [{slug: 'test'}]);
 - `pnpm lint` to run oxlint and oxfmt checks
 - `pnpm coverage` to run test coverage
 - `NODE_ENV=testing-mysql pnpm test` to run tests with MySQL
-- `pnpm perf` to run a performance test
+- `pnpm perf` to run a performance test; it always uses MySQL (`config/env/config.testing-mysql.json`), so it needs a local MySQL database. Override connection settings with `database__connection__*` env vars, for example `database__connection__password=root pnpm perf`
 
 ## Publish
 
