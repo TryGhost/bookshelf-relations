@@ -68,7 +68,7 @@ bookshelf.plugin(require('bookshelf-relations'), {
     hooks: {
         belongsToMany: {
             before(collection, data, options) {
-                data.id = generateId();
+                data.id = generateId(); // your own id generator
             },
             after(existing, targets, options) {
                 // store the requested order in the join table
