@@ -4,19 +4,23 @@ on:
   push:
     branches:
       - main
-      - 'renovate/*'
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     name: Lint
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: corepack enable
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24.22.1'
           cache: pnpm
@@ -26,7 +30,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    timeout-minutes: 15
     services:
       mysql:
         image: ${{ matrix.env.DB == 'mysql' && 'mysql:8.0' || '' }}
@@ -42,6 +46,7 @@ jobs:
           --health-timeout=5s
           --health-retries=12
     strategy:
+      fail-fast: false
       matrix:
         node: [ 20, 22, 24 ]
         env:
@@ -55,9 +60,9 @@ jobs:
       database__connection__password: root
     name: Node ${{ matrix.node }} - ${{ matrix.env.DB }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: corepack enable
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
@@ -65,8 +70,8 @@ jobs:
       - name: Set env vars (MySQL)
         if: contains(matrix.env.DB, 'mysql')
         run: |
-          echo "database__connection__host=127.0.0.1" >> $GITHUB_ENV
-          echo "database__connection__port=${{ job.services.mysql.ports['3306'] }}" >> $GITHUB_ENV
+          echo "database__connection__host=127.0.0.1" >> "$GITHUB_ENV"
+          echo "database__connection__port=${{ job.services.mysql.ports['3306'] }}" >> "$GITHUB_ENV"
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm coverage
@@ -76,7 +81,11 @@ jobs:
     if: always()
     needs: [lint, test]
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Verify all required jobs succeeded
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          echo "$NEEDS" | jq -e 'all(.[]; .result == "success")' > /dev/null
