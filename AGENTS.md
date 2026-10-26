@@ -5,7 +5,7 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 ## Commands
 
 - Use the pinned package manager: `pnpm install --frozen-lockfile`.
-- Run `pnpm test:ci` for CI parity: it runs coverage with the 80% line/function/branch gates, then oxlint/oxfmt.
+- Run `pnpm test:ci` for CI parity: it runs coverage with the line/function/branch/statement gates from `.nycrc.json`, then oxlint/oxfmt.
 - Use `pnpm test` for the default sqlite test suite plus the `posttest` lint hook.
 - Use `pnpm coverage` when you only need the coverage-gated sqlite test suite.
 - Use `pnpm lint` for oxlint and oxfmt checks; `pnpm lint:fix` is the autofix path.
@@ -29,3 +29,4 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 - JavaScript uses CommonJS, 4-space indentation, single quotes, and semicolons.
 - `oxfmt` intentionally ignores JSON, YAML, Markdown, lockfiles, and coverage output; format those files by preserving local style.
 - Relation behavior lives in `lib/plugin.js`, `lib/relations.js`, and `lib/detector.js`; update integration tests under `test/integration/` when changing relation semantics.
+- `test/integration/public-boundary_spec.js` covers the README-documented API (entrypoint, plugin options, manual mode); extend it when changing public behavior. Coverage thresholds in `.nycrc.json` only ratchet up.
