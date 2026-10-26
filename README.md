@@ -47,14 +47,14 @@ Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/G
 
 Hooks let you run code while the plugin attaches and detaches `belongsToMany` relations through their join table, for example to set extra pivot columns or store a sort order.
 
-Hooks can be defined globally in the plugin `hooks` option, or on a model-by-model basis with a `hooks` property on the model. Each hook is resolved separately: if the model defines a hook, it replaces the global hook of the same name and only one of them runs.
+Hooks can be defined globally in the plugin `hooks` option, or on a model-by-model basis with a `hooks` property on the model. Each hook phase is resolved separately: if the model defines either name for a phase (for example `before` or `beforeRelationCreation`), it replaces the global hook for that phase and only one of them runs.
 
 | hook     | alias                    | runs                                                                        | arguments                      |
 | -------- | ------------------------ | --------------------------------------------------------------------------- | ------------------------------ |
 | `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted | `(collection, data, options)`  |
 | `after`  | `afterRelationCreated`   | once per `belongsToMany` relation update, after attaching and detaching     | `(existing, targets, options)` |
 
-Either name can be used but the shorter name will be preferred if both exist.
+Either name can be used; if one hooks object defines both, the shorter name is used.
 
 - `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
 - `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
