@@ -56,7 +56,7 @@ Hooks can be defined globally in the plugin `hooks` option, or on a model-by-mod
 
 Either name can be used; if one hooks object defines both, the shorter name is used. The `before` hook is not called for relations defined with `through()`. The `after` hook also runs when nothing was attached or detached, and when the parent is destroyed (unless the relation sets `destroyRelated: false`), in which case `targets` is empty.
 
-- `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
+- `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`. For relations defined with `through()`, Bookshelf's `updatePivot` ignores the `query` and `transacting` options when it looks up the join row, so the per-target `updatePivot` call in the example below only works for relations without `through()`.
 - `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
 - `targets`: a collection of the related models the parent now points to, in the order they were passed in.
 - `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`. In automatic mode it also contains Bookshelf's own `query` (a cloned copy of the parent's query builder, so changing it does not affect the parent query) and, on save but not on destroy, `method`, so pick the options you need, such as `transacting`, rather than passing it on whole.
@@ -76,7 +76,7 @@ bookshelf.plugin(require('bookshelf-relations'), {
                 data.id = generateId(); // your own id generator
             },
             after(existing, targets, options) {
-                if (existing.relatedData.joinTable() !== 'posts_tags') {
+                if (existing.relatedData.joinTable() !== 'posts_tags' || existing.relatedData.isThrough()) {
                     return;
                 }
 
