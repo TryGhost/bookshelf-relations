@@ -61,7 +61,7 @@ Either name can be used; if one hooks object defines both, the shorter name is u
 - `targets`: a collection of the related models the parent now points to, in the order they were passed in.
 - `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`. In automatic mode it also contains Bookshelf's own `query` (a cloned copy of the parent's query builder, so changing it does not affect the parent query) and, on save but not on destroy, `method`, so pick the options you need, such as `transacting`, rather than passing it on whole.
 
-Model hooks are called with `this` bound to the parent model; global hooks are called without a `this` binding. A hook can return a promise, and the plugin waits for it before continuing.
+Model hooks are called with `this` bound to the parent model; global hooks are called without a `this` binding. A hook can return a promise, and it is awaited before continuing. The `before` hooks for one relation's new rows run concurrently and each row's insert waits only for its own hook, so a `before` hook should not rely on rows inserted for other targets in the same update.
 
 ```js
 bookshelf.plugin(require('bookshelf-relations'), {
