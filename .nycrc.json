@@ -8,7 +8,7 @@
   "check-coverage": true,
   "lines": 97,
   "functions": 100,
-  "branches": 90,
+  "branches": 91,
   "statements": 97,
   "reporter": [
     "lcov",
