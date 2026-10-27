@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "alias": "bookshelf-relations",
   "description": "Auto update relations",
-  "packageManager": "pnpm@10.34.7",
+  "packageManager": "pnpm@10.34.8",
   "main": "index.js",
   "scripts": {
     "lint": "oxlint --quiet && oxfmt --check .",
