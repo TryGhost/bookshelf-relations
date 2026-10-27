@@ -54,7 +54,7 @@ Hooks can be defined globally in the plugin `hooks` option, or on a model-by-mod
 | `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted | `(collection, data, options)`  |
 | `after`  | `afterRelationCreated`   | once per `belongsToMany` relation update, after attaching and detaching     | `(existing, targets, options)` |
 
-Either name can be used; if one hooks object defines both, the shorter name is used. The `before` hook is not called for relations defined with `through()`.
+Either name can be used; if one hooks object defines both, the shorter name is used. The `before` hook is not called for relations defined with `through()`. The `after` hook also runs when nothing was attached or detached, and when the parent is destroyed (unless the relation sets `destroyRelated: false`), in which case `targets` is empty.
 
 - `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
 - `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
@@ -67,12 +67,16 @@ Model hooks are called with `this` bound to the parent model; global hooks are c
 bookshelf.plugin(require('bookshelf-relations'), {
     hooks: {
         belongsToMany: {
+            // global hooks run for every belongsToMany relation, so only touch the join table you mean
             before(collection, data, options) {
+                if (collection.relatedData.joinTable() !== 'posts_tags') {
+                    return;
+                }
+
                 data.id = generateId(); // your own id generator
             },
             after(existing, targets, options) {
-                // global hooks run for every belongsToMany relation, so only touch join tables with a sort_order column
-                if (existing.relatedData.joinTableName !== 'posts_tags') {
+                if (existing.relatedData.joinTable() !== 'posts_tags') {
                     return;
                 }
 
