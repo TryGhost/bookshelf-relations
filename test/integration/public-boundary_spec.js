@@ -87,6 +87,34 @@ async function tagSlugsFor(knex, postId) {
     return rows.map((row) => row.slug);
 }
 
+describe('[Integration] Public package registration', function () {
+    let knex;
+
+    beforeEach(function () {
+        // No queries run here, so these tests skip the database reset the boundary tests need.
+        knex = testUtils.database.connect();
+    });
+
+    afterEach(async function () {
+        await knex.destroy();
+    });
+
+    it('registers through the package entrypoint and exposes the relations manager', function () {
+        const { bookshelf, originalModel } = setupModels(knex);
+
+        assert.equal(typeof plugin, 'function');
+        assert.notEqual(bookshelf.Model, originalModel);
+        assert.equal(typeof bookshelf.manager.updateRelations, 'function');
+    });
+
+    it('autoHook: false leaves bookshelf.Model untouched and still exposes the relations manager', function () {
+        const { bookshelf, originalModel } = setupModels(knex, { autoHook: false });
+
+        assert.equal(bookshelf.Model, originalModel);
+        assert.equal(typeof bookshelf.manager.updateRelations, 'function');
+    });
+});
+
 describe('[Integration] Public package boundary', function () {
     let knex;
 
@@ -97,14 +125,6 @@ describe('[Integration] Public package boundary', function () {
     });
 
     describe('automatic mode (default options)', function () {
-        it('registers through the package entrypoint and exposes the relations manager', function () {
-            const { bookshelf, originalModel } = setupModels(knex);
-
-            assert.equal(typeof plugin, 'function');
-            assert.notEqual(bookshelf.Model, originalModel);
-            assert.equal(typeof bookshelf.manager.updateRelations, 'function');
-        });
-
         it('inserts a parent with belongsTo, belongsToMany, hasOne and hasMany relations', async function () {
             const { bookshelf, Post } = setupModels(knex);
             const existingTag = await knex('tags').where('slug', 'slug1').first();
@@ -159,6 +179,74 @@ describe('[Integration] Public package boundary', function () {
             });
 
             assert.equal(await postBy(knex, 'no-relations'), undefined);
+        });
+
+        it('destroys hasOne, hasMany and pivot rows when a fetched parent is destroyed', async function () {
+            const { bookshelf, Post } = setupModels(
+                knex,
+                {},
+                { relationshipConfig: { author: { destroyRelated: false } } },
+            );
+            const author = await knex('authors').orderBy('id').first();
+            const tag = await knex('tags').where('slug', 'slug1').first();
+
+            const saved = await bookshelf.transaction((transacting) => {
+                return Post.forge({
+                    title: 'destroy-fetched',
+                    author_id: author.id,
+                    tags: [{ id: tag.id }],
+                    news: { keywords: 'destroy,news' },
+                    custom_fields: [{ key: 'destroy-key', value: 'destroy-value' }],
+                }).save(null, { transacting });
+            });
+
+            assert.deepEqual(await tagSlugsFor(knex, saved.id), ['slug1']);
+            assert.equal((await knex('news').where('post_id', saved.id)).length, 1);
+            assert.equal((await knex('custom_fields').where('post_id', saved.id)).length, 1);
+
+            await bookshelf.transaction(async (transacting) => {
+                const model = await Post.forge({ id: saved.id }).fetch({ transacting });
+                return model.destroy({ transacting });
+            });
+
+            assert.equal(await postBy(knex, 'destroy-fetched'), undefined);
+            assert.deepEqual(await knex('posts_tags').where('post_id', saved.id), []);
+            assert.deepEqual(await knex('news').where('post_id', saved.id), []);
+            assert.deepEqual(await knex('custom_fields').where('post_id', saved.id), []);
+            assert.equal((await knex('tags').where('id', tag.id).first()).slug, 'slug1');
+            assert.equal((await knex('authors').where('id', author.id).first()).name, author.name);
+        });
+
+        it('rejects destroying a fetched parent whose belongsTo relation keeps destroyRelated', async function () {
+            // Known limitation: with the default destroyRelated: true, destroying a fetched parent
+            // also deletes its belongsTo target, which the parent row still references. Consumers
+            // set destroyRelated: false on belongsTo relations, as in the test above.
+            const { bookshelf, Post } = setupModels(knex);
+            const author = await knex('authors').orderBy('id').first();
+
+            const saved = await bookshelf.transaction((transacting) => {
+                return Post.forge({ title: 'destroy-belongs-to', author_id: author.id }).save(
+                    null,
+                    {
+                        transacting,
+                    },
+                );
+            });
+            const before = await snapshot(knex);
+
+            await assert.rejects(
+                bookshelf.transaction(async (transacting) => {
+                    const model = await Post.forge({ id: saved.id }).fetch({ transacting });
+                    return model.destroy({ transacting });
+                }),
+                {
+                    errorType: 'BookshelfRelationsError',
+                    code: 'UPDATE_RELATION',
+                    context: { key: 'author', tableName: 'posts', method: 'setBelongsTo' },
+                },
+            );
+
+            assert.deepEqual(await snapshot(knex), before);
         });
 
         it('updates the existing hasOne relation when properties are passed without an id', async function () {
@@ -452,13 +540,6 @@ describe('[Integration] Public package boundary', function () {
     });
 
     describe('manual mode (autoHook: false)', function () {
-        it('leaves bookshelf.Model untouched and still exposes the relations manager', function () {
-            const { bookshelf, originalModel } = setupModels(knex, { autoHook: false });
-
-            assert.equal(bookshelf.Model, originalModel);
-            assert.equal(typeof bookshelf.manager.updateRelations, 'function');
-        });
-
         it('replaces belongsToMany relations as in the README example without saving the parent', async function () {
             const pluginOptions = { autoHook: false };
             const { bookshelf, Post } = setupModels(knex, pluginOptions);
@@ -529,7 +610,13 @@ describe('[Integration] Public package boundary', function () {
                     );
                     throw rollback;
                 }),
-                (error) => error === rollback,
+                (error) => {
+                    // Surface in-transaction assertion failures instead of a validator mismatch.
+                    if (error !== rollback) {
+                        throw error;
+                    }
+                    return true;
+                },
             );
 
             assert.deepEqual(await snapshot(knex), before);

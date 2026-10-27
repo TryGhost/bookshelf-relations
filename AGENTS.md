@@ -14,6 +14,7 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 ## Test Configuration
 
 - The default test environment is better-sqlite3 and writes `test.db`; leave that file untracked.
+- Mocha spec globs, timeout and `--exit` live in `.mocharc.json`, shared by `pnpm test` and `pnpm coverage`; `pnpm perf` runs with `--no-config`.
 - MySQL tests use `config/env/config.testing-mysql.json`. Override nested values with double-underscore env vars, for example `database__connection__password=root`.
 - CI tests better-sqlite3 and MySQL. The Node test matrix and separate lint runtime are defined in `.github/workflows/test.yml`; library runtime support is declared in `package.json` `engines.node`. Keep the `Required checks pass` aggregator as the stable required check.
 

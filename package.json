@@ -9,10 +9,10 @@
     "lint": "oxlint --quiet && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "format": "oxfmt .",
-    "test": "mocha --exit --timeout 10000 \"test/integration/**/*_spec.js\" \"test/unit/**/*_spec.js\"",
+    "test": "mocha",
     "posttest": "pnpm lint",
-    "perf": "mocha --exit \"test/perf/*_spec.js\"",
-    "coverage": "nyc mocha --exit --timeout 10000 \"test/integration/**/*_spec.js\" \"test/unit/**/*_spec.js\"",
+    "perf": "mocha --no-config --exit \"test/perf/*_spec.js\"",
+    "coverage": "nyc mocha",
     "test:ci": "pnpm coverage && pnpm lint",
     "preship": "pnpm test",
     "ship": "pro-ship"
