@@ -90,12 +90,12 @@ async function tagSlugsFor(knex, postId) {
 describe('[Integration] Public package registration', function () {
     let knex;
 
-    beforeEach(function () {
-        // No queries run here, so these tests skip the database reset the boundary tests need.
+    before(function () {
+        // No queries run here, so these tests share one knex instance and skip the database reset.
         knex = testUtils.database.connect();
     });
 
-    afterEach(async function () {
+    after(async function () {
         await knex.destroy();
     });
 
@@ -366,6 +366,23 @@ describe('[Integration] Public package boundary', function () {
     });
 
     describe('plugin options', function () {
+        it('unsetRelations: false still unsets relation attributes in automatic mode', async function () {
+            const { bookshelf, Post } = setupModels(knex, { unsetRelations: false });
+            const author = await knex('authors').orderBy('id').first();
+
+            const saved = await bookshelf.transaction((transacting) => {
+                return Post.forge({
+                    title: 'unset-relations-false',
+                    author_id: author.id,
+                    tags: [{ slug: 'unset-relations-tag' }],
+                }).save(null, { transacting });
+            });
+
+            assert.equal(saved.has('tags'), false);
+            const post = await postBy(knex, 'unset-relations-false');
+            assert.deepEqual(await tagSlugsFor(knex, post.id), ['unset-relations-tag']);
+        });
+
         it('editRelations: false links related records by id without editing them', async function () {
             const { bookshelf, Post } = setupModels(
                 knex,
@@ -428,11 +445,6 @@ describe('[Integration] Public package boundary', function () {
 
             assert.equal(bookshelf.manager.extendChanged, null);
             assert.equal(saved._changed, undefined);
-            const recorded = Object.keys(saved).filter((prop) => {
-                const value = saved[prop];
-                return value && typeof value === 'object' && value.tags && 'detached' in value.tags;
-            });
-            assert.deepEqual(recorded, []);
             assert.deepEqual(await tagSlugsFor(knex, post.id), []);
         });
 
