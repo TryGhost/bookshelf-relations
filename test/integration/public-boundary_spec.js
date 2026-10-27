@@ -353,7 +353,11 @@ describe('[Integration] Public package boundary', function () {
                 return model.save({ tags: [] }, { transacting });
             });
 
-            assert.equal(saved._changed, undefined);
+            const recorded = Object.keys(saved).filter((prop) => {
+                const value = saved[prop];
+                return value && typeof value === 'object' && value.tags && 'detached' in value.tags;
+            });
+            assert.deepEqual(recorded, []);
             assert.deepEqual(await tagSlugsFor(knex, post.id), []);
         });
 
@@ -546,13 +550,13 @@ describe('[Integration] Public package boundary', function () {
             assert.deepEqual(await snapshot(knex), before);
         });
 
-        it('rejects a relation that is not defined on the model', async function () {
+        it('throws synchronously for a relation that is not defined on the model', async function () {
             const { bookshelf, Post } = setupModels(knex, { autoHook: false });
             const post = await postBy(knex, 'First Post');
             const model = await Post.forge({ id: post.id }).fetch();
 
-            await assert.rejects(
-                async () =>
+            assert.throws(
+                () =>
                     bookshelf.manager.updateRelations({
                         model,
                         relations: { missing: [{ id: 1 }] },
