@@ -36,7 +36,7 @@ Use [Bookshelf transactions](https://bookshelfjs.org/api.html#Bookshelf-instance
 | editRelations           | Boolean | true    | If `false` value is passed in the plugin will not edit the properties of related models unless specified otherwise on model-level `relationshipConfig` through `editable` flag.                         |
 | extendChanged           | String  | -       | Define a variable name and Bookshelf-relations will store the information which relations were changed.                                                                                                 |
 | attachPreviousRelations | Boolean | false   | An option to attach previous relations. Bookshelf-relations attaches this information as `_previousRelations` on the target parent model.                                                               |
-| unsetRelations          | Boolean | true    | Accepted but currently has no effect. Automatic mode always unsets relation attributes on the parent model before saving it, whatever this option is set to.                                            |
+| unsetRelations          | Boolean | true    | Accepted but currently has no effect. Automatic mode unsets relation attributes on the parent model when processing relation changes, whatever this option is set to.                                   |
 | hooks                   | Object  | -       | Functions to run while updating `belongsToMany` relationships. See [Hooks](#hooks).                                                                                                                     |
 
 In manual mode, unset any relation attributes yourself before saving the parent.
@@ -74,7 +74,7 @@ bookshelf.plugin(require('bookshelf-relations'), {
                 // store the requested order in the join table
                 return Promise.all(targets.models.map((target, index) => {
                     return existing.updatePivot({sort_order: index}, Object.assign({}, options, {
-                        query: {where: {[existing.relatedData.otherKey]: target.id}}
+                        query: {where: {[existing.relatedData.key('otherKey')]: target.id}}
                     }));
                 }));
             }
