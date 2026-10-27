@@ -426,6 +426,8 @@ describe('[Integration] Public package boundary', function () {
                 return model.save({ tags: [] }, { transacting });
             });
 
+            assert.equal(bookshelf.manager.extendChanged, null);
+            assert.equal(saved._changed, undefined);
             const recorded = Object.keys(saved).filter((prop) => {
                 const value = saved[prop];
                 return value && typeof value === 'object' && value.tags && 'detached' in value.tags;
@@ -604,7 +606,7 @@ describe('[Integration] Public package boundary', function () {
                         { model, relations: { tags: [{ slug: 'rolled-back-manual-tag' }] } },
                         { transacting },
                     );
-                    assert.deepEqual(
+                    assert.equal(
                         (await transacting('posts_tags').where('post_id', post.id)).length,
                         1,
                     );
