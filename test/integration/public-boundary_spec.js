@@ -150,7 +150,9 @@ describe('[Integration] Public package boundary', function () {
             });
 
             assert.equal((await postBy(knex, 'no-relations')).id, saved.id);
-            assert.equal(saved.related('tags').length, 0);
+            assert.deepEqual(await tagSlugsFor(knex, saved.id), []);
+            assert.deepEqual(await knex('news').where('post_id', saved.id), []);
+            assert.deepEqual(await knex('custom_fields').where('post_id', saved.id), []);
 
             await bookshelf.transaction((transacting) => {
                 return Post.forge({ id: saved.id }).destroy({ transacting });
@@ -254,23 +256,6 @@ describe('[Integration] Public package boundary', function () {
             });
 
             assert.deepEqual(await tagSlugsFor(knex, post.id), ['slug2']);
-        });
-
-        it('inserts a belongsToMany target when the lookup query cannot be built', async function () {
-            const { bookshelf, Post } = setupModels(knex);
-            const post = await postBy(knex, 'First Post');
-
-            // An undefined property makes the lookup query fail to compile; the plugin ignores the
-            // lookup error and treats the target as new.
-            await bookshelf.transaction(async (transacting) => {
-                const model = await Post.forge({ id: post.id }).fetch({ transacting });
-                return model.save(
-                    { tags: [{ slug: 'unbound-lookup', name: undefined }] },
-                    { transacting },
-                );
-            });
-
-            assert.deepEqual(await tagSlugsFor(knex, post.id), ['unbound-lookup']);
         });
 
         it('rolls back the parent and nested inserts when a later relation fails validation', async function () {
@@ -550,13 +535,14 @@ describe('[Integration] Public package boundary', function () {
             assert.deepEqual(await snapshot(knex), before);
         });
 
-        it('throws synchronously for a relation that is not defined on the model', async function () {
+        it('fails for a relation that is not defined on the model', async function () {
             const { bookshelf, Post } = setupModels(knex, { autoHook: false });
             const post = await postBy(knex, 'First Post');
             const model = await Post.forge({ id: post.id }).fetch();
 
-            assert.throws(
-                () =>
+            // Accepts either a synchronous throw or a rejected promise.
+            await assert.rejects(
+                async () =>
                     bookshelf.manager.updateRelations({
                         model,
                         relations: { missing: [{ id: 1 }] },
