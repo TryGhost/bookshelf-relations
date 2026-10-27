@@ -51,7 +51,7 @@ Hooks can be defined globally in the plugin `hooks` option, or on a model-by-mod
 
 | hook     | alias                    | runs                                                                        | arguments                      |
 | -------- | ------------------------ | --------------------------------------------------------------------------- | ------------------------------ |
-| `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted | `(collection, data, options)`  |
+| `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted; not called for relations defined with `through()` | `(collection, data, options)`  |
 | `after`  | `afterRelationCreated`   | once per `belongsToMany` relation update, after attaching and detaching     | `(existing, targets, options)` |
 
 Either name can be used; if one hooks object defines both, the shorter name is used.
