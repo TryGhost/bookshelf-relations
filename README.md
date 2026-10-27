@@ -59,7 +59,7 @@ Either name can be used; if one hooks object defines both, the shorter name is u
 - `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
 - `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
 - `targets`: a collection of the related models the parent now points to, in the order they were passed in.
-- `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`. In automatic mode it also contains Bookshelf's own `method` and `query` (the parent's query builder), so pick the options you need, such as `transacting`, rather than passing it on whole.
+- `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`. In automatic mode it also contains Bookshelf's own `query` (a cloned copy of the parent's query builder, so changing it does not affect the parent query) and, on save but not on destroy, `method`, so pick the options you need, such as `transacting`, rather than passing it on whole.
 
 Model hooks are called with `this` bound to the parent model; global hooks are called without a `this` binding. A hook can return a promise, and the plugin waits for it before continuing.
 
