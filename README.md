@@ -47,19 +47,19 @@ Take a look [at the plugin configuration in Ghost](https://github.com/TryGhost/G
 
 Hooks let you run code while the plugin attaches and detaches `belongsToMany` relations through their join table, for example to set extra pivot columns or store a sort order.
 
-Hooks can be defined globally in the plugin `hooks` option, or on a model-by-model basis with a `hooks` property on the model. Each hook phase is resolved separately: if the model defines either name for a phase (for example `before` or `beforeRelationCreation`), it replaces the global hook for that phase and only one of them runs.
+Hooks can be defined globally in the plugin `hooks` option, or on a model-by-model basis with a `hooks` property on the model. In manual mode, global hooks are read from the `pluginOptions` passed to each `updateRelations` call, so pass the same options you registered the plugin with. Each hook phase is resolved separately: if the model defines either name for a phase (for example `before` or `beforeRelationCreation`), it replaces the global hook for that phase and only one of them runs.
 
 | hook     | alias                    | runs                                                                        | arguments                      |
 | -------- | ------------------------ | --------------------------------------------------------------------------- | ------------------------------ |
-| `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted; not called for relations defined with `through()` | `(collection, data, options)`  |
+| `before` | `beforeRelationCreation` | once for each join-table row the plugin inserts, before the row is inserted | `(collection, data, options)`  |
 | `after`  | `afterRelationCreated`   | once per `belongsToMany` relation update, after attaching and detaching     | `(existing, targets, options)` |
 
-Either name can be used; if one hooks object defines both, the shorter name is used.
+Either name can be used; if one hooks object defines both, the shorter name is used. The `before` hook is not called for relations defined with `through()`.
 
 - `collection` / `existing`: the parent model's Bookshelf `belongsToMany` collection, which supports methods such as `updatePivot`.
 - `data`: the join-table row about to be inserted, for example `{post_id: 1, tag_id: 2}`. Properties you add to it are inserted with the row.
 - `targets`: a collection of the related models the parent now points to, in the order they were passed in.
-- `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`.
+- `options`: a copy of the query options passed to the save or `updateRelations` call, for example `transacting`. In automatic mode it also contains Bookshelf's own `method` and `query` (the parent's query builder), so pick the options you need, such as `transacting`, rather than passing it on whole.
 
 Model hooks are called with `this` bound to the parent model; global hooks are called without a `this` binding. A hook can return a promise, and the plugin waits for it before continuing.
 
@@ -71,11 +71,17 @@ bookshelf.plugin(require('bookshelf-relations'), {
                 data.id = generateId(); // your own id generator
             },
             after(existing, targets, options) {
+                // global hooks run for every belongsToMany relation, so only touch join tables with a sort_order column
+                if (existing.relatedData.joinTableName !== 'posts_tags') {
+                    return;
+                }
+
                 // store the requested order in the join table
                 return Promise.all(targets.models.map((target, index) => {
-                    return existing.updatePivot({sort_order: index}, Object.assign({}, options, {
+                    return existing.updatePivot({sort_order: index}, {
+                        transacting: options.transacting,
                         query: {where: {[existing.relatedData.key('otherKey')]: target.id}}
-                    }));
+                    });
                 }));
             }
         }
