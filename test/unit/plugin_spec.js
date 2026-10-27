@@ -66,12 +66,20 @@ describe('[Unit] plugin', function () {
             return this;
         };
 
-        sinon.spy(bookshelfMock.manager, 'updateRelations');
+        sinon.stub(bookshelfMock.manager, 'updateRelations').resolves();
 
         await testModel.triggerThen('saving creating', testModel, {}, {});
 
         bookshelfMock.manager.updateRelations.called.should.eql(false);
         assert.deepEqual(testModel._relations.hasOne.fake, { name: 'fake' });
         assert.equal(testModel.has('fake'), false);
+
+        await testModel.triggerThen('created saved', testModel, {}, {});
+
+        assert.equal(bookshelfMock.manager.updateRelations.callCount, 1);
+        assert.deepEqual(bookshelfMock.manager.updateRelations.firstCall.args[0].relations, {
+            fake: { name: 'fake' },
+        });
+        assert.equal(bookshelfMock.manager.updateRelations.firstCall.args[0].model, testModel);
     });
 });

@@ -535,14 +535,14 @@ describe('[Integration] Public package boundary', function () {
             assert.deepEqual(await snapshot(knex), before);
         });
 
-        it('fails for a relation that is not defined on the model', async function () {
+        it('throws synchronously for a relation that is not defined on the model', async function () {
             const { bookshelf, Post } = setupModels(knex, { autoHook: false });
             const post = await postBy(knex, 'First Post');
             const model = await Post.forge({ id: post.id }).fetch();
 
-            // Accepts either a synchronous throw or a rejected promise.
-            await assert.rejects(
-                async () =>
+            // Manual mode throws synchronously, before any promise is returned.
+            assert.throws(
+                () =>
                     bookshelf.manager.updateRelations({
                         model,
                         relations: { missing: [{ id: 1 }] },
