@@ -1,3 +1,5 @@
+This changelog is no longer maintained after 2.1.0. See the [tags](https://github.com/TryGhost/bookshelf-relations/tags) and [commit history](https://github.com/TryGhost/bookshelf-relations/commits/main) for later releases.
+
 ### 2.1.0 - 2020-01-05
 
 - Adds per-relationship config allowing opt-out of default child record deletion for `hasMany` relationships
