@@ -1,4 +1,8 @@
+minimumReleaseAge: 4320
+strictDepBuilds: true
+blockExoticSubdeps: true
+
 allowBuilds:
-  better-sqlite3: true
+  better-sqlite3@12.11.1: true
   dtrace-provider: false
   sqlite3: false
