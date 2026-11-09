@@ -5,4 +5,3 @@ blockExoticSubdeps: true
 allowBuilds:
   better-sqlite3@12.11.1: true
   dtrace-provider: false
-  sqlite3: false
