@@ -174,6 +174,8 @@ describe('[Integration] Public package boundary', function () {
             assert.deepEqual(await knex('news').where('post_id', saved.id), []);
             assert.deepEqual(await knex('custom_fields').where('post_id', saved.id), []);
 
+            // Destroy an unfetched parent: author_id is unset, so the belongsTo limitation pinned
+            // below does not apply.
             await bookshelf.transaction((transacting) => {
                 return Post.forge({ id: saved.id }).destroy({ transacting });
             });
@@ -219,8 +221,10 @@ describe('[Integration] Public package boundary', function () {
 
         it('rejects destroying a fetched parent whose belongsTo relation keeps destroyRelated', async function () {
             // Known limitation: with the default destroyRelated: true, destroying a fetched parent
-            // also deletes its belongsTo target, which the parent row still references. Consumers
-            // set destroyRelated: false on belongsTo relations, as in the test above.
+            // also tries to delete its belongsTo target, which the parent row still references, and
+            // the foreign key rejects it. The workaround is destroyRelated: false on the belongsTo
+            // relation, as in the test above. Without the foreign key, a shared target would be
+            // silently deleted, so keep this pinned until the plugin is fixed.
             const { bookshelf, Post } = setupModels(knex);
             const author = await knex('authors').orderBy('id').first();
 
