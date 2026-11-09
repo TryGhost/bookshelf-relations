@@ -5,12 +5,11 @@ Bookshelf Relations is a single-package Node.js library for Bookshelf.js; read `
 ## Commands
 
 - Use the pinned package manager: `pnpm install --frozen-lockfile`.
-- Run `pnpm test:ci` for CI parity: it runs coverage with the thresholds in `.nycrc.json`, then oxlint/oxfmt.
+- Run `pnpm test:ci` for CI parity: it runs coverage with the 80% line/function/branch gates, then oxlint/oxfmt.
 - Use `pnpm test` for the default sqlite test suite plus the `posttest` lint hook.
 - Use `pnpm coverage` when you only need the coverage-gated sqlite test suite.
 - Use `pnpm lint` for oxlint and oxfmt checks; `pnpm lint:fix` is the autofix path.
 - Use `NODE_ENV=testing-mysql pnpm test` only when a local MySQL database is available.
-- Run one spec with `pnpm exec mocha --no-config --timeout 10000 --exit <file>`; `pnpm test <file>` still runs every spec in `.mocharc.json`.
 
 ## Test Configuration
 
