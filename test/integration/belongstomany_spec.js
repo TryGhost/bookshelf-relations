@@ -992,6 +992,28 @@ describe('[Integration] BelongsToMany: Posts/Tags', function () {
             });
         });
 
+        // Characterizes the current fallback in lib/detector.js, not a documented contract: a lookup
+        // query that cannot be built (here because of an undefined binding) is ignored and the target
+        // is treated as new. Update this test if that fallback is hardened.
+        it('inserts a tag when its lookup query cannot be built', function () {
+            return testUtils.testPostModel({
+                method: 'edit',
+                id: 1,
+                values: {
+                    tags: [{ slug: 'unbound-lookup', name: undefined }],
+                },
+                expectSuccess: async (result) => {
+                    const rows = await testUtils.database
+                        .getConnection()('posts_tags')
+                        .join('tags', 'tags.id', 'posts_tags.tag_id')
+                        .where('posts_tags.post_id', result.id)
+                        .select('tags.slug');
+
+                    rows.map((row) => row.slug).should.eql(['unbound-lookup']);
+                },
+            });
+        });
+
         it('setUndefined', function () {
             return testUtils.testPostModel({
                 method: 'edit',
