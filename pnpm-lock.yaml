@@ -183,17 +183,17 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       better-sqlite3:
-        specifier: 13.0.3
-        version: 13.0.3
+        specifier: 13.1.1
+        version: 13.1.1
       bookshelf:
         specifier: 1.2.0
-        version: 1.2.0(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))
+        version: 1.2.0(knex@3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))
       knex:
         specifier: 3.3.0
-        version: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
+        version: 3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
       knex-migrator:
         specifier: 6.3.0
-        version: 6.3.0(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1)
+        version: 6.3.0(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1)
       mocha:
         specifier: 12.0.3
         version: 12.0.3
@@ -706,8 +706,8 @@ packages:
     resolution: {integrity: sha512-dq9AtApgg5PGFtBzPFSBl3HZQjHok5gaQCM6zh2Yk0aSmDCs1CbnVI8/HgASQkNKsWFpseIO9beg5xxpYhbIfA==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x || 26.x}
 
-  better-sqlite3@13.0.3:
-    resolution: {integrity: sha512-RbOBxmLBG8uvFUc15X9+9SFemKcQ0WBuISBVkpuiaUB2qblC8UWlHEjdWVoZ8AdhSwmoEgsiXKfopX0CQxaACQ==}
+  better-sqlite3@13.1.1:
+    resolution: {integrity: sha512-JjyLCATp+VLxZVFyWkicyzKYwpEFLCrV4MmshW97xv3JXdhw5jBDcsbEWRGm2L/96E+k7rtjON8q9nml05h3Pw==}
     engines: {node: '>=22'}
 
   bindings@1.5.0:
@@ -2201,7 +2201,7 @@ snapshots:
       prebuild-install: 7.1.3
     optional: true
 
-  better-sqlite3@13.0.3:
+  better-sqlite3@13.1.1:
     dependencies:
       node-addon-api: 8.9.2
 
@@ -2219,12 +2219,12 @@ snapshots:
 
   bluebird@3.7.2: {}
 
-  bookshelf@1.2.0(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)):
+  bookshelf@1.2.0(knex@3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)):
     dependencies:
       bluebird: 3.7.2
       create-error: 0.3.1
       inflection: 1.13.4
-      knex: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
+      knex: 3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
       lodash: 4.18.1
 
   brace-expansion@1.1.21:
@@ -2638,14 +2638,14 @@ snapshots:
     dependencies:
       '@keyv/serialize': 1.1.1
 
-  knex-migrator@6.3.0(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1):
+  knex-migrator@6.3.0(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       '@tryghost/database-info': 2.3.19
       '@tryghost/errors': 3.4.5
       '@tryghost/logging': 5.4.8(supports-color@8.1.1)
       commander: 15.0.0
       debug: 4.4.3(supports-color@8.1.1)
-      knex: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
+      knex: 3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
       mysql2: 3.24.6(@types/node@25.9.9)
       semver: 7.8.6
     optionalDependencies:
@@ -2654,7 +2654,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  knex@3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1):
+  knex@3.3.0(better-sqlite3@13.1.1)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -2671,7 +2671,7 @@ snapshots:
       tarn: 3.1.2
       tildify: 2.0.0
     optionalDependencies:
-      better-sqlite3: 13.0.3
+      better-sqlite3: 13.1.1
       mysql2: 3.24.6(@types/node@25.9.9)
     transitivePeerDependencies:
       - supports-color
