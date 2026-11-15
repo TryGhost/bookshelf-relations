@@ -189,8 +189,8 @@ importers:
         version: 4.18.1
     devDependencies:
       '@tryghost/pro-ship':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.0.4
+        version: 2.0.4
       better-sqlite3:
         specifier: 13.1.1
         version: 13.1.1
@@ -633,8 +633,8 @@ packages:
   '@tryghost/pretty-stream@2.3.19':
     resolution: {integrity: sha512-YHNRYibJZBy+7IN2o0zMSd1o2jXO+NZ2O8zAvnK1hNwRH0zGdfNWTgRP6u3dwGYImhQEm6ceiQkmZZ6d/OUifQ==}
 
-  '@tryghost/pro-ship@2.0.0':
-    resolution: {integrity: sha512-QG4PZsYtxrkEOa8kkuqbZn2dEA86TM3tHfnssFHkt2mLulVnxM2DrDYI4llIPEIY2R7wQQLpCjI4yf++ffRRXQ==}
+  '@tryghost/pro-ship@2.0.4':
+    resolution: {integrity: sha512-tt6vcmI1m9ZyjhQ23FHDgQ6TmVzLqIWlw7PQ9nmOdce4iaW3RcxXZVIFnj90PvpmZdxX2j5Xl9KoMBOkqXwTxg==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -644,6 +644,9 @@ packages:
 
   '@tryghost/root-utils@2.3.19':
     resolution: {integrity: sha512-PIFzf2FUBiDe9H7UZ5om1yX/LgIpl7L96dtcgxahGqEhss5/OLVePaPTAray+VV3Nx7o/VM5HTOVPvuGai3mSw==}
+
+  '@tryghost/root-utils@2.3.21':
+    resolution: {integrity: sha512-U6NCurcith8tYnU3DQZWGaJstl4zt2wU7A9RlAx/kuxZdqoeoqrT91MacVKwdURiTH/JgIxeHEsQAxzNZC+TfQ==}
 
   '@tryghost/tpl@2.3.19':
     resolution: {integrity: sha512-6CeCScgfUF0UBaIH3zuegDL+CdVztF+fQxkbwFl5cvAKeZBHs5wypWnqCa5AwZWUZ4W+AMv6pPNDC/gxXZbbzg==}
@@ -1533,11 +1536,6 @@ packages:
     resolution: {integrity: sha512-GYrCADwpu6yV5OAvchkQ27Z5wwMxWAEMg5NNWjyHh/5DboFFqbdbvYNIvZouQpxXyeMPoTOh0vdPYKlf0ZswdQ==}
     hasBin: true
 
-  semver@7.8.5:
-    resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   semver@7.8.6:
     resolution: {integrity: sha512-9lpSSU4Mly3mrtruwLs1eLK6+gzbzqeBFwRNjIjE+9LuDpWdYctrQlQ3ej1Ilgi7gknpsTRnPoLP8DpCHqHIJw==}
     engines: {node: '>=10'}
@@ -2120,10 +2118,10 @@ snapshots:
       lodash: 4.18.1
       prettyjson: 1.2.5
 
-  '@tryghost/pro-ship@2.0.0':
+  '@tryghost/pro-ship@2.0.4':
     dependencies:
-      '@tryghost/root-utils': 2.3.19
-      semver: 7.8.5
+      '@tryghost/root-utils': 2.3.21
+      semver: 7.8.6
 
   '@tryghost/request@4.0.13':
     dependencies:
@@ -2135,6 +2133,11 @@ snapshots:
       lodash: 4.18.1
 
   '@tryghost/root-utils@2.3.19':
+    dependencies:
+      caller: 1.1.0
+      find-root: 1.1.0
+
+  '@tryghost/root-utils@2.3.21':
     dependencies:
       caller: 1.1.0
       find-root: 1.1.0
@@ -3059,8 +3062,6 @@ snapshots:
   secure-keys@1.0.0: {}
 
   semver@6.3.2: {}
-
-  semver@7.8.5: {}
 
   semver@7.8.6: {}
 
