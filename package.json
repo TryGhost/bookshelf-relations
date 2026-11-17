@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@tryghost/pro-ship": "2.0.4",
-    "better-sqlite3": "13.1.1",
+    "better-sqlite3": "13.2.0",
     "bookshelf": "1.2.0",
     "knex": "3.3.0",
     "knex-migrator": "6.4.1",
