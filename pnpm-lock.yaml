@@ -201,8 +201,8 @@ importers:
         specifier: 3.3.0
         version: 3.3.0(better-sqlite3@13.2.0)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1)
       knex-migrator:
-        specifier: 6.4.1
-        version: 6.4.1(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.2.0)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1)
+        specifier: 6.4.2
+        version: 6.4.2(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.2.0)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1)
       mocha:
         specifier: 12.0.3
         version: 12.0.3
@@ -1122,8 +1122,8 @@ packages:
   keyv@5.6.0:
     resolution: {integrity: sha512-CYDD3SOtsHtyXeEORYRx2qBtpDJFjRTGXUtmNEMGyzYOKj1TE3tycdlho7kA1Ufx9OYWZzg52QFBGALTirzDSw==}
 
-  knex-migrator@6.4.1:
-    resolution: {integrity: sha512-sbXliJr9wjMtPvkEQvoiC62QXswmyuFtZewOUqKkATsbJAQd46GnlAveIPXbKqxajDhAS5kyD36VuN4quYhZ3Q==}
+  knex-migrator@6.4.2:
+    resolution: {integrity: sha512-aCUnSssLbJcUl3XhkRhulNAaITx06+p/GqyZpD1tfs8dJqnHSDPWkgw2q0pq52toeg+ktisRKlrDKk6/Sk4YVA==}
     engines: {node: ^22.18.0 || ^24.14.1}
     hasBin: true
     peerDependencies:
@@ -2473,7 +2473,7 @@ snapshots:
     dependencies:
       '@keyv/serialize': 1.1.1
 
-  knex-migrator@6.4.1(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.2.0)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1):
+  knex-migrator@6.4.2(@types/node@25.9.9)(knex@3.3.0(better-sqlite3@13.2.0)(mysql2@3.24.6(@types/node@25.9.9))(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       '@tryghost/database-info': 2.3.19
       '@tryghost/errors': 3.4.5
